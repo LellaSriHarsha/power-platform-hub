@@ -25,10 +25,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   useEffect(() => {
-    // Resolve the target relative to the current document instead of the domain
-    // root, so the shell also works when the app is served from a subpath
-    // (e.g. a GitHub Pages project site at /<repo>/).
-    window.location.replace(new URL("powerverse.html", window.location.href).href);
+    window.location.replace("/powerverse.html");
   }, []);
 
   return (
