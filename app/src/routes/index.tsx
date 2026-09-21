@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   useEffect(() => {
-    window.location.replace("/powerverse.html");
+    window.location.replace(new URL("powerverse.html", window.location.href).href);
   }, []);
 
   return (

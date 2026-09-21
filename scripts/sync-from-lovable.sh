@@ -32,6 +32,16 @@ rsync -a --delete \
   --exclude '.output' --exclude '.nitro' \
   "$TMP/lovable/" "$ROOT/app/"
 
+# Self-healing patch: Lovable's shell redirects to /powerverse.html (absolute),
+# which breaks when the app is served from a subpath such as a GitHub Pages
+# project site (/power-platform-hub/). Re-apply the document-relative fix on
+# every sync, since the mirror above restores Lovable's original each time.
+INDEX_TSX="$ROOT/app/src/routes/index.tsx"
+if [ -f "$INDEX_TSX" ] && grep -q 'window.location.replace("/powerverse.html")' "$INDEX_TSX"; then
+  perl -0pi -e 's{window\.location\.replace\("/powerverse\.html"\);}{window.location.replace(new URL("powerverse.html", window.location.href).href);}' "$INDEX_TSX"
+  echo "→ Re-applied subpath-safe redirect patch to app/src/routes/index.tsx"
+fi
+
 cd "$ROOT"
 git add -A
 
