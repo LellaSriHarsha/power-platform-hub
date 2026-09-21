@@ -1,6 +1,31 @@
 # POWERVERSE — The Microsoft Power Platform Learning Hub
 
-An open, single-file learning hub for **Microsoft Power Platform** — built for makers, analysts and pro developers who want to *learn by doing*.
+<p align="center">
+  <img src="assets/banner.svg" alt="POWERVERSE — The Microsoft Power Platform Learning Hub" width="100%">
+</p>
+
+<p align="center">
+  <a href="https://lellasriharsha.github.io/power-platform-hub/"><b>🚀 Open the live playground</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://lellasriharsha.github.io/power-platform-hub/#functions">📚 99-function reference</a>
+  &nbsp;·&nbsp;
+  <a href="https://lellasriharsha.github.io/power-platform-hub/#interview">💼 Interview prep</a>
+  &nbsp;·&nbsp;
+  <a href="https://lellasriharsha.github.io/power-platform-hub/#scenarios">🏗️ Real scenarios</a>
+</p>
+
+<p align="center">
+  <a href="https://lellasriharsha.github.io/power-platform-hub/"><img src="https://img.shields.io/badge/demo-live-brightgreen" alt="Live demo"></a>
+  <img src="https://img.shields.io/badge/dependencies-zero-blue" alt="Zero dependencies">
+  <img src="https://img.shields.io/badge/Power%20Fx%20functions-99-A258C9" alt="99 Power Fx functions">
+  <img src="https://img.shields.io/badge/playground%20records-200-3B82F6" alt="200 playground records">
+  <img src="https://img.shields.io/badge/cert%20data-2026-F2C811" alt="2026 certification data">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT license"></a>
+</p>
+
+<h3 align="center">An open, single-file learning hub for Microsoft Power Platform — built for makers, analysts and pro developers who want to <i>learn by doing</i>.</h3>
+
+---
 
 > **Live demo:** https://lellasriharsha.github.io/power-platform-hub/
 
@@ -56,10 +81,15 @@ python3 -m http.server 8000
 
 ```
 power-platform-hub/
-└── index.html      # the entire app: markup, hand-rolled CSS, Power Fx engine and UI logic
+├── index.html          # the entire app: markup, hand-rolled CSS, Power Fx engine and UI logic
+├── README.md           # this file
+├── LICENSE             # MIT
+├── .gitignore
+└── assets/
+    └── banner.svg      # README hero artwork (hand-authored SVG, no image tooling)
 ```
 
-Everything ships in one file by design — easy to host, easy to fork, easy to embed.
+Everything the app needs ships in **one file** by design — easy to host, easy to fork, easy to embed.
 
 ### Architecture notes
 
