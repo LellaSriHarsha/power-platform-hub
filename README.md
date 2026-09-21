@@ -2,7 +2,7 @@
 
 An open, single-file learning hub for **Microsoft Power Platform** — built for makers, analysts and pro developers who want to *learn by doing*.
 
-> **Live demo:** https://<your-username>.github.io/power-platform-hub/ *(enable GitHub Pages — see below)*
+> **Live demo:** https://lellasriharsha.github.io/power-platform-hub/
 
 ---
 
@@ -37,7 +37,7 @@ An open, single-file learning hub for **Microsoft Power Platform** — built for
 No build step, no dependencies, no npm install.
 
 ```bash
-git clone https://github.com/<your-username>/power-platform-hub.git
+git clone https://github.com/LellaSriHarsha/power-platform-hub.git
 cd power-platform-hub
 open index.html          # macOS
 # or: xdg-open index.html  (Linux)  |  start index.html (Windows)
