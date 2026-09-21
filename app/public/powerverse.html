@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POWERVERSE — The Microsoft Power Platform Learning Hub</title>
+<meta name="description" content="Everything you need to learn Microsoft Power Platform: tools, live code playground, snippets, real-life scenarios and interview prep.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; worker-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+try{const saved=localStorage.getItem('powerverse-theme');const theme=saved||((matchMedia('(prefers-color-scheme:light)').matches)?'light':'dark');document.documentElement.dataset.theme=theme;document.documentElement.style.colorScheme=theme}catch{document.documentElement.dataset.theme='dark'}
+</script>
+<style>
+:root{
+  --ink:#080B16;
+  --ink-2:#0C1122;
+  --ink-3:#111831;
+  --line:rgba(148,163,204,.14);
+  --line-strong:rgba(148,163,204,.28);
+  --txt:#E8ECF8;
+  --txt-dim:#9AA5C4;
+  --txt-mute:#7B87A8;
+  /* Power Platform brand accents */
+  --c-apps:#A258C9;      /* Power Apps purple */
+  --c-flow:#3B82F6;      /* Power Automate blue */
+  --c-bi:#F2C811;        /* Power BI yellow */
+  --c-pages:#17B890;     /* Power Pages teal */
+  --c-copilot:#E066C4;   /* Copilot Studio pink */
+  --c-data:#8B9DFF;      /* Dataverse indigo */
+  --glow-apps:rgba(162,88,201,.35);
+  --glow-flow:rgba(59,130,246,.35);
+  --disp:'Chakra Petch',sans-serif;
+  --body:'Instrument Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  color-scheme:dark;
+}
+[data-theme="light"]{
+  --ink:#F5F7FC;
+  --ink-2:#FFFFFF;
+  --ink-3:#E9EEF8;
+  --line:rgba(39,55,91,.13);
+  --line-strong:rgba(39,55,91,.25);
+  --txt:#141B2D;
+  --txt-dim:#4E5B78;
+  --txt-mute:#63708C;
+  --c-apps:#8540AD;
+  --c-flow:#1769D2;
+  --c-bi:#B88700;
+  --c-pages:#087D67;
+  --c-copilot:#B83E9C;
+  --c-data:#5368D8;
+  --glow-apps:rgba(133,64,173,.18);
+  --glow-flow:rgba(23,105,210,.18);
+  color-scheme:light;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+button,a,input,textarea,select{font:inherit}
+:focus-visible{outline:2px solid var(--c-bi);outline-offset:3px}
+body{
+  background:var(--ink);
+  color:var(--txt);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:clip;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--c-flow);color:#fff}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--ink-2)}
+::-webkit-scrollbar-thumb{background:#232C4E;border-radius:6px;border:2px solid var(--ink-2)}
+::-webkit-scrollbar-thumb:hover{background:#35406B}
+
+/* ====== ambient background ====== */
+.bg-fx{position:fixed;inset:0;z-index:-2;pointer-events:none}
+.bg-fx::before{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,#000 20%,transparent 75%);
+}
+.bg-fx::after{
+  content:"";position:absolute;inset:-20%;
+  background:
+    radial-gradient(600px 400px at 15% 10%,rgba(162,88,201,.14),transparent 60%),
+    radial-gradient(700px 500px at 85% 15%,rgba(59,130,246,.13),transparent 60%),
+    radial-gradient(500px 500px at 50% 100%,rgba(23,184,144,.07),transparent 60%);
+}
+.grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* ====== layout primitives ====== */
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+main{display:block;min-width:0}
+section{position:relative;padding:110px 0}
+.sec-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--txt-mute);margin-bottom:18px;
+}
+.sec-tag::before{content:"";width:34px;height:1px;background:var(--txt-mute)}
+.sec-tag b{color:var(--c-flow);font-weight:500}
+h2.sec-title{
+  font-family:var(--disp);font-weight:600;
+  font-size:clamp(30px,4.6vw,54px);line-height:1.08;letter-spacing:-.01em;
+  margin-bottom:16px;
+}
+h2.sec-title .hl{color:transparent;-webkit-text-stroke:1px var(--txt-dim)}
+.sec-sub{color:var(--txt-dim);max-width:640px;font-size:17px;margin-bottom:52px}
+
+/* ====== reveal animation ====== */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.on{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}.rv-d4{transition-delay:.32s}
+
+/* ====== nav ====== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:rgba(8,11,22,.72);border-bottom:1px solid var(--line);
+  transition:background .3s;
+}
+[data-theme="light"] nav{background:rgba(255,255,255,.82)}
+.nav-in{max-width:1240px;margin:0 auto;padding:0 28px;height:66px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--txt);font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:.06em}
+.logo-mark{width:32px;height:32px;position:relative;flex:none}
+.logo-mark span{position:absolute;border-radius:5px;opacity:.95}
+.logo-mark span:nth-child(1){inset:0 16px 16px 0;background:var(--c-apps)}
+.logo-mark span:nth-child(2){inset:0 0 16px 16px;background:var(--c-flow)}
+.logo-mark span:nth-child(3){inset:16px 16px 0 0;background:var(--c-bi)}
+.logo-mark span:nth-child(4){inset:16px 0 0 16px;background:var(--c-pages)}
+.logo em{font-style:normal;color:var(--c-bi)}
+.nav-links{display:flex;gap:4px;margin-left:auto}
+.nav-links a{
+  color:var(--txt-dim);text-decoration:none;font-size:13.5px;font-weight:500;
+  padding:8px 13px;border-radius:8px;transition:.2s;letter-spacing:.01em;
+}
+.nav-links a:hover{color:var(--txt);background:rgba(148,163,204,.08)}
+.nav-cta{
+  margin-left:8px;font-family:var(--mono);font-size:12.5px;font-weight:500;
+  color:#0B0E1A;background:var(--c-bi);padding:9px 16px;border-radius:8px;
+  text-decoration:none;transition:.2s;letter-spacing:.03em;
+}
+.nav-cta:hover{box-shadow:0 0 24px rgba(242,200,17,.45);transform:translateY(-1px)}
+.theme-toggle{position:relative;display:grid;grid-template-columns:1fr 1fr;align-items:center;width:58px;height:32px;flex:none;padding:0 7px;border:1px solid var(--line-strong);border-radius:99px;background:var(--ink-2);color:var(--txt-dim);cursor:pointer;transition:border-color .2s,background .2s}
+.theme-toggle:hover{border-color:var(--c-flow)}
+.theme-toggle::before{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--c-flow);box-shadow:0 3px 10px var(--glow-flow);transition:transform .25s ease}
+.theme-toggle .sun,.theme-toggle .moon{position:relative;z-index:1;width:14px;height:14px;display:grid;place-items:center}
+.theme-toggle svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8}
+.theme-toggle .moon{color:var(--txt)}
+.theme-toggle .sun{color:var(--txt-mute)}
+[data-theme="light"] .theme-toggle::before{transform:translateX(26px);background:var(--c-bi)}
+[data-theme="light"] .theme-toggle .sun{color:#201A00}
+[data-theme="light"] .theme-toggle .moon{color:var(--txt-mute)}
+.burger{display:none;margin-left:auto;background:none;border:1px solid var(--line-strong);border-radius:8px;width:40px;height:40px;color:var(--txt);cursor:pointer;font-size:18px}
+.skip-link{position:fixed;left:18px;top:10px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--c-bi);color:var(--ink);font-family:var(--mono);font-size:12px;font-weight:700;text-decoration:none;transition:transform .2s}
+.skip-link:focus{transform:none}
+
+/* ====== hero ====== */
+.hero{padding:138px 0 72px;position:relative}
+.hero-kicker{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--txt-dim);border:1px solid var(--line-strong);border-radius:99px;
+  padding:8px 16px;margin-bottom:34px;background:rgba(12,17,34,.6);
+}
+.hero-kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--c-pages);box-shadow:0 0 10px var(--c-pages);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{
+  font-family:var(--disp);font-weight:700;
+  font-size:clamp(42px,6.4vw,78px);line-height:1.02;letter-spacing:0;
+  max-width:1040px;
+}
+.hero h1 .w{display:inline-block}
+.hero h1 .stroke{color:transparent;-webkit-text-stroke:1.5px var(--txt-dim)}
+.hero h1 .grad{
+  background:linear-gradient(100deg,var(--c-apps) 0%,var(--c-flow) 34%,var(--c-pages) 66%,var(--c-bi) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:220% 100%;animation:sheen 7s ease-in-out infinite;
+}
+@keyframes sheen{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero-sub{margin-top:28px;max-width:640px;color:var(--txt-dim);font-size:18px}
+.hero-sub b{color:var(--txt);font-weight:600}
+.hero-actions{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--disp);font-weight:600;font-size:14.5px;letter-spacing:.04em;
+  padding:15px 26px;border-radius:10px;text-decoration:none;transition:.25s;cursor:pointer;border:none;
+}
+.btn-pri{background:var(--c-flow);color:#fff}
+.btn-pri:hover{box-shadow:0 8px 34px var(--glow-flow);transform:translateY(-2px)}
+.btn-ghost{color:var(--txt);border:1px solid var(--line-strong);background:rgba(12,17,34,.5)}
+.btn-ghost:hover{border-color:var(--c-apps);box-shadow:0 8px 30px var(--glow-apps);transform:translateY(-2px)}
+.hero-stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin-top:54px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(12,17,34,.55);backdrop-filter:blur(6px)}
+.stat{min-width:0;padding:20px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat .num{font-family:var(--disp);font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1}
+.stat .num i{font-style:normal;color:var(--c-bi)}
+.stat .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt-mute);margin-top:9px}
+
+/* ====== marquee ====== */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;overflow:hidden;background:rgba(12,17,34,.5)}
+.mq-track{display:flex;gap:56px;width:max-content;animation:mq 30s linear infinite}
+.mq-track span{font-family:var(--disp);font-weight:600;font-size:19px;letter-spacing:.1em;color:var(--txt-mute);white-space:nowrap;display:flex;align-items:center;gap:56px}
+.mq-track span::after{content:"◆";font-size:10px;color:var(--c-bi)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ====== tools grid ====== */
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tool{
+  position:relative;border:1px solid var(--line);border-radius:16px;
+  padding:30px 28px 26px;background:linear-gradient(180deg,rgba(17,24,49,.55),rgba(12,17,34,.75));
+  transition:.3s cubic-bezier(.2,.7,.2,1);overflow:hidden;cursor:default;
+}
+.tool::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:2px;
+  background:var(--tc,var(--c-flow));opacity:0;transition:.3s;
+}
+.tool::after{
+  content:"";position:absolute;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,var(--tg,rgba(59,130,246,.18)),transparent 70%);
+  top:-90px;right:-70px;opacity:0;transition:.4s;
+}
+.tool:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.tool:hover::before,.tool:hover::after{opacity:1}
+.tool .idx{position:absolute;top:22px;right:24px;font-family:var(--mono);font-size:11px;color:var(--txt-mute);letter-spacing:.15em}
+.tool .t-ico{
+  width:52px;height:52px;border-radius:13px;display:grid;place-items:center;
+  background:rgba(8,11,22,.8);border:1px solid var(--line-strong);
+  font-family:var(--disp);font-weight:700;font-size:19px;color:var(--tc,var(--c-flow));margin-bottom:20px;
+  box-shadow:0 0 0 4px rgba(148,163,204,.05);
+}
+.tool h3{font-family:var(--disp);font-weight:600;font-size:21px;margin-bottom:4px}
+.tool .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--tc,var(--c-flow));margin-bottom:14px;display:block}
+.tool p{color:var(--txt-dim);font-size:14.5px;margin-bottom:18px}
+.tool ul{list-style:none;display:flex;flex-wrap:wrap;gap:7px}
+.tool ul li{
+  font-family:var(--mono);font-size:11px;color:var(--txt-dim);
+  border:1px solid var(--line);border-radius:99px;padding:4px 11px;background:rgba(8,11,22,.5);
+}
+
+/* ====== learning path ====== */
+.path{position:relative;margin-top:10px}
+.path::before{content:"";position:absolute;left:19px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--c-pages),var(--c-flow),var(--c-apps),var(--c-bi))}
+.step{position:relative;padding:0 0 34px 66px;max-width:860px}
+.step:last-child{padding-bottom:0}
+.step .node{
+  position:absolute;left:0;top:2px;width:40px;height:40px;border-radius:50%;
+  background:var(--ink-2);border:1px solid var(--line-strong);
+  display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:14px;color:var(--sc,var(--c-flow));
+  box-shadow:0 0 0 6px var(--ink);
+}
+.step h4{font-family:var(--disp);font-weight:600;font-size:19px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.step h4 .cert{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:#0B0E1A;background:var(--sc,var(--c-flow));padding:3px 9px;border-radius:5px;font-weight:700}
+.step p{color:var(--txt-dim);font-size:14.5px;margin-top:6px}
+.step p b{color:var(--txt)}
+
+/* ====== playground ====== */
+.pg-shell{
+  border:1px solid var(--line-strong);border-radius:18px;overflow:hidden;
+  background:var(--ink-2);box-shadow:0 30px 90px rgba(0,0,0,.5),0 0 0 1px rgba(59,130,246,.06);
+}
+.pg-bar{display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid var(--line);background:rgba(8,11,22,.7)}
+.pg-bar .lights{display:flex;gap:7px;margin-right:8px}
+.pg-bar .lights i{width:11px;height:11px;border-radius:50%;display:block}
+.pg-bar .lights i:nth-child(1){background:#FF5F57}.pg-bar .lights i:nth-child(2){background:#FEBC2E}.pg-bar .lights i:nth-child(3){background:#28C840}
+.pg-tabs{display:flex;gap:4px}
+.pg-tab{
+  font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--txt-mute);
+  background:none;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;transition:.2s;
+}
+.pg-tab.on{color:var(--txt);background:rgba(59,130,246,.16);box-shadow:inset 0 0 0 1px rgba(59,130,246,.35)}
+.pg-sample{
+  margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--txt-dim);
+  background:var(--ink);border:1px solid var(--line-strong);border-radius:8px;padding:8px 10px;cursor:pointer;
+  max-width:230px;
+}
+.pg-body{display:grid;grid-template-columns:1.15fr 1fr;min-height:380px}
+.pg-edit{border-right:1px solid var(--line);display:flex;flex-direction:column}
+.pg-edit textarea{
+  flex:1;resize:none;background:transparent;border:none;outline:none;color:#D6E0FF;
+  font-family:var(--mono);font-size:13.5px;line-height:1.75;padding:20px 22px;min-height:300px;
+  caret-color:var(--c-bi);
+}
+.pg-edit textarea::placeholder{color:var(--txt-mute)}
+.pg-runrow{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--line);background:rgba(8,11,22,.55)}
+.btn-run{
+  font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.08em;
+  background:var(--c-bi);color:#0B0E1A;border:none;border-radius:8px;padding:11px 24px;cursor:pointer;transition:.2s;
+}
+.btn-run:hover{box-shadow:0 0 26px rgba(242,200,17,.5);transform:translateY(-1px)}
+.btn-clr{
+  font-family:var(--mono);font-size:12px;color:var(--txt-dim);background:none;
+  border:1px solid var(--line-strong);border-radius:8px;padding:11px 16px;cursor:pointer;transition:.2s;
+}
+.btn-clr:hover{color:var(--txt);border-color:var(--txt-dim)}
+.pg-out{display:flex;flex-direction:column;background:rgba(8,11,22,.55)}
+.pg-out-h{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--txt-mute);padding:15px 20px 0;
+}
+.pg-out-b{flex:1;padding:12px 20px 20px;font-family:var(--mono);font-size:13.5px;overflow:auto}
+.pg-out-b .ok{color:#7EE2A8}
+.pg-out-b .err{color:#FF8FA3}
+.pg-out-b .hint{color:var(--txt-mute);font-size:12.5px;line-height:1.8}
+.pg-out-b .res-type{color:var(--c-bi);font-size:11px;letter-spacing:.15em;text-transform:uppercase;display:block;margin-top:10px}
+.pg-out-b table{border-collapse:collapse;margin-top:6px;font-size:12px;width:100%}
+.pg-out-b th{color:var(--c-flow);text-align:left;padding:6px 12px;border-bottom:1px solid var(--line-strong);font-weight:500}
+.pg-out-b td{color:var(--txt-dim);padding:5px 12px;border-bottom:1px solid var(--line)}
+.pg-foot{
+  padding:13px 20px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:11.5px;color:var(--txt-mute);line-height:1.7;
+}
+.pg-foot b{color:var(--txt-dim);font-weight:500}
+
+/* ====== snippet library ====== */
+.snip-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px}
+.snip-tab{
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--txt-dim);
+  background:rgba(12,17,34,.6);border:1px solid var(--line);border-radius:99px;
+  padding:10px 19px;cursor:pointer;transition:.22s;
+}
+.snip-tab:hover{color:var(--txt);border-color:var(--line-strong)}
+.snip-tab.on{color:#0B0E1A;background:var(--stc,var(--c-flow));border-color:var(--stc,var(--c-flow));font-weight:700;box-shadow:0 6px 24px var(--stg,var(--glow-flow))}
+.snip-pane{display:none}
+.snip-pane.on{display:grid;grid-template-columns:1fr 1fr;gap:18px;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.snip{
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--ink-2);
+  transition:.25s;display:flex;flex-direction:column;
+}
+.snip:hover{border-color:var(--line-strong);transform:translateY(-3px);box-shadow:0 18px 44px rgba(0,0,0,.4)}
+.snip-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);background:rgba(8,11,22,.6)}
+.snip-h .lang{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#0B0E1A;background:var(--slc,var(--c-flow));padding:3px 8px;border-radius:4px;font-weight:700}
+.snip-h h5{font-family:var(--disp);font-weight:600;font-size:14.5px;flex:1}
+.copy-btn{
+  font-family:var(--mono);font-size:11px;color:var(--txt-dim);background:none;
+  border:1px solid var(--line-strong);border-radius:7px;padding:6px 11px;cursor:pointer;transition:.2s;
+}
+.copy-btn:hover{color:var(--txt);border-color:var(--c-bi)}
+.copy-btn.ok{color:#7EE2A8;border-color:#7EE2A8}
+.snip pre{
+  padding:16px 18px;overflow-x:auto;flex:1;
+  font-family:var(--mono);font-size:12.5px;line-height:1.7;color:#C7D3F5;background:rgba(8,11,22,.35);
+}
+.snip pre .cm{color:#5E6A8C;font-style:italic}
+.snip pre .fn{color:#8FD3FF}
+.snip pre .st{color:#A8E6A3}
+.snip pre .kw{color:#E5A4E0}
+.snip .try{
+  display:block;text-align:center;padding:11px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
+  color:var(--c-bi);text-decoration:none;border-top:1px solid var(--line);transition:.2s;background:rgba(8,11,22,.4);
+}
+.snip .try:hover{background:rgba(242,200,17,.1);color:#FFE066}
+
+/* ====== scenarios ====== */
+.scen-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.scen{
+  border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(17,24,49,.5),rgba(12,17,34,.7));
+  overflow:hidden;transition:.28s;
+}
+.scen:hover{border-color:var(--line-strong);transform:translateY(-4px);box-shadow:0 22px 56px rgba(0,0,0,.42)}
+.scen-top{padding:26px 26px 20px;border-bottom:1px dashed var(--line);position:relative}
+.scen-top .ind{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--scc,var(--c-pages));display:flex;align-items:center;gap:8px;margin-bottom:12px;
+}
+.scen-top .ind::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--scc,var(--c-pages))}
+.scen-top h3{font-family:var(--disp);font-weight:600;font-size:20px;line-height:1.25;padding-right:44px}
+.scen-top .num{position:absolute;top:20px;right:22px;font-family:var(--disp);font-weight:700;font-size:30px;color:transparent;-webkit-text-stroke:1px var(--line-strong)}
+.scen-b{padding:22px 26px 24px}
+.scen-b .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--txt-mute);margin:14px 0 7px}
+.scen-b .lbl:first-child{margin-top:0}
+.scen-b p{color:var(--txt-dim);font-size:14px}
+.scen-b .stack{display:flex;flex-wrap:wrap;gap:6px}
+.scen-b .stack i{
+  font-style:normal;font-family:var(--mono);font-size:10.5px;color:var(--txt);
+  border:1px solid var(--line-strong);border-radius:5px;padding:3px 9px;background:rgba(8,11,22,.6);
+}
+.scen-b .impact{color:#7EE2A8;font-size:13.5px;font-family:var(--mono)}
+.scen-toggle{
+  width:100%;text-align:left;background:none;border:none;border-top:1px solid var(--line);
+  color:var(--txt-mute);font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;
+  padding:12px 26px;cursor:pointer;transition:.2s;
+}
+.scen-toggle:hover{color:var(--c-bi)}
+.scen-more{display:none;padding:18px 26px 22px;border-top:1px solid var(--line);background:rgba(8,11,22,.45)}
+.scen-more.on{display:block;animation:fadeUp .35s ease}
+.scen-more ol{margin-left:18px;color:var(--txt-dim);font-size:13.5px;display:grid;gap:8px}
+.scen-more ol b{color:var(--txt)}
+
+/* ====== interview ====== */
+.iq-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.iq-f{
+  font-family:var(--mono);font-size:12px;color:var(--txt-dim);background:rgba(12,17,34,.6);
+  border:1px solid var(--line);border-radius:99px;padding:9px 17px;cursor:pointer;transition:.2s;
+}
+.iq-f.on{color:#0B0E1A;background:var(--txt);border-color:var(--txt);font-weight:700}
+.iq-list{display:grid;gap:10px;max-width:960px}
+.iq{border:1px solid var(--line);border-radius:12px;background:rgba(12,17,34,.55);overflow:hidden;transition:.25s}
+.iq:hover{border-color:var(--line-strong)}
+.iq.open{border-color:rgba(242,200,17,.4);background:rgba(17,24,49,.6)}
+.iq-q{
+  width:100%;display:flex;align-items:center;gap:14px;text-align:left;
+  background:none;border:none;color:var(--txt);cursor:pointer;padding:18px 20px;
+  font-family:var(--body);font-size:15px;font-weight:600;
+}
+.iq-q .qn{font-family:var(--mono);font-size:11px;color:var(--txt-mute);flex:none;width:34px}
+.iq-q .diff{
+  flex:none;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  padding:3px 9px;border-radius:4px;margin-left:auto;
+}
+.diff.easy{color:#7EE2A8;border:1px solid rgba(126,226,168,.4)}
+.diff.med{color:#F2C811;border:1px solid rgba(242,200,17,.4)}
+.diff.hard{color:#FF8FA3;border:1px solid rgba(255,143,163,.4)}
+.iq-q .chev{flex:none;color:var(--txt-mute);transition:.3s;font-size:13px}
+.iq.open .chev{transform:rotate(180deg);color:var(--c-bi)}
+.iq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.2,.7,.2,1)}
+.iq-a-in{padding:0 20px 20px 68px;color:var(--txt-dim);font-size:14px;line-height:1.75}
+.iq-a-in code{
+  font-family:var(--mono);font-size:12px;color:#8FD3FF;background:rgba(59,130,246,.12);
+  padding:2px 7px;border-radius:5px;
+}
+.iq-a-in b{color:var(--txt)}
+.iq.hide{display:none}
+
+/* ====== resources ====== */
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.res{
+  display:flex;gap:16px;align-items:flex-start;text-decoration:none;
+  border:1px solid var(--line);border-radius:14px;padding:22px;background:rgba(12,17,34,.55);transition:.25s;
+}
+.res:hover{border-color:var(--rc,var(--c-flow));transform:translateY(-4px);box-shadow:0 18px 44px rgba(0,0,0,.4)}
+.res .r-ico{
+  flex:none;width:44px;height:44px;border-radius:11px;display:grid;place-items:center;
+  background:rgba(8,11,22,.8);border:1px solid var(--line-strong);font-size:18px;
+}
+.res h5{font-family:var(--disp);font-weight:600;font-size:15.5px;color:var(--txt);display:flex;align-items:center;gap:8px}
+.res h5 .ext{color:var(--txt-mute);font-size:11px;transition:.2s}
+.res:hover h5 .ext{color:var(--rc,var(--c-flow));transform:translate(2px,-2px)}
+.res p{color:var(--txt-mute);font-size:13px;margin-top:5px}
+.cert-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:44px}
+.cert{
+  border:1px solid var(--line);border-radius:12px;padding:18px;text-align:center;
+  background:rgba(12,17,34,.55);transition:.25s;
+}
+.cert:hover{border-color:var(--cc);box-shadow:0 10px 30px rgba(0,0,0,.35);transform:translateY(-3px)}
+.cert .code{font-family:var(--disp);font-weight:700;font-size:19px;color:var(--cc)}
+.cert .lvl{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--txt-mute);margin:6px 0 8px}
+.cert .nm{font-size:12.5px;color:var(--txt-dim);line-height:1.4}
+
+/* ====== footer ====== */
+footer{border-top:1px solid var(--line);padding:56px 0 40px;background:rgba(8,11,22,.8)}
+.foot-in{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.foot-brand{max-width:340px}
+.foot-brand p{color:var(--txt-mute);font-size:13.5px;margin-top:14px}
+.foot-cols{display:flex;gap:70px;flex-wrap:wrap}
+.foot-col h6{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--txt-mute);margin-bottom:16px}
+.foot-col a{display:block;color:var(--txt-dim);text-decoration:none;font-size:14px;margin-bottom:10px;transition:.2s}
+.foot-col a:hover{color:var(--c-bi)}
+.foot-base{margin-top:48px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:11.5px;color:var(--txt-mute)}
+
+/* ====== responsive ====== */
+@media(max-width:1024px){
+  .tools-grid{grid-template-columns:1fr 1fr}
+  .cert-strip{grid-template-columns:repeat(3,1fr)}
+  .res-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:820px){
+  section{padding:80px 0}
+  .nav-links,.nav-cta{display:none}
+  .burger{display:grid;place-items:center}
+  .nav-links.mob{
+    display:flex;position:absolute;top:66px;left:0;right:0;flex-direction:column;
+    background:rgba(8,11,22,.97);border-bottom:1px solid var(--line);padding:14px 22px;gap:2px;
+  }
+  .tools-grid,.scen-grid,.snip-pane.on,.res-grid{grid-template-columns:1fr}
+  .pg-body{grid-template-columns:1fr}
+  .pg-edit{border-right:none;border-bottom:1px solid var(--line)}
+  .hero-stats{flex-direction:column}
+  .stat{border-right:none;border-bottom:1px solid var(--line)}
+  .stat:last-child{border-bottom:none}
+  .cert-strip{grid-template-columns:1fr 1fr}
+  .iq-a-in{padding-left:20px}
+}
+
+/* ====== modal system ====== */
+.modal-ov{
+  position:fixed;inset:0;z-index:80;background:rgba(4,6,14,.78);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:28px;
+}
+.modal-ov.on{display:flex;animation:fadeUp .25s ease}
+.modal-card{
+  width:min(880px,100%);max-height:86vh;overflow:auto;border-radius:18px;
+  background:var(--ink-2);border:1px solid var(--line-strong);
+  box-shadow:0 40px 120px rgba(0,0,0,.6);
+}
+.modal-h{
+  position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:14px;
+  padding:20px 26px;border-bottom:1px solid var(--line);background:rgba(12,17,34,.95);backdrop-filter:blur(8px);
+}
+.modal-h h3{font-family:var(--disp);font-weight:600;font-size:20px;flex:1}
+.modal-h .mtag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#0B0E1A;background:var(--mc,var(--c-flow));padding:3px 10px;border-radius:5px;font-weight:700}
+.modal-x{background:none;border:1px solid var(--line-strong);color:var(--txt-dim);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:15px;transition:.2s}
+.modal-x:hover{color:var(--txt);border-color:var(--c-bi)}
+.modal-b{padding:26px}
+.modal-b p{color:var(--txt-dim);font-size:14.5px;margin-bottom:14px}
+.modal-b .kv{display:grid;grid-template-columns:140px 1fr;gap:8px 16px;font-size:14px;margin-bottom:18px}
+.modal-b .kv dt{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-mute);padding-top:2px}
+.modal-b .kv dd{color:var(--txt-dim);margin:0}
+.modal-b code{font-family:var(--mono);font-size:12px;color:#8FD3FF;background:rgba(59,130,246,.12);padding:2px 7px;border-radius:5px}
+.modal-b pre{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.7;color:#C7D3F5;overflow-x:auto;margin:10px 0 16px;white-space:pre-wrap}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.modal-list{list-style:none;display:flex;flex-wrap:wrap;gap:7px;margin:6px 0 16px}
+.modal-list li{font-family:var(--mono);font-size:11px;color:var(--txt-dim);border:1px solid var(--line);border-radius:99px;padding:4px 11px;background:rgba(8,11,22,.5)}
+.modal-link{color:var(--c-bi);text-decoration:none;font-family:var(--mono);font-size:12.5px}
+.modal-link:hover{text-decoration:underline}
+
+/* data viewer */
+.dv-tabs{display:flex;gap:8px;margin-bottom:16px}
+.dv-tab{font-family:var(--mono);font-size:12px;color:var(--txt-dim);background:none;border:1px solid var(--line-strong);border-radius:8px;padding:8px 15px;cursor:pointer;transition:.2s}
+.dv-tab.on{color:#0B0E1A;background:var(--c-pages);border-color:var(--c-pages);font-weight:700}
+.dv-meta{font-family:var(--mono);font-size:11.5px;color:var(--txt-mute);margin-bottom:10px}
+.dv-table{overflow:auto;max-height:48vh;border:1px solid var(--line);border-radius:10px}
+.dv-table table{border-collapse:collapse;font-family:var(--mono);font-size:12px;width:100%}
+.dv-table th{position:sticky;top:0;background:var(--ink-3);color:var(--c-pages);text-align:left;padding:9px 14px;border-bottom:1px solid var(--line-strong);white-space:nowrap;font-weight:600}
+.dv-table td{color:var(--txt-dim);padding:7px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+.dv-table tr:hover td{background:rgba(23,184,144,.06);color:var(--txt)}
+.dv-table .null{color:#4A5578;font-style:italic}
+
+/* ====== function reference ====== */
+.fn-tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:26px}
+.fn-search{
+  flex:1;min-width:240px;display:flex;align-items:center;gap:10px;
+  background:rgba(12,17,34,.7);border:1px solid var(--line-strong);border-radius:12px;padding:0 18px;
+  transition:.2s;
+}
+.fn-search:focus-within{border-color:var(--c-flow);box-shadow:0 0 0 3px rgba(59,130,246,.18)}
+.fn-search span{color:var(--txt-mute);font-size:15px}
+.fn-search input{
+  flex:1;background:none;border:none;outline:none;color:var(--txt);
+  font-family:var(--mono);font-size:14px;padding:15px 0;
+}
+.fn-search input::placeholder{color:var(--txt-mute)}
+.fn-count{font-family:var(--mono);font-size:12px;color:var(--txt-mute);letter-spacing:.06em}
+.fn-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px}
+.fn-chip{
+  font-family:var(--mono);font-size:12px;color:var(--txt-dim);cursor:pointer;
+  background:rgba(12,17,34,.6);border:1px solid var(--line);border-radius:99px;padding:9px 17px;transition:.2s;
+}
+.fn-chip:hover{color:var(--txt);border-color:var(--line-strong)}
+.fn-chip.on{color:#0B0E1A;background:var(--c-bi);border-color:var(--c-bi);font-weight:700}
+.fn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.fn-browser{border:1px solid var(--line);border-radius:14px;background:rgba(8,11,22,.5);overflow:hidden}
+.fn-browser .fn-grid{max-height:min(72vh,820px);overflow-y:auto;overscroll-behavior:contain;padding:14px;scrollbar-gutter:stable}
+.fn-browser .fn-grid:focus{outline:2px solid var(--c-flow);outline-offset:-2px}
+.fn-card{
+  border:1px solid var(--line);border-radius:13px;background:linear-gradient(180deg,rgba(17,24,49,.5),rgba(12,17,34,.75));
+  padding:20px;display:flex;flex-direction:column;transition:.24s;position:relative;
+}
+.fn-card:hover{border-color:var(--fcc,var(--c-flow));transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.fn-card .f-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.fn-card .f-name{font-family:var(--disp);font-weight:700;font-size:16.5px;color:var(--fcc,var(--c-flow))}
+.fn-card .f-cat{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-mute);border:1px solid var(--line);border-radius:4px;padding:2px 7px;margin-left:auto}
+.fn-card .f-sig{font-family:var(--mono);font-size:11.5px;color:#8FD3FF;margin-bottom:9px;word-break:break-word}
+.fn-card .f-desc{font-size:13px;color:var(--txt-dim);flex:1;margin-bottom:12px}
+.fn-card .f-ex{
+  font-family:var(--mono);font-size:11.5px;color:#C7D3F5;background:rgba(8,11,22,.7);
+  border:1px solid var(--line);border-left:3px solid var(--fcc,var(--c-flow));
+  border-radius:8px;padding:10px 12px;margin-bottom:12px;overflow-x:auto;white-space:pre;
+}
+.fn-card .f-acts{display:flex;gap:8px}
+.f-btn{
+  flex:1;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-align:center;
+  padding:8px 10px;border-radius:8px;cursor:pointer;transition:.2s;text-decoration:none;
+  background:none;border:1px solid var(--line-strong);color:var(--txt-dim);
+}
+.f-btn:hover{color:var(--txt);border-color:var(--txt-dim)}
+.f-btn.try{color:var(--c-bi);border-color:rgba(242,200,17,.4)}
+.f-btn.try:hover{background:rgba(242,200,17,.1);color:#FFE066;border-color:var(--c-bi)}
+.f-btn.ok{color:#7EE2A8!important;border-color:#7EE2A8!important}
+.fn-empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--txt-mute);font-family:var(--mono);font-size:13px}
+
+/* ====== editor upgrade (gutter + highlight) ====== */
+.pg-editor{position:relative;flex:1;display:flex;min-height:300px}
+.pg-gutter{
+  flex:none;width:44px;padding:20px 0;background:rgba(8,11,22,.55);border-right:1px solid var(--line);
+  font-family:var(--mono);font-size:13.5px;line-height:1.75;color:#3D4769;text-align:right;
+  overflow:hidden;user-select:none;
+}
+.pg-gutter div{padding-right:10px}
+.pg-codewrap{position:relative;flex:1}
+.pg-hl,.pg-edit textarea{
+  font-family:var(--mono);font-size:13.5px;line-height:1.75;
+  padding:20px 22px;margin:0;white-space:pre;overflow-wrap:normal;tab-size:2;
+}
+.pg-hl{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;color:#D6E0FF;
+  border:none;background:transparent;
+}
+.pg-hl .tk-cm{color:#5E6A8C;font-style:italic}
+.pg-hl .tk-st{color:#A8E6A3}
+.pg-hl .tk-num{color:#F2C811}
+.pg-hl .tk-fn{color:#8FD3FF}
+.pg-hl .tk-kw{color:#E5A4E0}
+.pg-edit textarea{position:absolute;inset:0;width:100%;height:100%;z-index:1;background:transparent;color:transparent;min-height:0;overflow:auto}
+.pg-edit textarea::selection{background:rgba(59,130,246,.35);color:transparent}
+.pg-edit textarea::placeholder{color:#5E6A8C}
+
+/* ====== intellisense ====== */
+.intel{
+  position:absolute;z-index:30;display:none;width:340px;max-height:230px;overflow:auto;
+  background:var(--ink-3);border:1px solid var(--line-strong);border-radius:11px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+.intel.on{display:block;animation:fadeUp .15s ease}
+.intel-it{display:flex;flex-direction:column;gap:2px;padding:9px 14px;cursor:pointer;border-left:2px solid transparent}
+.intel-it .i-name{font-family:var(--mono);font-size:13px;color:#8FD3FF;font-weight:500}
+.intel-it .i-sig{font-family:var(--mono);font-size:10.5px;color:var(--txt-mute)}
+.intel-it.sel,.intel-it:hover{background:rgba(59,130,246,.14);border-left-color:var(--c-flow)}
+.intel-foot{font-family:var(--mono);font-size:10px;color:var(--txt-mute);padding:7px 14px;border-top:1px solid var(--line)}
+
+/* ====== tool cards clickable ====== */
+.tool{cursor:pointer}
+.tool .t-more{
+  display:inline-flex;align-items:center;gap:7px;margin-top:18px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--tc,var(--c-flow));
+}
+.tool .t-more::after{content:"↗";transition:.2s}
+.tool:hover .t-more::after{transform:translate(3px,-3px)}
+
+/* ====== light theme surfaces ====== */
+[data-theme="light"] .bg-fx::after{opacity:.42}
+[data-theme="light"] .grain{opacity:.025}
+[data-theme="light"] .hero-kicker,
+[data-theme="light"] .btn-ghost,
+[data-theme="light"] .hero-stats,
+[data-theme="light"] .marquee,
+[data-theme="light"] .snip-nav,
+[data-theme="light"] .iq-f,
+[data-theme="light"] .iq,
+[data-theme="light"] .res,
+[data-theme="light"] .cert,
+[data-theme="light"] .fn-search,
+[data-theme="light"] .fn-chip{background:rgba(255,255,255,.78)}
+[data-theme="light"] .tool,
+[data-theme="light"] .step,
+[data-theme="light"] .playground,
+[data-theme="light"] .snip,
+[data-theme="light"] .scen,
+[data-theme="light"] .fn-card,
+[data-theme="light"] .modal-card{background:var(--ink-2)}
+[data-theme="light"] .t-ico,
+[data-theme="light"] .tool li,
+[data-theme="light"] .scen-b .metric,
+[data-theme="light"] .modal-list li{background:var(--ink-3)}
+[data-theme="light"] .pg-bar,
+[data-theme="light"] .pg-runrow,
+[data-theme="light"] .pg-out,
+[data-theme="light"] .snip-h,
+[data-theme="light"] .scen-more,
+[data-theme="light"] .modal-h,
+[data-theme="light"] .fn-browser,
+[data-theme="light"] footer{background:rgba(233,238,248,.76)}
+[data-theme="light"] .pg-gutter{background:var(--ink-3);color:var(--txt-mute)}
+[data-theme="light"] .pg-hl,[data-theme="light"] .snip pre,[data-theme="light"] .modal-b pre,[data-theme="light"] .fn-card .f-ex{color:#263555}
+[data-theme="light"] .pg-hl .tk-cm,[data-theme="light"] .snip pre .cm{color:#6A7692}
+[data-theme="light"] .pg-hl .tk-st,[data-theme="light"] .snip pre .st{color:#087D67}
+[data-theme="light"] .pg-hl .tk-fn,[data-theme="light"] .snip pre .fn,[data-theme="light"] .intel-it .i-name,[data-theme="light"] .fn-card .f-sig{color:#1769D2}
+[data-theme="light"] .pg-hl .tk-kw,[data-theme="light"] .snip pre .kw{color:#9A3785}
+[data-theme="light"] .pg-out-b .ok,[data-theme="light"] .scen-b .impact{color:#087D67}
+[data-theme="light"] .pg-out-b .err{color:#B4233C}
+[data-theme="light"] .tool:hover,[data-theme="light"] .snip:hover,[data-theme="light"] .scen:hover,[data-theme="light"] .res:hover,[data-theme="light"] .fn-card:hover{box-shadow:0 18px 42px rgba(39,55,91,.13)}
+[data-theme="light"] .modal-ov{background:rgba(20,27,45,.58)}
+
+@media(max-width:1160px){
+  .nav-links,.nav-cta{display:none}
+  .theme-toggle{margin-left:auto}
+  .burger{display:grid;place-items:center;margin-left:0}
+  .nav-links.mob{display:flex;position:absolute;top:66px;left:0;right:0;flex-direction:column;background:rgba(8,11,22,.98);border-bottom:1px solid var(--line);padding:14px 22px;gap:2px}
+  [data-theme="light"] .nav-links.mob{background:rgba(255,255,255,.98)}
+  .nav-links.mob a{padding:11px 14px}
+}
+@media(max-width:1024px){.fn-grid{grid-template-columns:1fr 1fr}.hero-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat:nth-child(3){border-right:none}.stat:nth-child(-n+3){border-bottom:1px solid var(--line)}}
+@media(max-width:820px){.fn-grid{grid-template-columns:1fr}.pg-gutter{display:none}.intel{width:280px}.hero{padding-top:112px}.hero-kicker{border-radius:10px;line-height:1.45}.hero h1{font-size:clamp(39px,12vw,58px)}.fn-browser .fn-grid{max-height:70vh}.fn-chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px}.fn-chip{flex:none}}
+@media(max-width:560px){.wrap,.nav-in{padding-left:18px;padding-right:18px}.hero-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(3){border-right:1px solid var(--line)}.stat:nth-child(2n){border-right:none}.stat:nth-child(-n+4){border-bottom:1px solid var(--line)}.hero-actions .btn{width:100%;justify-content:center}.fn-tools{align-items:stretch}.fn-search{min-width:100%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{opacity:1;transform:none;transition:none}.hero-kicker .dot,.hero h1 .grad,.mq-track{animation:none}.btn,.tool,.fn-card,.theme-toggle::before{transition:none}}
+</style>
+<noscript><style>.rv{opacity:1;transform:none}.hero-stats .num{visibility:visible}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<div class="bg-fx"></div>
+<div class="grain"></div>
+<!-- ============ NAV ============ -->
+<nav>
+  <div class="nav-in">
+    <a class="logo" href="#top">
+      <span class="logo-mark"><span></span><span></span><span></span><span></span></span>
+      POWER<em>VERSE</em>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#tools">The Platform</a>
+      <a href="#path">Learning Path</a>
+      <a href="#playground">Playground</a>
+      <a href="#snippets">Code Library</a>
+      <a href="#functions">Fx Functions</a>
+      <a href="#scenarios">Scenarios</a>
+      <a href="#interview">Interview Prep</a>
+      <a href="#resources">Resources</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+      <span class="moon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.5 14.4A8.5 8.5 0 0 1 9.6 3.5 8.5 8.5 0 1 0 20.5 14.4Z"/></svg></span>
+      <span class="sun" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
+    </button>
+    <a class="nav-cta" href="#playground">▶ OPEN PLAYGROUND</a>
+    <button class="burger" id="burger" type="button" aria-label="Open navigation" aria-controls="navLinks" aria-expanded="false">☰</button>
+  </div>
+</nav>
+
+<main id="main">
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-kicker rv on"><span class="dot"></span> Microsoft Power Platform · The Complete Learning Hub</div>
+    <h1 class="rv on">
+      Build apps. Automate work. <span class="stroke">Analyze</span> everything. <span class="grad">Master the Power&nbsp;Platform.</span>
+    </h1>
+    <p class="hero-sub rv on rv-d1">
+      One hub for everything Power Platform — <b>Power Apps</b>, <b>Power Automate</b>, <b>Power BI</b>, <b>Power Pages</b> and <b>Copilot Studio</b>.
+      Learn with guided paths, run real code in the browser playground, copy production-ready snippets,
+      study real-world architectures, and drill interview questions.
+    </p>
+    <div class="hero-actions rv on rv-d2">
+      <a class="btn btn-pri" href="#playground">⌁ Try the Live Playground</a>
+      <a class="btn btn-ghost" href="#tools">Explore the Platform ↓</a>
+    </div>
+    <div class="hero-stats rv on rv-d3">
+      <div class="stat"><div class="num" data-count="5">0</div><div class="lbl">Core Products</div></div>
+      <div class="stat"><div class="num" data-count="1400">0<i>+</i></div><div class="lbl">Data Connectors</div></div>
+      <div class="stat"><div class="num" data-count="98">0</div><div class="lbl">Fx Functions Documented</div></div>
+      <div class="stat"><div class="num" data-count="200">0</div><div class="lbl">Playground Records</div></div>
+      <div class="stat"><div class="num" data-count="25">0</div><div class="lbl">Interview Questions</div></div>
+      <div class="stat"><div class="num" data-count="6">0</div><div class="lbl">Real Scenarios</div></div>
+    </div>
+  </div>
+</header>
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="mq-track">
+    <span>POWER APPS</span><span>POWER AUTOMATE</span><span>POWER BI</span><span>POWER PAGES</span><span>COPILOT STUDIO</span><span>DATAVERSE</span><span>AI BUILDER</span><span>POWER FX</span><span>DAX</span>
+    <span>POWER APPS</span><span>POWER AUTOMATE</span><span>POWER BI</span><span>POWER PAGES</span><span>COPILOT STUDIO</span><span>DATAVERSE</span><span>AI BUILDER</span><span>POWER FX</span><span>DAX</span>
+  </div>
+</div>
+
+<!-- ============ TOOLS ============ -->
+<section id="tools">
+  <div class="wrap">
+    <div class="sec-tag rv"><b>01</b> The Platform</div>
+    <h2 class="sec-title rv">Six products.<br>One <span class="hl">connected</span> ecosystem.</h2>
+    <p class="sec-sub rv">Power Platform is Microsoft's low-code stack. Every product below connects to Dataverse and 1,400+ connectors — learn them individually, then combine them to build end-to-end business solutions.</p>
+    <div class="tools-grid">
+      <div class="tool rv" data-tool="apps" style="--tc:var(--c-apps);--tg:var(--glow-apps)">
+        <span class="idx">/01</span>
+        <div class="t-ico">Pa</div>
+        <h3>Power Apps</h3>
+        <span class="tag">Build custom apps</span>
+        <p>Create <b>canvas apps</b> with pixel-perfect drag-and-drop UI, or <b>model-driven apps</b> generated from your Dataverse data model. Powered by the Power Fx formula language.</p>
+        <ul><li>Canvas apps</li><li>Model-driven apps</li><li>Power Fx</li><li>Custom pages</li></ul>
+        <span class="t-more">EXPLORE FUNCTIONS &amp; DOCS</span>
+      </div>
+      <div class="tool rv rv-d1" data-tool="flow" style="--tc:var(--c-flow);--tg:var(--glow-flow)">
+        <span class="idx">/02</span>
+        <div class="t-ico">Pf</div>
+        <h3>Power Automate</h3>
+        <span class="tag">Automate workflows</span>
+        <p>Cloud flows for event-driven &amp; scheduled automation, <b>desktop flows (RPA)</b> for legacy UI automation, and business process flows for guided stages.</p>
+        <ul><li>Cloud flows</li><li>Desktop flows / RPA</li><li>Approvals</li><li>Expressions</li></ul>
+        <span class="t-more">EXPLORE FUNCTIONS &amp; DOCS</span>
+      </div>
+      <div class="tool rv rv-d2" data-tool="bi" style="--tc:var(--c-bi);--tg:rgba(242,200,17,.18)">
+        <span class="idx">/03</span>
+        <div class="t-ico">Bi</div>
+        <h3>Power BI</h3>
+        <span class="tag">Analyze &amp; visualize</span>
+        <p>Turn raw data into interactive reports and dashboards. Model with <b>Power Query (M)</b>, calculate with <b>DAX</b>, and share securely across your org.</p>
+        <ul><li>DAX</li><li>Power Query / M</li><li>Semantic models</li><li>Dashboards</li></ul>
+        <span class="t-more">EXPLORE FUNCTIONS &amp; DOCS</span>
+      </div>
+      <div class="tool rv" data-tool="pages" style="--tc:var(--c-pages);--tg:rgba(23,184,144,.2)">
+        <span class="idx">/04</span>
+        <div class="t-ico">Pp</div>
+        <h3>Power Pages</h3>
+        <span class="tag">External portals</span>
+        <p>Build secure, external-facing websites over Dataverse. Design with the studio, extend with <b>Liquid templates</b>, JavaScript and Web APIs.</p>
+        <ul><li>Portals studio</li><li>Liquid</li><li>Web roles</li><li>Lists &amp; forms</li></ul>
+        <span class="t-more">EXPLORE FUNCTIONS &amp; DOCS</span>
+      </div>
+      <div class="tool rv rv-d1" data-tool="copilot" style="--tc:var(--c-copilot);--tg:rgba(224,102,196,.18)">
+        <span class="idx">/05</span>
+        <div class="t-ico">Cs</div>
+        <h3>Copilot Studio</h3>
+        <span class="tag">AI agents &amp; bots</span>
+        <p>Create conversational copilots and autonomous agents with generative AI, topics, and actions that call Power Automate flows and connectors.</p>
+        <ul><li>Generative answers</li><li>Topics</li><li>Agents</li><li>Channels</li></ul>
+        <span class="t-more">EXPLORE FUNCTIONS &amp; DOCS</span>
+      </div>
+      <div class="tool rv rv-d2" data-tool="dataverse" style="--tc:var(--c-data);--tg:rgba(139,157,255,.18)">
+        <span class="idx">/06</span>
+        <div class="t-ico">Dv</div>
+        <h3>Dataverse</h3>
+        <span class="tag">The data backbone</span>
+        <p>The managed data platform underneath it all: tables, relationships, business rules, security roles — plus a full <b>Web API</b> for pro developers.</p>
+        <ul><li>Tables &amp; columns</li><li>Security roles</li><li>Web API / OData</li><li>Plugins</li></ul>
+        <span class="t-more">EXPLORE FUNCTIONS &amp; DOCS</span>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ LEARNING PATH ============ -->
+<section id="path">
+  <div class="wrap">
+    <div class="sec-tag rv"><b>02</b> Learning Path</div>
+    <h2 class="sec-title rv">From first app<br>to <span class="hl">solution architect</span>.</h2>
+    <p class="sec-sub rv">A proven route through the ecosystem — each step maps to an official Microsoft certification.</p>
+    <div class="path">
+      <div class="step rv" style="--sc:var(--c-pages)">
+        <div class="node">1</div>
+        <h4>Foundations <span class="cert">PL-900 · AB-900</span></h4>
+        <p>Understand the business value of each product, Dataverse, connectors and AI Builder. <b>PL-900</b> is the live entry exam (never expires). New for 2026: <b>AB-900 — Copilot &amp; Agent Administration Fundamentals</b> for the AI track. <b>Build your first canvas app and cloud flow</b> in a free developer environment. Time: 2–4 weeks.</p>
+      </div>
+      <div class="step rv" style="--sc:var(--c-flow)">
+        <div class="node">2</div>
+        <h4>App Maker <span class="cert">PL-300 · APPLIED SKILLS</span></h4>
+        <p>Go deep on one track: <b>canvas apps + Power Fx</b> via Microsoft's Applied Skills credentials (PL-100 was retired in 2024), or <b>data modeling + DAX</b> (PL-300, still live). Learn delegation, collections, variables, and publishing/sharing patterns.</p>
+      </div>
+      <div class="step rv" style="--sc:var(--c-apps)">
+        <div class="node">3</div>
+        <h4>Functional Consultant <span class="cert">PL-200 ⚠ RETIRING AUG 2026</span></h4>
+        <p>Model-driven apps, Dataverse design (tables, relationships, security roles), business process flows, and Copilot Studio bots. <b>Note: PL-200 retires Aug 31, 2026</b> — only attempt if you can pass before then; otherwise follow the incoming AB-role successor credentials. Solution packaging &amp; ALM basics.</p>
+      </div>
+      <div class="step rv" style="--sc:var(--c-copilot)">
+        <div class="node">4</div>
+        <h4>Pro Developer <span class="cert">PL-400</span></h4>
+        <p>Extend with code: <b>PCF components, plugins (C#), JavaScript form scripts, custom connectors, Web API</b> integrations and Azure services. DevOps with pipelines.</p>
+      </div>
+      <div class="step rv" style="--sc:var(--c-bi)">
+        <div class="node">5</div>
+        <h4>Solution Architect <span class="cert">PL-600 ⚠ RETIRING JUN 2026</span></h4>
+        <p>Design enterprise solutions: environment strategy, DLP policies, governance (CoE Starter Kit), integration patterns, licensing, and leading delivery teams. <b>PL-600 retires Jun 30, 2026</b> — architect-level AB credentials are rolling out as successors through 2026.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ PLAYGROUND ============ -->
+<section id="playground">
+  <div class="wrap">
+    <div class="sec-tag rv"><b>03</b> Live Playground</div>
+    <h2 class="sec-title rv">Write code. <span class="hl">Run it</span>. Right here.</h2>
+    <p class="sec-sub rv">A real <b>Power Fx expression engine</b> running in your browser with <b>IntelliSense autocomplete</b>, syntax highlighting and line numbers — evaluating against <b>two 100-record datasets</b> (<b>Employees</b> &amp; <b>Orders</b>). Hit <b>? help</b> to explain any function at your cursor, and <b>🗄 data</b> to browse the tables. Switch to JavaScript for PCF-style coding.</p>
+    <div class="pg-shell rv">
+      <div class="pg-bar">
+        <div class="lights"><i></i><i></i><i></i></div>
+        <div class="pg-tabs">
+          <button class="pg-tab on" data-tab="fx" role="tab" aria-selected="true">power-fx.fx</button>
+          <button class="pg-tab" data-tab="js" role="tab" aria-selected="false">script.js</button>
+        </div>
+        <select class="pg-sample" id="pgSample"></select>
+      </div>
+      <div class="pg-body">
+        <div class="pg-edit">
+          <div class="pg-editor">
+            <div class="pg-gutter" id="pgGutter"></div>
+            <div class="pg-codewrap">
+              <pre class="pg-hl" id="pgHl" aria-hidden="true"></pre>
+              <textarea id="pgCode" spellcheck="false" aria-label="Playground code" placeholder="// write a formula…"></textarea>
+              <div class="intel" id="pgIntel"></div>
+            </div>
+          </div>
+          <div class="pg-runrow">
+            <button class="btn-run" id="pgRun">▶ RUN</button>
+            <button class="btn-clr" id="pgHelp" title="Explain the function under your cursor">? help</button>
+            <button class="btn-clr" id="pgData" title="Inspect the sample datasets">🗄 data</button>
+            <button class="btn-clr" id="pgClear">clear</button>
+            <button class="btn-clr" id="pgReset">reset</button>
+          </div>
+        </div>
+        <div class="pg-out">
+          <div class="pg-out-h">Output</div>
+          <div class="pg-out-b" id="pgOut" role="status" aria-live="polite"><span class="hint">// Press RUN or Ctrl/Cmd + Enter to evaluate.<br>// Try: Concatenate("Hello ", "Maker")<br>// Or pick a sample from the dropdown ↑</span></div>
+        </div>
+      </div>
+      <div class="pg-foot">
+        <b>98 functions live in this engine:</b> Text (Concatenate, Concat, Text, Upper, Lower, Proper, Trim, TrimEnds, Len, Left, Right, Mid, StartsWith, EndsWith, Find, Substitute, Replace, Split, Char, IsMatch, EncodeUrl) · Math (Sum, Average, Min, Max, Round, RoundUp, RoundDown, Trunc, Int, Abs, Sqrt, Power, Mod, Rand, RandBetween) · Dates (Today, Now, Date, Time, Year, Month, Day, Hour, Minute, Weekday, DateAdd, DateDiff, DateValue, TimeValue, DateTimeValue, IsToday) · Logic (If, Switch, And, Or, Not, IsBlank, IsBlankOrError, IsEmpty, IsNumeric, Coalesce, IfError, With) · Tables (Filter, Search, LookUp, Sort, SortByColumns, Distinct, GroupBy, Ungroup, AddColumns, ShowColumns, DropColumns, RenameColumns, First, Last, FirstN, LastN, Index, ForAll, Sequence, Count, CountA, CountRows, CountIf) · Behavior (Set, UpdateContext, Collect, ClearCollect, Clear, Remove, Patch, Defaults, Notify, Navigate, Reset) · records {a:1} · tables [1,2,3] · datasets: <b>Employees (100)</b>, <b>Orders (100)</b>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ SNIPPETS ============ -->
+<section id="snippets">
+  <div class="wrap">
+    <div class="sec-tag rv"><b>04</b> Code Library</div>
+    <h2 class="sec-title rv">Copy-ready snippets for<br><span class="hl">every language</span> in the stack.</h2>
+    <p class="sec-sub rv">Power Fx formulas, Automate expressions, DAX measures, Power Query M, Dataverse Web API and Liquid — tested patterns you can paste straight into your solutions.</p>
+    <div class="snip-nav rv" role="tablist" aria-label="Code languages">
+      <button class="snip-tab on" role="tab" aria-selected="true" aria-controls="pane-fx" data-pane="fx" style="--stc:var(--c-apps);--stg:var(--glow-apps)">Power Fx</button>
+      <button class="snip-tab" role="tab" aria-selected="false" aria-controls="pane-flow" data-pane="flow" style="--stc:var(--c-flow);--stg:var(--glow-flow)">Automate Expressions</button>
+      <button class="snip-tab" role="tab" aria-selected="false" aria-controls="pane-dax" data-pane="dax" style="--stc:var(--c-bi);--stg:rgba(242,200,17,.3)">DAX + Power Query</button>
+      <button class="snip-tab" role="tab" aria-selected="false" aria-controls="pane-pro" data-pane="pro" style="--stc:var(--c-pages);--stg:rgba(23,184,144,.3)">Web API · JS · Liquid</button>
+    </div>
+
+    <div class="snip-pane on" id="pane-fx">
+      <div class="snip" style="--slc:var(--c-apps)">
+        <div class="snip-h"><span class="lang">POWER FX</span><h5>Patch — create a Dataverse record</h5><button class="copy-btn">copy</button></div>
+<pre>// Button OnSelect — insert + notify
+<span class="fn">Patch</span>(Employees,
+  <span class="fn">Defaults</span>(Employees),
+  { Name: txtName.Text,
+    Department: ddDept.Selected.Value,
+    Salary: <span class="fn">Value</span>(txtSalary.Text) }
+);
+<span class="fn">Notify</span>(<span class="st">"Employee created ✅"</span>, NotificationType.Success);
+<span class="fn">Reset</span>(txtName); <span class="fn">Reset</span>(txtSalary);</pre>
+      </div>
+      <div class="snip" style="--slc:var(--c-apps)">
+        <div class="snip-h"><span class="lang">POWER FX</span><h5>Gallery — search + filter + sort</h5><button class="copy-btn">copy</button></div>
+<pre>// Gallery.Items property
+<span class="fn">SortByColumns</span>(
+  <span class="fn">Filter</span>(Employees,
+    (<span class="fn">IsBlank</span>(txtSearch.Text) <span class="kw">Or</span>
+     <span class="fn">StartsWith</span>(Name, txtSearch.Text)),
+    (ddDept.Selected.Value = <span class="st">"All"</span> <span class="kw">Or</span>
+     Department = ddDept.Selected.Value)
+  ),
+  <span class="st">"Name"</span>, SortOrder.Ascending
+)</pre>
+        <a class="try" href="#playground" data-try="fx">⌁ try a live version in the playground</a>
+      </div>
+      <div class="snip" style="--slc:var(--c-apps)">
+        <div class="snip-h"><span class="lang">POWER FX</span><h5>Validate form before submit</h5><button class="copy-btn">copy</button></div>
+<pre>// Button DisplayMode — disable until valid
+<span class="fn">If</span>(
+  <span class="kw">And</span>(
+    <span class="fn">Not</span>(<span class="fn">IsBlank</span>(<span class="fn">Trim</span>(txtName.Text))),
+    <span class="fn">IsMatch</span>(txtEmail.Text, Match.Email),
+    <span class="fn">Value</span>(txtSalary.Text) &gt; 0
+  ),
+  DisplayMode.Edit,
+  DisplayMode.Disabled
+)</pre>
+      </div>
+      <div class="snip" style="--slc:var(--c-apps)">
+        <div class="snip-h"><span class="lang">POWER FX</span><h5>Collections &amp; ForAll loops</h5><button class="copy-btn">copy</button></div>
+<pre>// Screen OnVisible — cache + transform
+<span class="fn">ClearCollect</span>(colTeam,
+  <span class="fn">Filter</span>(Employees, Department = <span class="st">"IT"</span>));
+
+<span class="fn">ForAll</span>(colTeam,
+  <span class="fn">Collect</span>(colEmails,
+    { Mail: <span class="fn">Lower</span>(FirstName &amp; <span class="st">"."</span> &amp;
+              LastName &amp; <span class="st">"@contoso.com"</span>) }));</pre>
+        <a class="try" href="#playground" data-try="fx">⌁ try a live version in the playground</a>
+      </div>
+    </div>
+    <div class="snip-pane" id="pane-flow">
+      <div class="snip" style="--slc:var(--c-flow)">
+        <div class="snip-h"><span class="lang">EXPRESSION</span><h5>Dates &amp; time in flows</h5><button class="copy-btn">copy</button></div>
+<pre>// Common date expressions
+<span class="fn">utcNow</span>()                              <span class="cm">// current UTC timestamp</span>
+<span class="fn">addDays</span>(<span class="fn">utcNow</span>(), 7, <span class="st">'yyyy-MM-dd'</span>)    <span class="cm">// +7 days, formatted</span>
+<span class="fn">convertTimeZone</span>(<span class="fn">utcNow</span>(), <span class="st">'UTC'</span>,
+  <span class="st">'India Standard Time'</span>, <span class="st">'dd-MMM hh:mm tt'</span>)
+<span class="fn">formatDateTime</span>(<span class="fn">addHours</span>(
+  <span class="fn">triggerBody</span>()?[<span class="st">'CreatedOn'</span>], 2), <span class="st">'g'</span>)</pre>
+      </div>
+      <div class="snip" style="--slc:var(--c-flow)">
+        <div class="snip-h"><span class="lang">EXPRESSION</span><h5>Conditionals &amp; null-safety</h5><button class="copy-btn">copy</button></div>
+<pre>// Safe navigation + fallback with coalesce
+<span class="fn">coalesce</span>(
+  <span class="fn">triggerBody</span>()?[<span class="st">'Approver'</span>]?[<span class="st">'DisplayName'</span>],
+  <span class="st">'No approver assigned'</span>)
+
+// Inline if — approve anything under $5k
+<span class="fn">if</span>(<span class="fn">lessOrEquals</span>(
+     <span class="fn">float</span>(<span class="fn">outputs</span>(<span class="st">'Get_Invoice'</span>)?[<span class="st">'body/Amount'</span>]),
+     5000),
+   <span class="st">'Auto-Approved'</span>, <span class="st">'Needs Manager'</span>)</pre>
+      </div>
+      <div class="snip" style="--slc:var(--c-flow)">
+        <div class="snip-h"><span class="lang">EXPRESSION</span><h5>Array magic (no loops)</h5><button class="copy-btn">copy</button></div>
+<pre>// Distinct values without Apply-to-each
+<span class="fn">union</span>(
+  <span class="fn">body</span>(<span class="st">'Select_Departments'</span>),
+  <span class="fn">body</span>(<span class="st">'Select_Departments'</span>))
+
+// Join names with comma for an email body
+<span class="fn">join</span>(<span class="fn">body</span>(<span class="st">'Select_Names'</span>), <span class="st">', '</span>)
+
+// First item / count helpers
+<span class="fn">first</span>(<span class="fn">body</span>(<span class="st">'Filter_array'</span>))
+<span class="fn">length</span>(<span class="fn">outputs</span>(<span class="st">'Get_items'</span>)?[<span class="st">'body/value'</span>])</pre>
+      </div>
+      <div class="snip" style="--slc:var(--c-flow)">
+        <div class="snip-h"><span class="lang">ODATA</span><h5>Filter queries (delegable)</h5><button class="copy-btn">copy</button></div>
+<pre>// SharePoint "Get items" → Filter Query field
+Status eq <span class="st">'Pending'</span> and Amount gt 1000
+substringof(<span class="st">'urgent'</span>, Title)
+Created ge @{<span class="fn">addDays</span>(<span class="fn">utcNow</span>(),-30,<span class="st">'yyyy-MM-dd'</span>)}
+
+// Dataverse "List rows" → Filter rows
+statecode eq 0 and prioritycode eq 1
+createdon ge @{<span class="fn">formatDateTime</span>(
+  <span class="fn">addDays</span>(<span class="fn">utcNow</span>(),-7),<span class="st">'yyyy-MM-dd'</span>)}</pre>
+      </div>
+    </div>
+    <div class="snip-pane" id="pane-dax">
+      <div class="snip" style="--slc:var(--c-bi)">
+        <div class="snip-h"><span class="lang">DAX</span><h5>Core measures with CALCULATE</h5><button class="copy-btn">copy</button></div>
+<pre>Total Sales = <span class="fn">SUM</span> ( Sales[Amount] )
+
+Sales YTD =
+<span class="fn">CALCULATE</span> ( [Total Sales],
+    <span class="fn">DATESYTD</span> ( 'Date'[Date] ) )
+
+Sales vs LY % =
+<span class="kw">VAR</span> LY = <span class="fn">CALCULATE</span> ( [Total Sales],
+    <span class="fn">SAMEPERIODLASTYEAR</span> ( 'Date'[Date] ) )
+<span class="kw">RETURN</span>
+<span class="fn">DIVIDE</span> ( [Total Sales] - LY, LY )</pre>
+      </div>
+      <div class="snip" style="--slc:var(--c-bi)">
+        <div class="snip-h"><span class="lang">DAX</span><h5>Rank &amp; running total</h5><button class="copy-btn">copy</button></div>
+<pre>Product Rank =
+<span class="fn">RANKX</span> (
+    <span class="fn">ALLSELECTED</span> ( 'Product'[Name] ),
+    [Total Sales], , DESC, Dense
+)
+
+Running Total =
+<span class="fn">CALCULATE</span> (
+    [Total Sales],
+    <span class="fn">FILTER</span> (
+        <span class="fn">ALL</span> ( 'Date'[Date] ),
+        'Date'[Date] &lt;= <span class="fn">MAX</span> ( 'Date'[Date] )
+    )
+)</pre>
+      </div>
+      <div class="snip" style="--slc:var(--c-bi)">
+        <div class="snip-h"><span class="lang">M</span><h5>Power Query — clean &amp; shape</h5><button class="copy-btn">copy</button></div>
+<pre><span class="kw">let</span>
+  Source = Csv.Document(File.Contents(<span class="st">"C:\data\orders.csv"</span>),
+             [Delimiter=<span class="st">","</span>, Encoding=65001]),
+  Promoted = Table.PromoteHeaders(Source),
+  Typed = Table.TransformColumnTypes(Promoted,
+    {{<span class="st">"Amount"</span>, Currency.Type},
+     {<span class="st">"OrderDate"</span>, <span class="kw">type</span> date}}),
+  Clean = Table.SelectRows(Typed,
+    <span class="kw">each</span> [Amount] &lt;&gt; <span class="kw">null</span> <span class="kw">and</span> [Amount] &gt; 0)
+<span class="kw">in</span>
+  Clean</pre>
+      </div>
+      <div class="snip" style="--slc:var(--c-bi)">
+        <div class="snip-h"><span class="lang">M</span><h5>Custom column + unpivot</h5><button class="copy-btn">copy</button></div>
+<pre><span class="kw">let</span>
+  Source = Excel.CurrentWorkbook()
+             {[Name=<span class="st">"SalesTable"</span>]}[Content],
+  WithMargin = Table.AddColumn(Source, <span class="st">"Margin"</span>,
+    <span class="kw">each</span> [Revenue] - [Cost], <span class="kw">type</span> number),
+  Unpivoted = Table.UnpivotOtherColumns(
+    WithMargin, {<span class="st">"Region"</span>},
+    <span class="st">"Measure"</span>, <span class="st">"Value"</span>)
+<span class="kw">in</span>
+  Unpivoted</pre>
+      </div>
+    </div>
+    <div class="snip-pane" id="pane-pro">
+      <div class="snip" style="--slc:var(--c-pages)">
+        <div class="snip-h"><span class="lang">JAVASCRIPT</span><h5>Dataverse Web API — CRUD</h5><button class="copy-btn">copy</button></div>
+<pre>// Create a record (model-driven form / PCF)
+<span class="kw">const</span> account = { name: <span class="st">"Contoso Ltd"</span>,
+  revenue: 1500000 };
+<span class="kw">await</span> Xrm.WebApi.createRecord(<span class="st">"account"</span>, account);
+
+// Query with OData
+<span class="kw">const</span> res = <span class="kw">await</span> Xrm.WebApi.retrieveMultipleRecords(
+  <span class="st">"account"</span>,
+  <span class="st">"?$select=name,revenue"</span> +
+  <span class="st">"&amp;$filter=revenue gt 100000"</span> +
+  <span class="st">"&amp;$orderby=revenue desc&amp;$top=5"</span>);</pre>
+      </div>
+      <div class="snip" style="--slc:var(--c-pages)">
+        <div class="snip-h"><span class="lang">JAVASCRIPT</span><h5>Form scripting — onChange logic</h5><button class="copy-btn">copy</button></div>
+<pre><span class="kw">function</span> <span class="fn">onIndustryChange</span>(executionContext) {
+  <span class="kw">const</span> form = executionContext.getFormContext();
+  <span class="kw">const</span> industry =
+    form.getAttribute(<span class="st">"industrycode"</span>).getValue();
+
+  <span class="kw">if</span> (industry === 1) { <span class="cm">// Accounting</span>
+    form.getControl(<span class="st">"creditlimit"</span>)
+        .setNotification(<span class="st">"Requires CFO approval"</span>, <span class="st">"warn1"</span>);
+  } <span class="kw">else</span> {
+    form.getControl(<span class="st">"creditlimit"</span>)
+        .clearNotification(<span class="st">"warn1"</span>);
+  }
+}</pre>
+        <a class="try" href="#playground" data-try="js">⌁ run JS in the playground</a>
+      </div>
+      <div class="snip" style="--slc:var(--c-pages)">
+        <div class="snip-h"><span class="lang">REST</span><h5>Web API via HTTP (flows / Postman)</h5><button class="copy-btn">copy</button></div>
+<pre>GET https://org.crm.dynamics.com/api/data/v9.2/
+    accounts?$select=name&amp;$top=3
+Authorization: Bearer eyJ0eXAiOi...
+OData-MaxVersion: 4.0
+Prefer: odata.maxpagesize=50
+
+PATCH .../api/data/v9.2/accounts(&lt;guid&gt;)
+Content-Type: application/json
+{ <span class="st">"telephone1"</span>: <span class="st">"555-0199"</span>,
+  <span class="st">"description"</span>: <span class="st">"Updated via Web API"</span> }</pre>
+      </div>
+      <div class="snip" style="--slc:var(--c-pages)">
+        <div class="snip-h"><span class="lang">LIQUID</span><h5>Power Pages — secure data loop</h5><button class="copy-btn">copy</button></div>
+<pre>{% fetchxml openTickets %}
+&lt;fetch top="5"&gt;
+  &lt;entity name="incident"&gt;
+    &lt;attribute name="title" /&gt;
+    &lt;filter&gt;&lt;condition attribute="statecode"
+      operator="eq" value="0" /&gt;&lt;/filter&gt;
+  &lt;/entity&gt;
+&lt;/fetch&gt;
+{% endfetchxml %}
+
+{% for case in openTickets.results.entities %}
+  &lt;li&gt;{{ case.title | escape }}&lt;/li&gt;
+{% endfor %}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ FUNCTION REFERENCE ============ -->
+<section id="functions">
+  <div class="wrap">
+    <div class="sec-tag rv"><b>05</b> Power Fx Function Reference</div>
+    <h2 class="sec-title rv">Every function.<br><span class="hl">Searchable</span>. Runnable.</h2>
+    <p class="sec-sub rv">The complete Power Fx function library — search it, filter by category, read the syntax, and <b>run every example live</b> in the playground against real data. Based on the official Microsoft Learn reference.</p>
+    <div class="fn-tools rv">
+      <label class="fn-search"><span aria-hidden="true">⌕</span><input type="search" id="fnSearch" aria-label="Search Power Fx functions" placeholder="Search 98 functions… try “filter”, “date”, “text”"></label>
+      <span class="fn-count" id="fnCount" aria-live="polite"></span>
+    </div>
+    <div class="fn-chips rv" id="fnChips"></div>
+    <div class="fn-browser"><div class="fn-grid" id="fnGrid" tabindex="0" aria-label="Power Fx function results"></div></div>
+  </div>
+</section>
+
+<!-- ============ SCENARIOS ============ -->
+<section id="scenarios">
+  <div class="wrap">
+    <div class="sec-tag rv"><b>06</b> Real-Life Scenarios</div>
+    <h2 class="sec-title rv">How teams actually <span class="hl">ship</span><br>Power Platform solutions.</h2>
+    <p class="sec-sub rv">Six production-grade architectures from real industries. Expand any card to see the end-to-end build sequence.</p>
+    <div class="scen-grid">
+      <div class="scen rv" style="--scc:var(--c-flow)">
+        <div class="scen-top"><div class="ind">HR · Enterprise</div><h3>Employee Onboarding Automation</h3><span class="num">01</span></div>
+        <div class="scen-b">
+          <div class="lbl">The Problem</div>
+          <p>New hires waited 3+ days for laptops, accounts and access. HR tracked everything in spreadsheets and email threads.</p>
+          <div class="lbl">Solution Stack</div>
+          <div class="stack"><i>Power Automate</i><i>Dataverse</i><i>Approvals</i><i>Teams + Outlook</i><i>Adaptive Cards</i></div>
+          <div class="lbl">Impact</div>
+          <p class="impact">▲ Day-1 readiness 98% · 12 hrs saved per hire</p>
+        </div>
+        <button class="scen-toggle">+ ARCHITECTURE BREAKDOWN</button>
+        <div class="scen-more"><ol>
+          <li><b>Trigger:</b> new row in Dataverse "Onboarding" table (created from a Power Apps form by HR).</li>
+          <li><b>Parallel branches:</b> IT ticket via ServiceNow connector, AD account via Graph API, hardware approval to manager.</li>
+          <li><b>Adaptive Card</b> posted to the manager in Teams with Approve/Reject buttons.</li>
+          <li><b>Reminders:</b> scheduled flow nudges outstanding tasks 24h before start date.</li>
+          <li><b>Reporting:</b> Power BI dashboard over Dataverse shows cycle time per department.</li>
+        </ol></div>
+      </div>
+      <div class="scen rv rv-d1" style="--scc:var(--c-apps)">
+        <div class="scen-top"><div class="ind">Finance · Mobile</div><h3>Expense Approval Canvas App</h3><span class="num">02</span></div>
+        <div class="scen-b">
+          <div class="lbl">The Problem</div>
+          <p>Field staff photographed receipts and emailed them; finance re-keyed amounts. Month-end close took 9 days.</p>
+          <div class="lbl">Solution Stack</div>
+          <div class="stack"><i>Canvas App</i><i>AI Builder OCR</i><i>SharePoint</i><i>Approval flow</i><i>Power BI</i></div>
+          <div class="lbl">Impact</div>
+          <p class="impact">▲ Close time 9 → 3 days · zero manual entry</p>
+        </div>
+        <button class="scen-toggle">+ ARCHITECTURE BREAKDOWN</button>
+        <div class="scen-more"><ol>
+          <li><b>Capture:</b> mobile canvas app with camera control; AI Builder receipt processor extracts merchant, date, total.</li>
+          <li><b>Validate:</b> Power Fx rules flag policy violations (&gt;$100 meals, weekend claims).</li>
+          <li><b>Route:</b> conditional approval — manager if &lt;$1k, finance director above.</li>
+          <li><b>Sync:</b> approved rows flow to the ERP (SAP connector) as journal entries.</li>
+          <li><b>Analyze:</b> embedded Power BI tile shows spend by category inside the app.</li>
+        </ol></div>
+      </div>
+      <div class="scen rv rv-d2" style="--scc:var(--c-bi)">
+        <div class="scen-top"><div class="ind">Retail · Analytics</div><h3>Executive Sales Command Center</h3><span class="num">03</span></div>
+        <div class="scen-b">
+          <div class="lbl">The Problem</div>
+          <p>Leadership made decisions on week-old Excel exports. No single view of pipeline vs. actuals across 40 stores.</p>
+          <div class="lbl">Solution Stack</div>
+          <div class="stack"><i>Power BI</i><i>Dataflows</i><i>Star schema</i><i>Row-level security</i><i>Teams embed</i></div>
+          <div class="lbl">Impact</div>
+          <p class="impact">▲ Refresh daily 6am · one source of truth</p>
+        </div>
+        <button class="scen-toggle">+ ARCHITECTURE BREAKDOWN</button>
+        <div class="scen-more"><ol>
+          <li><b>Ingest:</b> dataflows pull POS, CRM and inventory data nightly into a Lakehouse.</li>
+          <li><b>Model:</b> star schema — FactSales + DimDate/Store/Product; measures in DAX (YTD, vs LY, basket size).</li>
+          <li><b>Secure:</b> row-level security so regional managers see only their stores.</li>
+          <li><b>Distribute:</b> report embedded in a Teams tab + mobile layout for phones.</li>
+          <li><b>Alert:</b> data-driven alerts fire a Power Automate flow when a store drops &gt;10% vs target.</li>
+        </ol></div>
+      </div>
+      <div class="scen rv" style="--scc:var(--c-pages)">
+        <div class="scen-top"><div class="ind">Public Sector · Portal</div><h3>Citizen Service Portal + AI Assistant</h3><span class="num">04</span></div>
+        <div class="scen-b">
+          <div class="lbl">The Problem</div>
+          <p>A city council handled 40k calls/month for permits, complaints and status checks. Phone queues averaged 25 minutes.</p>
+          <div class="lbl">Solution Stack</div>
+          <div class="stack"><i>Power Pages</i><i>Copilot Studio</i><i>Dataverse</i><i>Entra ID / B2C</i><i>Web API</i></div>
+          <div class="lbl">Impact</div>
+          <p class="impact">▲ 62% of queries deflected to self-service</p>
+        </div>
+        <button class="scen-toggle">+ ARCHITECTURE BREAKDOWN</button>
+        <div class="scen-more"><ol>
+          <li><b>Portal:</b> Power Pages site with permit application forms bound to Dataverse, Liquid templates for dynamic pages.</li>
+          <li><b>Identity:</b> citizens sign in with Azure AD B2C; table permissions scope rows to the signed-in contact.</li>
+          <li><b>Copilot:</b> Copilot Studio bot embedded on the site answers FAQs via generative AI over council documents.</li>
+          <li><b>Escalation:</b> unresolved chats create Dataverse cases and route to agents in a model-driven app.</li>
+          <li><b>Status tracking:</b> citizens see live case status via secure lists — no phone call needed.</li>
+        </ol></div>
+      </div>
+      <div class="scen rv rv-d1" style="--scc:var(--c-copilot)">
+        <div class="scen-top"><div class="ind">Manufacturing · Field</div><h3>Offline Equipment Inspection App</h3><span class="num">05</span></div>
+        <div class="scen-b">
+          <div class="lbl">The Problem</div>
+          <p>Technicians inspected machinery in plants with no connectivity, logging results on paper and re-entering them weekly.</p>
+          <div class="lbl">Solution Stack</div>
+          <div class="stack"><i>Canvas App (offline)</i><i>Dataverse</i><i>Barcode scanner</i><i>SaveData/LoadData</i><i>Flow sync</i></div>
+          <div class="lbl">Impact</div>
+          <p class="impact">▲ 100% digital audits · 6 hrs/tech/week saved</p>
+        </div>
+        <button class="scen-toggle">+ ARCHITECTURE BREAKDOWN</button>
+        <div class="scen-more"><ol>
+          <li><b>Scan:</b> technician scans the machine's barcode; app looks up the asset in Dataverse.</li>
+          <li><b>Offline-first:</b> checklists cached with SaveData/LoadData; results queued in a local collection.</li>
+          <li><b>Evidence:</b> photos + defect annotations captured via camera and pen input controls.</li>
+          <li><b>Sync:</b> on reconnection, a flow patches queued records and flags critical defects to supervisors instantly.</li>
+          <li><b>Trending:</b> Power BI defect heatmap per production line guides preventive maintenance.</li>
+        </ol></div>
+      </div>
+      <div class="scen rv rv-d2" style="--scc:var(--c-data)">
+        <div class="scen-top"><div class="ind">Legal · AI</div><h3>Intelligent Invoice Processing Pipeline</h3><span class="num">06</span></div>
+        <div class="scen-b">
+          <div class="lbl">The Problem</div>
+          <p>2,000 PDF invoices/month arrived by email. AP clerks typed each one into the finance system — error rate ~4%.</p>
+          <div class="lbl">Solution Stack</div>
+          <div class="stack"><i>AI Builder</i><i>Power Automate</i><i>Dataverse</i><i>Outlook trigger</i><i>Exception app</i></div>
+          <div class="lbl">Impact</div>
+          <p class="impact">▲ 91% touchless · error rate 4% → 0.3%</p>
+        </div>
+        <button class="scen-toggle">+ ARCHITECTURE BREAKDOWN</button>
+        <div class="scen-more"><ol>
+          <li><b>Trigger:</b> flow fires when an email with attachment lands in invoices@contoso.com.</li>
+          <li><b>Extract:</b> custom AI Builder document model pulls vendor, PO#, line items, totals.</li>
+          <li><b>Match:</b> 3-way match against PO + goods-receipt in Dataverse; tolerance ±2%.</li>
+          <li><b>Exceptions:</b> low-confidence or mismatched invoices land in a model-driven review queue app.</li>
+          <li><b>Post:</b> clean invoices post directly to Dynamics 365 Finance via virtual tables / OData.</li>
+        </ol></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ INTERVIEW ============ -->
+<section id="interview">
+  <div class="wrap">
+    <div class="sec-tag rv"><b>07</b> Interview Prep</div>
+    <h2 class="sec-title rv">Questions interviewers<br><span class="hl">actually ask</span>.</h2>
+    <p class="sec-sub rv">Real interview questions with model answers, filtered by topic and tagged by difficulty. Click any question to reveal the answer.</p>
+    <div class="iq-filters rv">
+      <button class="iq-f on" data-cat="all">All Topics</button>
+      <button class="iq-f" data-cat="fund">Fundamentals</button>
+      <button class="iq-f" data-cat="apps">Power Apps</button>
+      <button class="iq-f" data-cat="flow">Power Automate</button>
+      <button class="iq-f" data-cat="bi">Power BI</button>
+      <button class="iq-f" data-cat="dv">Dataverse</button>
+      <button class="iq-f" data-cat="arch">Architecture &amp; ALM</button>
+    </div>
+    <div class="iq-list rv" id="iqList"></div>
+  </div>
+</section>
+<!-- ============ RESOURCES ============ -->
+<section id="resources">
+  <div class="wrap">
+    <div class="sec-tag rv"><b>08</b> Resources</div>
+    <h2 class="sec-title rv">Everything else<br>you'll <span class="hl">ever need</span>.</h2>
+    <p class="sec-sub rv">Official docs, free learning paths, communities and the creator channels the pros actually follow.</p>
+    <div class="res-grid rv">
+      <a class="res" style="--rc:var(--c-flow)" href="https://learn.microsoft.com/power-platform/" target="_blank" rel="noopener">
+        <div class="r-ico">📚</div><div><h5>Microsoft Learn <span class="ext">↗</span></h5><p>Free, hands-on learning paths &amp; sandbox modules for every product and exam.</p></div>
+      </a>
+      <a class="res" style="--rc:var(--c-apps)" href="https://learn.microsoft.com/power-apps/" target="_blank" rel="noopener">
+        <div class="r-ico">📱</div><div><h5>Power Apps Docs <span class="ext">↗</span></h5><p>Canvas &amp; model-driven reference, Power Fx function library, delegation tables.</p></div>
+      </a>
+      <a class="res" style="--rc:var(--c-flow)" href="https://learn.microsoft.com/power-automate/" target="_blank" rel="noopener">
+        <div class="r-ico">⚡</div><div><h5>Power Automate Docs <span class="ext">↗</span></h5><p>Connector reference, expression guide, desktop flow (RPA) documentation.</p></div>
+      </a>
+      <a class="res" style="--rc:var(--c-bi)" href="https://learn.microsoft.com/power-bi/" target="_blank" rel="noopener">
+        <div class="r-ico">📊</div><div><h5>Power BI Docs <span class="ext">↗</span></h5><p>DAX reference, modeling guidance, Fabric integration and embedding APIs.</p></div>
+      </a>
+      <a class="res" style="--rc:var(--c-pages)" href="https://powerusers.microsoft.com/" target="_blank" rel="noopener">
+        <div class="r-ico">💬</div><div><h5>Power Platform Community <span class="ext">↗</span></h5><p>Official forums — ask questions, find gallery samples, join user groups.</p></div>
+      </a>
+      <a class="res" style="--rc:var(--c-copilot)" href="https://www.youtube.com/@ShaneYoungCloud" target="_blank" rel="noopener">
+        <div class="r-ico">▶️</div><div><h5>Creator Channels <span class="ext">↗</span></h5><p>Shane Young, Reza Dorrani, April Dunnam, Leila Gharani — free deep-dive videos.</p></div>
+      </a>
+      <a class="res" style="--rc:var(--c-data)" href="https://www.xrmtoolbox.com/" target="_blank" rel="noopener">
+        <div class="r-ico">🧰</div><div><h5>XrmToolBox <span class="ext">↗</span></h5><p>Essential Windows app with 200+ tools for Dataverse admin &amp; development.</p></div>
+      </a>
+      <a class="res" style="--rc:var(--c-pages)" href="https://github.com/microsoft/powerapps-tools" target="_blank" rel="noopener">
+        <div class="r-ico">🐙</div><div><h5>GitHub Samples + CoE Kit <span class="ext">↗</span></h5><p>Microsoft's open-source samples, templates and the CoE Starter Kit for governance.</p></div>
+      </a>
+      <a class="res" style="--rc:var(--c-apps)" href="https://make.powerapps.com/" target="_blank" rel="noopener">
+        <div class="r-ico">🛠️</div><div><h5>Maker Portal <span class="ext">↗</span></h5><p>Start building — sign up for the free Developer Plan to get your own environment.</p></div>
+      </a>
+    </div>
+    <div class="cert-strip rv">
+      <div class="cert" style="--cc:var(--c-pages)"><div class="code">PL-900</div><div class="lvl">Live · Fundamentals</div><div class="nm">Power Platform Fundamentals</div></div>
+      <div class="cert" style="--cc:var(--c-copilot)"><div class="code">AB-900</div><div class="lvl">New 2026 · Fundamentals</div><div class="nm">Copilot &amp; Agent Administration</div></div>
+      <div class="cert" style="--cc:var(--c-bi)"><div class="code">PL-300</div><div class="lvl">Live · Associate</div><div class="nm">Power BI Data Analyst</div></div>
+      <div class="cert" style="--cc:var(--c-apps)"><div class="code">PL-400</div><div class="lvl">Live · Expert</div><div class="nm">Power Platform Developer</div></div>
+      <div class="cert" style="--cc:#FF8FA3"><div class="code">PL-200/500/600</div><div class="lvl">⚠ Retiring 2026</div><div class="nm">Jun 30 &amp; Aug 31 deadlines</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <div class="foot-brand">
+        <a class="logo" href="#top"><span class="logo-mark"><span></span><span></span><span></span><span></span></span>POWER<em>VERSE</em></a>
+        <p>A community learning hub for Microsoft Power Platform. Built with semantic HTML, hand-rolled CSS and a Power Fx engine written in vanilla JavaScript.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h6>Learn</h6>
+          <a href="#tools">The Platform</a>
+          <a href="#path">Learning Path</a>
+          <a href="#scenarios">Real Scenarios</a>
+        </div>
+        <div class="foot-col">
+          <h6>Practice</h6>
+          <a href="#playground">Live Playground</a>
+          <a href="#snippets">Code Library</a>
+          <a href="#interview">Interview Prep</a>
+        </div>
+        <div class="foot-col">
+          <h6>Official</h6>
+          <a href="https://learn.microsoft.com/power-platform/" target="_blank" rel="noopener">Microsoft Learn</a>
+          <a href="https://make.powerapps.com/" target="_blank" rel="noopener">Maker Portal</a>
+          <a href="https://powerusers.microsoft.com/" target="_blank" rel="noopener">Community</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 POWERVERSE — an unofficial learning resource. Microsoft, Power Platform are trademarks of Microsoft Corp.</span>
+      <span>v1.0 · runs 100% in your browser</span>
+    </div>
+  </div>
+</footer>
+</main>
+<!-- ============ MODAL ============ -->
+<div class="modal-ov" id="modalOv">
+  <div class="modal-card" id="modalCard"></div>
+</div>
+<script>
+/* ================= CORE UI ================= */
+const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+function copyText(text){
+  if(navigator.clipboard?.writeText)return navigator.clipboard.writeText(text);
+  return new Promise((resolve,reject)=>{const area=document.createElement('textarea');area.value=text;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();try{document.execCommand('copy')?resolve():reject(new Error('Copy unavailable'))}catch(error){reject(error)}finally{area.remove()}});
+}
+
+/* theme */
+const themeToggle=$('#themeToggle');
+function applyTheme(theme,persist=false){
+  document.documentElement.dataset.theme=theme;
+  document.documentElement.style.colorScheme=theme;
+  const next=theme==='dark'?'light':'dark';
+  themeToggle.setAttribute('aria-label',`Switch to ${next} mode`);
+  themeToggle.title=`Switch to ${next} mode`;
+  if(persist){try{localStorage.setItem('powerverse-theme',theme)}catch{}}
+}
+applyTheme(document.documentElement.dataset.theme||'dark');
+themeToggle.addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark',true));
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',event=>{if(!localStorage.getItem('powerverse-theme'))applyTheme(event.matches?'dark':'light')})}catch{}
+
+/* mobile nav */
+const burger=$('#burger'),navLinks=$('#navLinks');
+function setNav(open){navLinks.classList.toggle('mob',open);burger.setAttribute('aria-expanded',String(open));burger.setAttribute('aria-label',open?'Close navigation':'Open navigation')}
+burger.addEventListener('click',()=>setNav(!navLinks.classList.contains('mob')));
+$$('#navLinks a').forEach(a=>a.addEventListener('click',()=>setNav(false)));
+
+/* scroll reveal */
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}}),{threshold:.08});
+  $$('.rv').forEach(el=>io.observe(el));
+}else{$$('.rv').forEach(el=>el.classList.add('on'))}
+
+/* animated counters */
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return; cio.unobserve(e.target);
+  const el=e.target,end=+el.dataset.count,t0=performance.now(),dur=1600;
+  (function tick(t){
+    const p=Math.min((t-t0)/dur,1),ease=1-Math.pow(1-p,3);
+    el.childNodes[0].nodeValue=Math.round(end*ease).toLocaleString();
+    if(p<1)requestAnimationFrame(tick);
+  })(t0);
+}),{threshold:.5});
+$$('.stat .num').forEach(el=>cio.observe(el));
+
+/* snippet pane tabs */
+$$('.snip-tab').forEach(b=>b.addEventListener('click',()=>{
+  $$('.snip-tab').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-selected','false')}); b.classList.add('on');b.setAttribute('aria-selected','true');
+  $$('.snip-pane').forEach(p=>p.classList.toggle('on',p.id==='pane-'+b.dataset.pane));
+}));
+
+/* copy buttons */
+$$('.copy-btn').forEach(b=>b.addEventListener('click',()=>{
+  const code=b.closest('.snip').querySelector('pre').innerText;
+  copyText(code).then(()=>{
+    b.textContent='copied ✓'; b.classList.add('ok');
+    setTimeout(()=>{b.textContent='copy';b.classList.remove('ok');},1600);
+  }).catch(()=>{b.textContent='copy failed';setTimeout(()=>{b.textContent='copy'},1600)});
+}));
+
+/* scenario expanders */
+$$('.scen-toggle').forEach(b=>{b.setAttribute('aria-expanded','false');b.addEventListener('click',()=>{
+  const m=b.nextElementSibling,open=m.classList.toggle('on');
+  b.setAttribute('aria-expanded',String(open));
+  b.textContent=(open?'−':'+')+' ARCHITECTURE BREAKDOWN';
+})});
+/* ================= INTERVIEW DATA ================= */
+const IQ=[
+{cat:'fund',d:'easy',q:'What are the core components of Microsoft Power Platform?',
+ a:`Five products: <b>Power Apps</b> (build apps), <b>Power Automate</b> (automate workflows), <b>Power BI</b> (analytics), <b>Power Pages</b> (external portals) and <b>Copilot Studio</b> (AI agents). They sit on shared foundations: <b>Dataverse</b> (data), <b>connectors</b> (1,400+ services), and <b>AI Builder</b>.`},
+{cat:'fund',d:'easy',q:'What is Dataverse and when would you use it over SharePoint?',
+ a:`Dataverse is a managed relational data platform with tables, relationships, business rules, row-level security and auditing. Choose it when you need <b>relational data, security granularity, or offline/mobile support</b>. SharePoint lists are fine for simple, document-centric, low-volume scenarios.`},
+{cat:'fund',d:'med',q:'Explain the difference between environments and solutions.',
+ a:`An <b>environment</b> is a container for apps, flows and data (Dev / Test / Prod). A <b>solution</b> is a package that groups related components for transport between environments — use <b>unmanaged</b> in dev, export as <b>managed</b> for test/prod.`},
+{cat:'fund',d:'med',q:'What is a connector? Standard vs premium vs custom?',
+ a:`Connectors wrap APIs so makers can use services without code. <b>Standard</b> connectors (SharePoint, Outlook, Teams) are included in M365-seeded licenses. <b>Premium</b> (Dataverse, SQL, SAP) require a premium license. <b>Custom connectors</b> wrap any REST API you own.`},
+{cat:'apps',d:'easy',q:'Canvas app vs model-driven app — how do you choose?',
+ a:`Canvas = <b>full UI control</b>, start blank, many data sources, great for task-based/mobile apps. Model-driven = UI generated from the <b>Dataverse data model</b>, responsive automatically, ideal for data-heavy business processes with complex relationships and security needs.`},
+{cat:'apps',d:'easy',q:'Explain the different variable types in Power Apps.',
+ a:`<b>Global variables</b> (<code>Set()</code>) — available app-wide. <b>Context variables</b> (<code>UpdateContext()</code>) — screen-scoped. <b>Collections</b> (<code>Collect</code>/<code>ClearCollect</code>) — in-memory tables. Prefer context variables for maintainability; use named formulas for derived values.`},
+{cat:'apps',d:'hard',q:'What is delegation and why does the 500/2000-row limit matter?',
+ a:`Delegation pushes data processing to the <b>data source</b> instead of the device. Non-delegable queries only process the first <code>500</code> (default, max <code>2000</code>) rows locally — a silent data-loss bug. Fix by using delegable operators (<code>=</code>, <code>StartsWith</code>, <code>And/Or</code> on delegable columns), indexing columns, or Dataverse views.`},
+{cat:'apps',d:'med',q:'How does Patch() differ from SubmitForm()?',
+ a:`<code>SubmitForm()</code> saves a whole Edit Form with its validation and Data Cards. <code>Patch()</code> writes records imperatively — <code>Patch(Employees, Defaults(Employees), {...})</code> creates, while patching <code>LookUp(...)</code> updates. Patch is more flexible (multi-table, partial updates) but you handle validation yourself.`},
+{cat:'flow',d:'easy',q:'What are the three trigger types in Power Automate?',
+ a:`<b>Automated</b> (fires on an event, e.g. "when an item is created"), <b>Instant/Manual</b> (button, Power Apps, mobile), and <b>Scheduled</b> (recurrence). Also mention polling vs webhook triggers and trigger conditions to avoid unnecessary runs.`},
+{cat:'flow',d:'med',q:'How do you handle errors and retries in a cloud flow?',
+ a:`Use <b>"Configure run after"</b> on actions to catch <code>failed</code>/<code>timed out</code> states, wrap logic in <b>Scope</b> blocks (try/catch/finally pattern), set <b>retry policies</b> (exponential backoff), add a <b>Terminate</b> action with a custom status, and log failures to a Dataverse table or notify via Teams.`},
+{cat:'flow',d:'med',q:'Apply to each vs Select — when does each win?',
+ a:`<b>Select</b> transforms an array in one action — fast, no loop, but output is just a mapped array. <b>Apply to each</b> runs full actions per item (needed for creates/approvals). Tip: enable <b>concurrency control</b> (up to 50) on Apply-to-each and use Filter array/Select first to minimize loop iterations.`},
+{cat:'flow',d:'hard',q:'How would you stop a flow from triggering itself in a loop?',
+ a:`Classic infinite loop: flow updates a row whose update re-triggers the flow. Solutions: add a <b>trigger condition</b> (e.g. <code>@not(equals(triggerBody()?['ModifiedBy'],'serviceAccount'))</code>), store a "processing" flag column checked in the condition, or use a dedicated service account and compare against it.`},
+{cat:'bi',d:'easy',q:'What is DAX and how is it different from Excel formulas?',
+ a:`DAX (Data Analysis Expressions) works on <b>tables and columns</b>, not cells. Key concepts: <b>measures</b> (calculated at query time, respond to filters) vs <b>calculated columns</b> (computed at refresh, stored per row). Filter context and <code>CALCULATE()</code> are the heart of DAX.`},
+{cat:'bi',d:'med',q:'Explain CALCULATE and filter context to a junior analyst.',
+ a:`Every measure is evaluated under a <b>filter context</b> — the active filters from slicers, rows, columns. <code>CALCULATE(measure, filter)</code> <b>modifies</b> that context: it can add, replace (<code>ALL</code>, <code>REMOVEFILTERS</code>) or shift (<code>SAMEPERIODLASTYEAR</code>) filters. Example: <code>% of Total = DIVIDE([Sales], CALCULATE([Sales], ALL(Product)))</code>.`},
+{cat:'bi',d:'med',q:'Import vs DirectQuery vs Composite — how do you decide?',
+ a:`<b>Import</b> copies data into the model — fastest, full DAX, but needs refresh. <b>DirectQuery</b> queries the source live — near-real-time, but slower and some DAX limits. <b>Composite/Dual</b> mixes both. Decision drivers: data volume, freshness requirements, source capability.`},
+{cat:'bi',d:'hard',q:'A report is slow. Walk me through your troubleshooting.',
+ a:`1) <b>Performance Analyzer</b> to isolate slow visuals. 2) Check <b>model</b>: star schema, remove unused columns, avoid high cardinality, integer keys. 3) <b>DAX Studio</b> for expensive measures (iterators over big tables). 4) Reduce visuals per page, avoid bi-directional relationships, use aggregations. 5) Consider aggregated tables or incremental refresh.`},
+{cat:'dv',d:'easy',q:'What column types exist in Dataverse and what is a choice column?',
+ a:`Text, number, currency, date/time, <b>choice/choices</b> (option sets), lookup, yes/no, file, image, and formula columns. A <b>choice</b> stores an integer value with a label — use <b>global choices</b> to share lists (like "Priority") across tables.`},
+{cat:'dv',d:'med',q:'How does Dataverse security work?',
+ a:`Layered: <b>security roles</b> (privileges: create/read/write/delete/append/append-to/assign/share × scope: user/BU/parent-child/org), <b>business units</b> (hierarchy), <b>teams</b> (incl. owner vs access teams), <b>field-level security</b>, and <b>hierarchy security</b> for managers. Access = union of all grants, most permissive wins.`},
+{cat:'dv',d:'hard',q:'When would you write a plugin vs a Power Automate flow?',
+ a:`<b>Plugins</b> (C#, synchronous, inside the transaction pipeline) for: strict data validation, real-time rollups, operations that must roll back atomically, and high-volume/low-latency needs. <b>Flows</b> for: async integrations, approvals, notifications — anything where seconds of latency are fine and maker maintainability matters.`},
+{cat:'dv',d:'med',q:'What are alternate keys and why do they matter for integrations?',
+ a:`An <b>alternate key</b> is a unique column (or composite) besides the GUID — e.g. an ERP customer number. Integrations can <b>upsert</b> via the alternate key without querying for the GUID first, making sync idempotent and much faster.`},
+{cat:'arch',d:'med',q:'Describe a healthy ALM strategy for Power Platform.',
+ a:`Minimum: <b>Dev → Test → Prod</b> environments, unmanaged solutions in dev, <b>managed</b> downstream. Automate with <b>Power Platform Pipelines</b> or Azure DevOps/GitHub Actions: export to source control, build, deploy with a service principal, use environment variables + connection references for config, and run Solution Checker on every build.`},
+{cat:'arch',d:'hard',q:'How do you design governance for 500 makers?',
+ a:`Deploy the <b>CoE Starter Kit</b> (inventory, usage analytics, compliance flows). Use <b>DLP policies</b> to segment connectors (business vs blocked), default environment routing, an environment request process, share limits, inactivity cleanup, and a maker onboarding/champions program. Governance should enable, not block.`},
+{cat:'arch',d:'hard',q:'A client wants real-time sync between Dataverse and an on-prem SQL ERP. Options?',
+ a:`Discuss trade-offs: <b>1)</b> Dataverse plugins → Azure Service Bus → on-prem listener (near-real-time, reliable). <b>2)</b> Power Automate with the <b>on-premises data gateway</b> (simpler, higher latency, throttling limits). <b>3)</b> Virtual tables for read-in-place without copying. <b>4)</b> Dataflows for batch. Ask about volume, direction and conflict resolution before choosing.`},
+{cat:'arch',d:'med',q:'What is the difference between owner, access and Azure AD group teams?',
+ a:`<b>Owner teams</b> own records and hold security roles directly. <b>Access teams</b> share record access without roles (no ownership). <b>AAD security/Office group teams</b> sync membership from Entra ID — add a user in Entra and they instantly get the team's roles in Dataverse.`},
+{cat:'apps',d:'hard',q:'How would you make a canvas app work offline?',
+ a:`Cache reference data on start with <code>LoadData</code>/<code>ClearCollect</code>, queue writes in a local collection persisted with <code>SaveData</code>, detect state via <code>Connection.Connected</code>, and replay the queue with <code>ForAll + Patch</code> on reconnect. Watch for conflicts — last-write-wins or a manual merge UI. Note: Dataverse mobile apps also have built-in offline profiles.`}
+];
+
+/* render interview list */
+const iqList=$('#iqList');
+iqList.innerHTML=IQ.map((it,i)=>`
+  <div class="iq" data-cat="${it.cat}">
+    <button class="iq-q" aria-expanded="false">
+      <span class="qn">Q${String(i+1).padStart(2,'0')}</span>
+      <span>${it.q}</span>
+      <span class="diff ${it.d}">${it.d==='easy'?'Easy':it.d==='med'?'Medium':'Hard'}</span>
+      <span class="chev">▼</span>
+    </button>
+    <div class="iq-a"><div class="iq-a-in">${it.a}</div></div>
+  </div>`).join('');
+
+$$('.iq-q').forEach(btn=>btn.addEventListener('click',()=>{
+  const card=btn.closest('.iq'),body=card.querySelector('.iq-a'),open=card.classList.toggle('open');
+  btn.setAttribute('aria-expanded',String(open));
+  body.style.maxHeight=open?body.scrollHeight+'px':'0px';
+}));
+
+/* interview filters */
+$$('.iq-f').forEach(b=>b.addEventListener('click',()=>{
+  $$('.iq-f').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  const c=b.dataset.cat;
+  $$('.iq').forEach(el=>el.classList.toggle('hide',c!=='all'&&el.dataset.cat!==c));
+}));
+/* ================= POWER FX ENGINE ================= */
+/* --- tokenizer --- */
+function fxTok(src){
+  const T=[];let i=0;
+  const isD=c=>/[0-9]/.test(c),isA=c=>/[A-Za-z_]/.test(c),isAN=c=>/[A-Za-z0-9_]/.test(c);
+  while(i<src.length){
+    const c=src[i];
+    if(/\s/.test(c)){i++;continue}
+    if(c==='/'&&src[i+1]==='/'){while(i<src.length&&src[i]!=='\n')i++;continue}
+    if(c==='/'&&src[i+1]==='*'){i+=2;while(i<src.length&&!(src[i]==='*'&&src[i+1]==='/'))i++;i+=2;continue}
+    if(c==='"'){let s='';i++;while(i<src.length){if(src[i]==='"'){if(src[i+1]==='"'){s+='"';i+=2;continue}i++;break}s+=src[i++]}T.push({k:'str',v:s});continue}
+    if(isD(c)||(c==='.'&&isD(src[i+1]||''))){let n='';while(i<src.length&&(isD(src[i])||src[i]==='.'))n+=src[i++];T.push({k:'num',v:parseFloat(n)});continue}
+    if(isA(c)){let w='';while(i<src.length&&isAN(src[i]))w+=src[i++];
+      const lw=w.toLowerCase();
+      const callNext=src[i]==='(';
+      if(lw==='true'||lw==='false')T.push({k:'bool',v:lw==='true'});
+      else if(lw==='and'&&!callNext)T.push({k:'op',v:'&&'});
+      else if(lw==='or'&&!callNext)T.push({k:'op',v:'||'});
+      else if(lw==='not'&&!callNext)T.push({k:'op',v:'!'});
+      else if(lw==='blank')T.push({k:'fn',v:'Blank'});
+      else T.push({k:'id',v:w});
+      continue}
+    const two=src.slice(i,i+2);
+    if(['<=','>=','<>','&&','||'].includes(two)){T.push({k:'op',v:two});i+=2;continue}
+    if('=<>+-*/&'.includes(c)){T.push({k:'op',v:c});i++;continue}
+    if('(){},;:!'.includes(c)){T.push({k:'p',v:c});i++;continue}
+    if(c==='.'){T.push({k:'p',v:'.'});i++;continue}
+    if(c==='['){T.push({k:'p',v:'['});i++;continue}
+    if(c===']'){T.push({k:'p',v:']'});i++;continue}
+    throw new Error('Unexpected character: '+c);
+  }
+  return T;
+}
+
+/* --- parser (Pratt-style precedence climbing) --- */
+function fxParse(src){
+  const T=fxTok(src);let p=0;
+  const peek=()=>T[p],next=()=>T[p++];
+  const eat=(k,v)=>{const t=T[p];if(!t||t.k!==k||(v!==undefined&&t.v!==v))throw new Error('Expected "'+(v||k)+'" but found '+(t?(t.v??t.k):'end of formula'));p++;return t};
+  function seq(){
+    const items=[or()];
+    while(peek()&&peek().k==='p'&&peek().v===';'){next();if(!peek()||(peek().k==='p'&&peek().v===')'))break;items.push(or())}
+    return items.length===1?items[0]:{t:'seq',items};
+  }
+  function or(){let l=and();while(peek()&&peek().k==='op'&&peek().v==='||'){next();l={t:'bin',op:'||',l,r:and()}}return l}
+  function and(){let l=cmp();while(peek()&&peek().k==='op'&&peek().v==='&&'){next();l={t:'bin',op:'&&',l,r:cmp()}}return l}
+  function cmp(){let l=concat();while(peek()&&peek().k==='op'&&['=','<>','<','>','<=','>='].includes(peek().v)){const op=next().v;l={t:'bin',op,l,r:concat()}}return l}
+  function concat(){let l=add();while(peek()&&peek().k==='op'&&peek().v==='&'){next();l={t:'bin',op:'&',l,r:add()}}return l}
+  function add(){let l=mul();while(peek()&&peek().k==='op'&&(peek().v==='+'||peek().v==='-')){const op=next().v;l={t:'bin',op,l,r:mul()}}return l}
+  function mul(){let l=un();while(peek()&&peek().k==='op'&&(peek().v==='*'||peek().v==='/')){const op=next().v;l={t:'bin',op,l,r:un()}}return l}
+  function un(){
+    if(peek()&&peek().k==='op'&&(peek().v==='!'||peek().v==='-')){const op=next().v;return{t:'un',op,e:un()}}
+    return post();
+  }
+  function post(){
+    let e=prim();
+    while(peek()&&peek().k==='p'&&peek().v==='.'){next();const f=eat('id').v;e={t:'get',obj:e,field:f}}
+    return e;
+  }
+  function prim(){
+    const t=peek();
+    if(!t)throw new Error('Unexpected end of formula');
+    if(t.k==='num'){next();return{t:'num',v:t.v}}
+    if(t.k==='str'){next();return{t:'str',v:t.v}}
+    if(t.k==='bool'){next();return{t:'bool',v:t.v}}
+    if(t.k==='fn'&&t.v==='Blank'){next();if(peek()&&peek().k==='p'&&peek().v==='('){next();eat('p',')')}return{t:'blank'}}
+    if(t.k==='p'&&t.v==='('){next();const e=seq();eat('p',')');return e}
+    if(t.k==='p'&&t.v==='['){next();const items=[];if(!(peek().k==='p'&&peek().v===']')){do{items.push(or())}while(peek().k==='p'&&peek().v===','&&next())}eat('p',']');return{t:'tbl',items}}
+    if(t.k==='p'&&t.v==='{'){next();const pairs=[];if(!(peek().k==='p'&&peek().v==='}')){do{const k=eat('id').v;eat('p',':');pairs.push([k,or()])}while(peek().k==='p'&&peek().v===','&&next())}eat('p','}');return{t:'rec',pairs}}
+    if(t.k==='id'){
+      next();
+      if(peek()&&peek().k==='p'&&peek().v==='('){next();const args=[];if(!(peek().k==='p'&&peek().v===')')){do{args.push(or())}while(peek().k==='p'&&peek().v===','&&next())}eat('p',')');return{t:'call',fn:t.v,args}}
+      return{t:'ident',v:t.v};
+    }
+    throw new Error('Unexpected token: '+(t.v??t.k));
+  }
+  const ast=seq();
+  if(p<T.length)throw new Error('Unexpected trailing input: '+(T[p].v??T[p].k));
+  return ast;
+}
+/* --- evaluator --- */
+/* Deterministic 100-row datasets (seeded RNG) so every function category has data to chew on */
+const FX_RNG=(()=>{let s=42;return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}})();
+const pick=a=>a[Math.floor(FX_RNG()*a.length)];
+const FX_DATASETS=(()=>{
+  const FIRST=['Ava','Liam','Maya','Noah','Zara','Omar','Elena','Kai','Priya','Diego','Ingrid','Ravi','Sofia','Marcus','Yuki','Amara','Felix','Nadia','Oscar','Leila','Hugo','Tara','Ivan','Cleo','Ramon'];
+  const LAST=['Singh','Chen','Patel','Kim','Ali','Ruiz','Novak','Tanaka','Sharma','Lopez','Berg','Kumar','Rossi','Weber','Sato','Diallo','Moreau','Iqbal','Costa','Haddad'];
+  const DEPTS=['IT','HR','Finance','Sales','Operations'];
+  const CITIES=['London','New York','Paris','Tokyo','Sydney','Toronto','Berlin','Austin','Dubai','Mumbai'];
+  const NICKS=['Ace','RJ','Mac','Zed','Sky','Bo','Kit','Jax','Lux','Rey'];
+  const CUSTOMERS=['Contoso','Fabrikam','Northwind','AdventureWorks','TailSpin','WideWorld','Acme Corp','Globex','Initech','Umbrella','Hooli','Stark Industries'];
+  const PRODUCTS=[['Laptop Pro 15','Hardware'],['Monitor 27"','Hardware'],['Docking Station','Hardware'],['ERP License','Software'],['CRM Seat','Software'],['BI Pro License','Software'],['Support Plan','Services'],['Consulting Day','Services'],['Migration Pack','Services'],['Care+ Warranty','Support'],['Extended SLA','Support'],['Repair Kit','Support']];
+  const STATUSES=['Pending','Approved','Shipped','Cancelled'];
+  const PRIOS=['Low','Normal','High','Critical'];
+  const Employees=[],Orders=[];
+  for(let i=0;i<100;i++){
+    const fn=FIRST[i%FIRST.length],ln=LAST[(i*7+3)%LAST.length];
+    const active=FX_RNG()>0.18;
+    Employees.push({
+      Id:i+1,FirstName:fn,LastName:ln,
+      Department:DEPTS[i%DEPTS.length],
+      City:pick(CITIES),
+      Salary:38000+Math.floor(FX_RNG()*110)*1000,
+      Rating:FX_RNG()>0.12?Math.round((1+FX_RNG()*4)*10)/10:null,
+      Active:active,
+      Joined:new Date(2016+Math.floor(FX_RNG()*10),Math.floor(FX_RNG()*12),1+Math.floor(FX_RNG()*28)),
+      Email:(fn+'.'+ln+'@contoso.com').toLowerCase(),
+      Nickname:FX_RNG()>0.3?pick(NICKS):null
+    });
+    const pr=pick(PRODUCTS),qty=1+Math.floor(FX_RNG()*20);
+    Orders.push({
+      Id:5001+i,Customer:pick(CUSTOMERS),Product:pr[0],Category:pr[1],
+      Qty:qty,Amount:Math.round((50+FX_RNG()*2950))*qty,
+      OrderDate:new Date(2024+Math.floor(FX_RNG()*3),Math.floor(FX_RNG()*12),1+Math.floor(FX_RNG()*28)),
+      Status:pick(STATUSES),Priority:pick(PRIOS),
+      Discount:FX_RNG()>0.7?Math.round(FX_RNG()*20):null
+    });
+  }
+  return{Employees,Orders};
+})();
+
+const FX_SAMPLE_DATA=()=>({
+  Employees:FX_DATASETS.Employees.map(r=>({...r})),
+  Orders:FX_DATASETS.Orders.map(r=>({...r})),
+  SortOrder:{Ascending:'Ascending',Descending:'Descending'},
+  NotificationType:{Success:'Success',Error:'Error',Warning:'Warning',Information:'Information'},
+  DisplayMode:{Edit:'Edit',Disabled:'Disabled',View:'View'},
+  Match:{Email:'@@EMAIL@@',Digit:'@@DIGIT@@'}
+});
+
+function fxEval(src){
+  const logs=[];
+  const env=FX_SAMPLE_DATA();
+  const findK=(o,n)=>{if(!o||typeof o!=='object')return undefined;const k=Object.keys(o).find(k=>k.toLowerCase()===String(n).toLowerCase());return k===undefined?undefined:k};
+  const str=v=>v===null||v===undefined?'':(v instanceof Date?v.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}):(typeof v==='boolean'?(v?'true':'false'):String(v)));
+  const truthy=v=>{if(typeof v==='boolean')return v;if(v===null||v===undefined)return false;throw new Error('Expected a true/false value')};
+  const num=v=>{const n=Number(v);if(Number.isNaN(n))throw new Error('Expected a number, got: '+str(v));return n};
+
+  function ev(n,scope){
+    switch(n.t){
+      case 'num':case 'str':case 'bool':return n.v;
+      case 'blank':return null;
+      case 'seq':{let r=null;for(const e of n.items)r=ev(e,scope);return r}
+      case 'ident':{
+        if(n.v.toLowerCase()==='thisrecord'){
+          if(!scope.rec)throw new Error('ThisRecord is only valid inside Filter, ForAll, Concat…');
+          return scope.rec}
+        if(scope.locals){const k=findK(scope.locals,n.v);if(k!==undefined)return scope.locals[k]}
+        if(scope.rec){const k=findK(scope.rec,n.v);if(k!==undefined)return scope.rec[k]}
+        const k=findK(env,n.v);if(k!==undefined)return env[k];
+        throw new Error('Name isn\'t valid. "'+n.v+'" isn\'t recognized.');
+      }
+      case 'get':{
+        const o=ev(n.obj,scope);
+        if(o===null||o===undefined)return null;
+        const k=findK(o,n.field);
+        if(k===undefined)throw new Error('The record has no field "'+n.field+'"');
+        return o[k];
+      }
+      case 'rec':{const o={};for(const[k,e]of n.pairs)o[k]=ev(e,scope);return o}
+      case 'tbl':return n.items.map(e=>ev(e,scope));
+      case 'un':{const v=ev(n.e,scope);return n.op==='-'?-num(v):!truthy(v)}
+      case 'bin':{
+        const{op}=n;
+        if(op==='&&')return truthy(ev(n.l,scope))&&truthy(ev(n.r,scope));
+        if(op==='||')return truthy(ev(n.l,scope))||truthy(ev(n.r,scope));
+        const a=ev(n.l,scope),b=ev(n.r,scope);
+        if(op==='&')return str(a)+str(b);
+        if(op==='='){if(typeof a==='string'&&typeof b==='string')return a.toLowerCase()===b.toLowerCase();
+          if(a instanceof Date&&b instanceof Date)return a.getTime()===b.getTime();return a===b||(a==null&&b==null)}
+        if(op==='<>'){if(typeof a==='string'&&typeof b==='string')return a.toLowerCase()!==b.toLowerCase();
+          if(a instanceof Date&&b instanceof Date)return a.getTime()!==b.getTime();return !(a===b||(a==null&&b==null))}
+        if(op==='+'){if(a instanceof Date)return new Date(a.getTime()+num(b)*864e5);if(typeof a==='string'||typeof b==='string')return str(a)+str(b);return num(a)+num(b)}
+        if(op==='-'){if(a instanceof Date&&b instanceof Date)return(a-b)/864e5;if(a instanceof Date)return new Date(a.getTime()-num(b)*864e5);return num(a)-num(b)}
+        if(op==='*')return num(a)*num(b);
+        if(op==='/'){const d=num(b);if(d===0)throw new Error('Division by zero');return num(a)/d}
+        const x=a instanceof Date?a.getTime():(typeof a==='string'?a.toLowerCase():num(a));
+        const y=b instanceof Date?b.getTime():(typeof b==='string'?String(b).toLowerCase():num(b));
+        return op==='<'?x<y:op==='>'?x>y:op==='<='?x<=y:x>=y;
+      }
+      case 'call':return call(n.fn,n.args,scope);
+    }
+    throw new Error('Unknown node');
+  }
+
+  const argRaw=n=>n.t==='ident'?n.v:null;
+  const unitOf=n=>n?(n.t==='ident'?n.v.toLowerCase():(n.t==='str'?n.v.toLowerCase():'days')):'days';
+  function call(fn,args,scope){
+    const F=fn.toLowerCase();
+    const A=()=>args.map(a=>ev(a,scope));
+    const rowScope=r=>({rec:(r!==null&&typeof r==='object')?r:{Value:r},locals:scope.locals});
+    switch(F){
+      case 'if':{for(let i=0;i<args.length-1;i+=2)if(truthy(ev(args[i],scope)))return ev(args[i+1],scope);
+        return args.length%2?ev(args[args.length-1],scope):false}
+      case 'switch':{const m=ev(args[0],scope);for(let i=1;i<args.length-1;i+=2){const c=ev(args[i],scope);
+        if(String(m).toLowerCase()===String(c).toLowerCase())return ev(args[i+1],scope)}
+        return args.length%2?ev(args[args.length-1],scope):null}
+      case 'with':{const rec=ev(args[0],scope);return ev(args[1],{rec:scope.rec,locals:{...scope.locals,...rec}})}
+      case 'set':{const nm=argRaw(args[0]);if(!nm)throw new Error('Set: first argument must be a variable name');
+        const v=ev(args[1],scope);env[nm]=v;logs.push('✔ Set('+nm+') = '+str(v));return v}
+      case 'updatecontext':{const rec=ev(args[0],scope);Object.assign(env,rec);
+        logs.push('✔ UpdateContext '+str(rec));return true}
+      case 'clearcollect':case 'collect':{const nm=argRaw(args[0]);if(!nm)throw new Error(F+': first argument must be a collection name');
+        const items=ev(args[1],scope);const arr=Array.isArray(items)?items:[items];
+        if(F==='clearcollect'||!Array.isArray(env[nm]))env[nm]=[];
+        env[nm].push(...arr);logs.push('✔ '+fn+'('+nm+') → '+env[nm].length+' row(s)');return env[nm]}
+      case 'clear':{const nm=argRaw(args[0]);env[nm]=[];logs.push('✔ Clear('+nm+')');return true}
+      case 'notify':{const[a1]=A();logs.push('🔔 Notify: '+str(a1));return true}
+      case 'navigate':logs.push('→ Navigate (simulated)');return true;
+      case 'reset':logs.push('↺ Reset (simulated)');return true;
+      case 'concatenate':return A().map(str).join('');
+      case 'concat':{const t=ev(args[0],scope);if(!Array.isArray(t))throw new Error('Concat: first argument must be a table');
+        const out=t.map(r=>str(ev(args[1],rowScope(r))));return out.join(args[2]?str(ev(args[2],scope)):'')}
+      case 'upper':return str(ev(args[0],scope)).toUpperCase();
+      case 'lower':return str(ev(args[0],scope)).toLowerCase();
+      case 'proper':return str(ev(args[0],scope)).toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
+      case 'trim':return str(ev(args[0],scope)).trim().replace(/\s+/g,' ');
+      case 'trimends':return str(ev(args[0],scope)).trim();
+      case 'len':return str(ev(args[0],scope)).length;
+      case 'left':{const s=str(ev(args[0],scope)),n2=num(ev(args[1],scope));return s.slice(0,n2)}
+      case 'right':{const s=str(ev(args[0],scope)),n2=num(ev(args[1],scope));return s.slice(-n2)}
+      case 'mid':{const s=str(ev(args[0],scope)),a1=num(ev(args[1],scope)),a2=args[2]?num(ev(args[2],scope)):s.length;return s.slice(a1-1,a1-1+a2)}
+      case 'startswith':return str(ev(args[0],scope)).toLowerCase().startsWith(str(ev(args[1],scope)).toLowerCase());
+      case 'endswith':return str(ev(args[0],scope)).toLowerCase().endsWith(str(ev(args[1],scope)).toLowerCase());
+      case 'substitute':{const[s,o,nw]=A();return str(s).split(str(o)).join(str(nw))}
+      case 'find':{const[s1,s2]=A();const ix=str(s2).toLowerCase().indexOf(str(s1).toLowerCase());return ix<0?null:ix+1}
+      case 'value':{const v=ev(args[0],scope);const n2=parseFloat(String(v).replace(/[$,%\s]/g,''));if(Number.isNaN(n2))throw new Error('Value: cannot convert "'+str(v)+'" to a number');return n2}
+      case 'char':return String.fromCharCode(num(ev(args[0],scope)));
+      case 'round':{const[v,d]=A();const m=Math.pow(10,num(d));return Math.round(num(v)*m)/m}
+      case 'roundup':{const[v,d]=A();const m=Math.pow(10,num(d));return Math.ceil(num(v)*m)/m}
+      case 'rounddown':{const[v,d]=A();const m=Math.pow(10,num(d));return Math.floor(num(v)*m)/m}
+      case 'int':return Math.floor(num(ev(args[0],scope)));
+      case 'abs':return Math.abs(num(ev(args[0],scope)));
+      case 'sqrt':return Math.sqrt(num(ev(args[0],scope)));
+      case 'power':{const[a,b]=A();return Math.pow(num(a),num(b))}
+      case 'mod':{const[a,b]=A();return num(a)%num(b)}
+      case 'rand':return Math.random();
+      case 'randbetween':{const[a,b]=A();return Math.floor(Math.random()*(num(b)-num(a)+1))+num(a)}
+      case 'isblank':{const v=ev(args[0],scope);return v===null||v===undefined||v===''}
+      case 'isblankorerror':{try{const v=ev(args[0],scope);return v===null||v===undefined||v===''}catch{return true}}
+      case 'isempty':{const v=ev(args[0],scope);return Array.isArray(v)&&v.length===0}
+      case 'isnumeric':{const v=ev(args[0],scope);return typeof v==='number'&&!Number.isNaN(v)}
+      case 'coalesce':{for(const a of args){const v=ev(a,scope);if(v!==null&&v!==undefined&&v!=='')return v}return null}
+      case 'iferror':{try{return ev(args[0],scope)}catch(e){return args[1]?ev(args[1],scope):null}}
+      case 'ismatch':{const s=str(ev(args[0],scope));const p=ev(args[1],scope);
+        if(p==='@@EMAIL@@')return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+        if(p==='@@DIGIT@@')return /^\d+$/.test(s);
+        try{return new RegExp(str(p)).test(s)}catch{throw new Error('IsMatch: invalid pattern')}}
+      case 'text':{const v=ev(args[0],scope);const fmt=args[1]?str(ev(args[1],scope)):null;
+        if(!fmt)return str(v);
+        if(typeof v==='number'){
+          const dec=(fmt.split('.')[1]||'').length;const useComma=fmt.includes(',');
+          let s2=v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+          if(!useComma)s2=s2.replace(/,/g,'');
+          return(fmt.includes('$')?'$':'')+s2+(fmt.includes('%')?'%':'');
+        }
+        if(v instanceof Date){const pad=x=>String(x).padStart(2,'0');
+          return fmt.replace(/yyyy/g,String(v.getFullYear())).replace(/yy/g,String(v.getFullYear()).slice(2))
+            .replace(/mm/g,pad(v.getMonth()+1)).replace(/m/g,String(v.getMonth()+1))
+            .replace(/dd/g,pad(v.getDate())).replace(/d/g,String(v.getDate()))}
+        return str(v)}
+      case 'blank':return null;
+      case 'sum':case 'average':case 'min':case 'max':{
+        let vals;
+        if(args.length===2){const t=ev(args[0],scope);if(!Array.isArray(t))throw new Error(fn+': expected a table');
+          vals=t.map(r=>num(ev(args[1],rowScope(r))))}
+        else vals=A().flat().map(num);
+        if(!vals.length)return 0;
+        const s=vals.reduce((a,b)=>a+b,0);
+        return F==='sum'?s:F==='average'?s/vals.length:F==='min'?Math.min(...vals):Math.max(...vals)}
+      case 'count':return A().flat().filter(v=>typeof v==='number').length;
+      case 'counta':return A().flat().filter(v=>v!==null&&v!==undefined&&v!=='').length;
+      case 'countrows':{const t=ev(args[0],scope);if(!Array.isArray(t))throw new Error('CountRows: expected a table');return t.length}
+      case 'countif':{const t=ev(args[0],scope);return t.filter(r=>truthy(ev(args[1],rowScope(r)))).length}
+      case 'filter':{const t=ev(args[0],scope);if(!Array.isArray(t))throw new Error('Filter: first argument must be a table');
+        const conds=args.slice(1);return t.filter(r=>conds.every(c=>truthy(ev(c,rowScope(r)))))}
+      case 'lookup':{const t=ev(args[0],scope);if(!Array.isArray(t))throw new Error('LookUp: first argument must be a table');
+        const rec=t.find(r=>truthy(ev(args[1],rowScope(r))));
+        if(rec===undefined)return null;
+        return args[2]?ev(args[2],rowScope(rec)):rec}
+      case 'first':{const t=ev(args[0],scope);if(!Array.isArray(t))throw new Error('First: expected a table');return t[0]??null}
+      case 'last':{const t=ev(args[0],scope);return Array.isArray(t)?(t[t.length-1]??null):null}
+      case 'firstn':{const t=ev(args[0],scope);return t.slice(0,num(ev(args[1],scope)))}
+      case 'lastn':{const t=ev(args[0],scope);return t.slice(-num(ev(args[1],scope)))}
+      case 'sortbycolumns':{const t=[...ev(args[0],scope)];const col=str(ev(args[1],scope));
+        const desc=args[2]&&str(ev(args[2],scope)).toLowerCase()==='descending';
+        return t.sort((a,b)=>{const x=a[findK(a,col)],y=b[findK(b,col)];
+          const c=(typeof x==='string'?String(x).toLowerCase():x)<(typeof y==='string'?String(y).toLowerCase():y)?-1:1;
+          return desc?-c:c})}
+      case 'sort':{const t=[...ev(args[0],scope)];
+        const desc=args[2]&&str(ev(args[2],scope)).toLowerCase()==='descending';
+        return t.sort((a,b)=>{const x=ev(args[1],rowScope(a)),y=ev(args[1],rowScope(b));
+          return(x<y?-1:1)*(desc?-1:1)})}
+      case 'distinct':{const t=ev(args[0],scope);const seen=new Set(),out=[];
+        for(const r of t){const v=ev(args[1],rowScope(r));const k=JSON.stringify(v);if(!seen.has(k)){seen.add(k);out.push(v)}}
+        return out}
+      case 'forall':{const t=ev(args[0],scope);if(!Array.isArray(t))throw new Error('ForAll: first argument must be a table');
+        return t.map(r=>ev(args[1],rowScope(r)))}
+      case 'today':{const d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+      case 'now':return new Date();
+      case 'date':{const[y,m,d]=A();return new Date(num(y),num(m)-1,num(d))}
+      case 'time':{const[h,m,s]=A();const d=new Date();d.setHours(num(h),num(m),s?num(s):0,0);return d}
+      case 'year':return ev(args[0],scope).getFullYear();
+      case 'month':return ev(args[0],scope).getMonth()+1;
+      case 'day':return ev(args[0],scope).getDate();
+      case 'hour':return ev(args[0],scope).getHours();
+      case 'minute':return ev(args[0],scope).getMinutes();
+      case 'weekday':return ev(args[0],scope).getDay()+1;
+      case 'dateadd':{const d=new Date(ev(args[0],scope).getTime());const n2=num(ev(args[1],scope));const u=unitOf(args[2]);
+        if(u.startsWith('month'))d.setMonth(d.getMonth()+n2);
+        else if(u.startsWith('year'))d.setFullYear(d.getFullYear()+n2);
+        else if(u.startsWith('hour'))d.setTime(d.getTime()+n2*36e5);
+        else if(u.startsWith('minute'))d.setTime(d.getTime()+n2*6e4);
+        else d.setDate(d.getDate()+n2);return d}
+      case 'datediff':{const a=ev(args[0],scope),b=ev(args[1],scope);const u=unitOf(args[2]);const ms=b-a;
+        if(u.startsWith('month'))return(b.getFullYear()-a.getFullYear())*12+(b.getMonth()-a.getMonth());
+        if(u.startsWith('year'))return b.getFullYear()-a.getFullYear();
+        if(u.startsWith('hour'))return Math.floor(ms/36e5);
+        if(u.startsWith('minute'))return Math.floor(ms/6e4);
+        return Math.floor(ms/864e5)}
+      case 'defaults':return{};
+      case 'patch':{
+        const src=ev(args[0],scope);const base=ev(args[1],scope);const changes=ev(args[2],scope);
+        if(Array.isArray(src)){
+          if(base&&Object.keys(base).length){Object.assign(base,changes);logs.push('✔ Patched existing record');return base}
+          const rec={...changes};src.push(rec);logs.push('✔ Created new record ('+src.length+' total)');return rec}
+        return{...base,...changes}}
+      case 'showcolumns':case 'addcolumns':{
+        if(F==='showcolumns'){const t=ev(args[0],scope);const cols=args.slice(1).map(a=>str(ev(a,scope)));
+          return t.map(r=>{const o={};for(const c of cols){const k=findK(r,c);if(k!==undefined)o[k]=r[k]}return o})}
+        const t=ev(args[0],scope);const nm=str(ev(args[1],scope));
+        return t.map(r=>({...r,[nm]:ev(args[2],rowScope(r))}))}
+      case 'sequence':{const n2=num(ev(args[0],scope));const st=args[1]?num(ev(args[1],scope)):1;
+        const step=args[2]?num(ev(args[2],scope)):1;const out=[];for(let i=0;i<n2;i++)out.push({Value:st+i*step});return out}
+      case 'index':{const t=ev(args[0],scope);const i=num(ev(args[1],scope));
+        if(!Array.isArray(t))throw new Error('Index: first argument must be a table');
+        if(i<1||i>t.length)throw new Error('Index: row '+i+' is out of range (1–'+t.length+')');return t[i-1]}
+      case 'search':{const t=ev(args[0],scope);const txt=str(ev(args[1],scope)).toLowerCase();
+        const cols=args.slice(2).map(a=>str(ev(a,scope)));
+        return t.filter(r=>cols.some(c=>{const k=findK(r,c);return k!==undefined&&String(r[k]??'').toLowerCase().includes(txt)}))}
+      case 'datevalue':{const d=new Date(str(ev(args[0],scope)));if(isNaN(d))throw new Error('DateValue: cannot parse date');return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+      case 'timevalue':{const d=new Date('2000-01-01 '+str(ev(args[0],scope)));if(isNaN(d))throw new Error('TimeValue: cannot parse time');return d}
+      case 'datetimevalue':{const d=new Date(str(ev(args[0],scope)));if(isNaN(d))throw new Error('DateTimeValue: cannot parse');return d}
+      case 'istoday':{const d=ev(args[0],scope);const t=new Date();return d.getFullYear()===t.getFullYear()&&d.getMonth()===t.getMonth()&&d.getDate()===t.getDate()}
+      case 'renamecolumns':{const t=ev(args[0],scope);
+        return t.map(r=>{const o={...r};for(let i=1;i<args.length-1;i+=2){const oldK=findK(o,str(ev(args[i],scope)));const nw=str(ev(args[i+1],scope));
+          if(oldK!==undefined){o[nw]=o[oldK];delete o[oldK]}}return o})}
+      case 'dropcolumns':{const t=ev(args[0],scope);const cols=args.slice(1).map(a=>str(ev(a,scope)).toLowerCase());
+        return t.map(r=>{const o={};for(const k of Object.keys(r))if(!cols.includes(k.toLowerCase()))o[k]=r[k];return o})}
+      case 'groupby':{const t=ev(args[0],scope);const col=str(ev(args[1],scope));const gn=str(ev(args[2],scope));
+        const map=new Map();
+        for(const r of t){const key=r[findK(r,col)];const ks=JSON.stringify(key);
+          if(!map.has(ks))map.set(ks,{[col]:key,[gn]:[]});
+          map.get(ks)[gn].push(r)}
+        return[...map.values()]}
+      case 'ungroup':{const t=ev(args[0],scope);const col=str(ev(args[1],scope));const out=[];
+        for(const r of t){const grp=r[findK(r,col)];if(!Array.isArray(grp))throw new Error('Ungroup: column "'+col+'" is not a nested table');
+          for(const g of grp){const o={...g};for(const k of Object.keys(r))if(k.toLowerCase()!==col.toLowerCase())o[k]=r[k];out.push(o)}}
+        return out}
+      case 'remove':{const nm=argRaw(args[0]);const t=nm?env[nm]:ev(args[0],scope);
+        if(!Array.isArray(t))throw new Error('Remove: first argument must be a collection/table');
+        const target=ev(args[1],scope);
+        let ix=typeof target==='number'?target-1:t.findIndex(r=>JSON.stringify(r)===JSON.stringify(target));
+        if(ix>=0){t.splice(ix,1);logs.push('✔ Removed row '+(ix+1)+' ('+t.length+' left)')}return t}
+      case 'replace':{const s=str(ev(args[0],scope)),a1=num(ev(args[1],scope)),a2=num(ev(args[2],scope)),nw=str(ev(args[3],scope));
+        return s.slice(0,a1-1)+nw+s.slice(a1-1+a2)}
+      case 'split':{const s=str(ev(args[0],scope)),sep=str(ev(args[1],scope));
+        return s.split(sep).map(v=>({Value:v}))}
+      case 'encodeurl':return encodeURIComponent(str(ev(args[0],scope)));
+      case 'trunc':{const v=num(ev(args[0],scope));const d=args[1]?num(ev(args[1],scope)):0;const m=Math.pow(10,d);return Math.trunc(v*m)/m}
+      case 'and':return args.every(a=>truthy(ev(a,scope)));
+      case 'or':return args.some(a=>truthy(ev(a,scope)));
+      case 'not':return !truthy(ev(args[0],scope));
+      default:throw new Error('"'+fn+'" is not supported by this playground engine yet. Check the supported list below.');
+    }
+  }
+
+  const ast=fxParse(src);
+  const result=ev(ast,{rec:null,locals:{}});
+  return{result,logs};
+}
+
+/* --- value formatting for the output pane --- */
+function fxShow(v){
+  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  if(v===null||v===undefined)return{html:'Blank()',type:'Blank'};
+  if(typeof v==='boolean')return{html:v?'true':'false',type:'Boolean'};
+  if(typeof v==='number')return{html:Number.isInteger(v)?String(v):String(Math.round(v*1e6)/1e6),type:'Number'};
+  if(typeof v==='string')return{html:'"'+esc(v)+'"',type:'Text'};
+  if(v instanceof Date)return{html:v.toLocaleString(),type:'DateTime'};
+  if(Array.isArray(v)){
+    if(v.length&&typeof v[0]==='object'&&!(v[0] instanceof Date)){
+      const cols=[...new Set(v.slice(0,20).flatMap(r=>Object.keys(r)))];
+      const rows=v.slice(0,10).map(r=>'<tr>'+cols.map(c=>'<td>'+esc(r[c]===undefined?'—':(typeof r[c]==='object'&&r[c]!==null?'{…}':r[c]))+'</td>').join('')+'</tr>').join('');
+      return{html:'<table><tr>'+cols.map(c=>'<th>'+esc(c)+'</th>').join('')+'</tr>'+rows+'</table>'+(v.length>10?'<div class="hint">… '+(v.length-10)+' more rows</div>':''),type:'Table ('+v.length+' rows)'};
+    }
+    return{html:'[ '+v.map(x=>esc(x instanceof Date?x.toLocaleDateString():(typeof x==='object'&&x!==null?JSON.stringify(x):x))).join(', ')+' ]',type:'Table ('+v.length+' rows)'};
+  }
+  if(typeof v==='object')return{html:'{ '+Object.entries(v).map(([k,x])=>esc(k)+': '+esc(typeof x==='object'&&x!==null?JSON.stringify(x):x)).join(', ')+' }',type:'Record'};
+  return{html:esc(String(v)),type:'Unknown'};
+}
+/* ================= POWER FX FUNCTION REFERENCE DATA ================= */
+const FN=[
+/* ---- TEXT ---- */
+{n:'Concatenate',c:'Text',s:'Concatenate( String1 [, String2 …] )',d:'Joins multiple text strings into one continuous string.',x:'Concatenate(First(Employees).FirstName, " ", First(Employees).LastName)'},
+{n:'Concat',c:'Text',s:'Concat( Table, Formula [, Separator] )',d:'Concatenates the result of a formula applied across every row of a table.',x:'Concat(FirstN(Employees,3), FirstName, ", ")'},
+{n:'Text',c:'Text',s:'Text( Value [, FormatString] )',d:'Formats numbers and dates as text — currency, decimals, date patterns.',x:'Text(12345.678, "$#,##0.00")'},
+{n:'Upper',c:'Text',s:'Upper( String )',d:'Converts every letter in a text string to uppercase.',x:'Upper(First(Employees).Department)'},
+{n:'Lower',c:'Text',s:'Lower( String )',d:'Converts every letter in a text string to lowercase.',x:'Lower("POWER PLATFORM")'},
+{n:'Proper',c:'Text',s:'Proper( String )',d:'Capitalizes the first letter of each word in a text string.',x:'Proper("welcome to the power platform")'},
+{n:'Trim',c:'Text',s:'Trim( String )',d:'Removes leading, trailing AND extra interior spaces from text.',x:'Trim("  too    many   spaces  ")'},
+{n:'TrimEnds',c:'Text',s:'TrimEnds( String )',d:'Removes only leading and trailing spaces, keeping interior spacing.',x:'TrimEnds("  keep  inner  ")'},
+{n:'Len',c:'Text',s:'Len( String )',d:'Returns the number of characters in a text string.',x:'Len(First(Employees).Email)'},
+{n:'Left',c:'Text',s:'Left( String, Count )',d:'Returns the first N characters from the start of a string.',x:'Left(First(Employees).Email, 8)'},
+{n:'Right',c:'Text',s:'Right( String, Count )',d:'Returns the last N characters from the end of a string.',x:'Right(First(Employees).Email, 12)'},
+{n:'Mid',c:'Text',s:'Mid( String, Start [, Count] )',d:'Returns characters from the middle of a string, starting at position Start.',x:'Mid("Power Platform", 7, 8)'},
+{n:'StartsWith',c:'Text',s:'StartsWith( Text, SearchText )',d:'true if a string starts with another (case-insensitive). Delegable — great for search boxes.',x:'StartsWith(First(Employees).City, "lon")'},
+{n:'EndsWith',c:'Text',s:'EndsWith( Text, SearchText )',d:'true if a string ends with another (case-insensitive).',x:'EndsWith(First(Employees).Email, "contoso.com")'},
+{n:'Find',c:'Text',s:'Find( FindText, WithinText )',d:'Returns the 1-based position of a substring, or Blank if not found.',x:'Find("@", First(Employees).Email)'},
+{n:'Substitute',c:'Text',s:'Substitute( Text, Old, New )',d:'Replaces every occurrence of a substring with new text.',x:'Substitute(First(Employees).Email, ".", " ")'},
+{n:'Replace',c:'Text',s:'Replace( Text, Start, Count, New )',d:'Replaces characters at a position with new text (positional, unlike Substitute).',x:'Replace("PowerApps", 6, 4, "FX")'},
+{n:'Split',c:'Text',s:'Split( Text, Separator )',d:'Splits a string into a single-column table of {Value} records.',x:'Split("Red,Green,Blue", ",")'},
+{n:'Char',c:'Text',s:'Char( Code )',d:'Converts a character code into its string (e.g. 10 = line break).',x:'Char(65) & Char(66) & Char(67)'},
+{n:'IsMatch',c:'Text',s:'IsMatch( Text, Pattern )',d:'Validates text against a pattern — Match.Email, Match.Digit or a regex.',x:'IsMatch(First(Employees).Email, Match.Email)'},
+{n:'EncodeUrl',c:'Text',s:'EncodeUrl( String )',d:'URL-encodes special characters so text is safe to embed in a web link.',x:'EncodeUrl("status report Q3 2026.pdf")'},
+/* ---- MATH & AGGREGATION ---- */
+{n:'Sum',c:'Math',s:'Sum( Table, Formula ) or Sum( n1, n2 … )',d:'Adds numbers — either arguments or a formula evaluated per table row.',x:'Sum(Orders, Amount)'},
+{n:'Average',c:'Math',s:'Average( Table, Formula )',d:'Arithmetic mean of a numeric formula across table rows.',x:'Average(Employees, Salary)'},
+{n:'Min',c:'Math',s:'Min( Table, Formula ) or Min( n1, n2 … )',d:'Smallest value found.',x:'Min(Employees, Salary)'},
+{n:'Max',c:'Math',s:'Max( Table, Formula ) or Max( n1, n2 … )',d:'Largest value found.',x:'Max(Orders, Qty)'},
+{n:'Round',c:'Math',s:'Round( Number, Digits )',d:'Rounds to the nearest value at the given decimal places.',x:'Round(Average(Employees, Rating), 1)'},
+{n:'RoundUp',c:'Math',s:'RoundUp( Number, Digits )',d:'Always rounds away from zero.',x:'RoundUp(4.21, 1)'},
+{n:'RoundDown',c:'Math',s:'RoundDown( Number, Digits )',d:'Always rounds toward zero.',x:'RoundDown(4.89, 1)'},
+{n:'Trunc',c:'Math',s:'Trunc( Number [, Digits] )',d:'Truncates a number — chops decimals without rounding.',x:'Trunc(3.99)'},
+{n:'Int',c:'Math',s:'Int( Number )',d:'Rounds down to the nearest whole number (floor).',x:'Int(Average(Orders, Qty))'},
+{n:'Abs',c:'Math',s:'Abs( Number )',d:'Absolute value — distance from zero.',x:'Abs(DateDiff(Today(), Date(2026,1,1)))'},
+{n:'Sqrt',c:'Math',s:'Sqrt( Number )',d:'Square root of a number.',x:'Sqrt(144)'},
+{n:'Power',c:'Math',s:'Power( Base, Exponent )',d:'Raises a number to a power.',x:'Power(2, 10)'},
+{n:'Mod',c:'Math',s:'Mod( Number, Divisor )',d:'Remainder after division — handy for alternating row colors.',x:'Mod(7, 3)'},
+{n:'Rand',c:'Math',s:'Rand()',d:'A pseudo-random decimal between 0 and 1. Volatile — recalculates.',x:'Round(Rand()*100, 0)'},
+{n:'RandBetween',c:'Math',s:'RandBetween( Low, High )',d:'A pseudo-random whole number inside a range, inclusive.',x:'RandBetween(1, 6)'},
+/* ---- DATE & TIME ---- */
+{n:'Today',c:'Date & Time',s:'Today()',d:'Current date with the time set to midnight.',x:'Text(Today(), "mm/dd/yyyy")'},
+{n:'Now',c:'Date & Time',s:'Now()',d:'Current date AND time. Volatile — refreshes on each evaluation.',x:'Hour(Now()) & "h " & Minute(Now()) & "m"'},
+{n:'Date',c:'Date & Time',s:'Date( Year, Month, Day )',d:'Builds a date value from parts.',x:'Date(2026, 12, 25)'},
+{n:'Time',c:'Date & Time',s:'Time( Hour, Minute, Second )',d:'Builds a time value from parts.',x:'Time(14, 30, 0)'},
+{n:'Year',c:'Date & Time',s:'Year( DateTime )',d:'Extracts the year from a date.',x:'Year(First(Employees).Joined)'},
+{n:'Month',c:'Date & Time',s:'Month( DateTime )',d:'Extracts the month number (1–12) from a date.',x:'Month(First(Orders).OrderDate)'},
+{n:'Day',c:'Date & Time',s:'Day( DateTime )',d:'Extracts the day of the month (1–31).',x:'Day(Today())'},
+{n:'Hour',c:'Date & Time',s:'Hour( DateTime )',d:'Extracts the hour (0–23) from a date/time.',x:'Hour(Now())'},
+{n:'Minute',c:'Date & Time',s:'Minute( DateTime )',d:'Extracts the minutes (0–59).',x:'Minute(Now())'},
+{n:'Weekday',c:'Date & Time',s:'Weekday( DateTime )',d:'Day of week as a number — 1 = Sunday by default.',x:'Weekday(Today())'},
+{n:'DateAdd',c:'Date & Time',s:'DateAdd( DateTime, N [, Units] )',d:'Shifts a date by N Days, Months, Years, Hours or Minutes.',x:'DateAdd(Today(), 30, Days)'},
+{n:'DateDiff',c:'Date & Time',s:'DateDiff( Start, End [, Units] )',d:'Whole units between two dates — deadlines, SLAs, tenure.',x:'DateDiff(First(Employees).Joined, Today(), Years) & " yrs tenure"'},
+{n:'DateValue',c:'Date & Time',s:'DateValue( Text )',d:'Parses a text string into a date (drops the time).',x:'Text(DateValue("2026-03-15"), "mm/dd/yyyy")'},
+{n:'TimeValue',c:'Date & Time',s:'TimeValue( Text )',d:'Parses a text string into a time value.',x:'Hour(TimeValue("17:45"))'},
+{n:'DateTimeValue',c:'Date & Time',s:'DateTimeValue( Text )',d:'Parses a text string into a full date/time value.',x:'Year(DateTimeValue("2024-06-01 10:30"))'},
+{n:'IsToday',c:'Date & Time',s:'IsToday( DateTime )',d:'true if a date/time falls on the current day.',x:'CountIf(Orders, IsToday(OrderDate))'},
+/* ---- LOGIC & ERRORS ---- */
+{n:'If',c:'Logic',s:'If( Cond, Then [, Else] ) — chains allowed',d:'Conditional branching. Chain condition/result pairs; last odd arg is the fallback.',x:'If(Average(Employees, Salary) > 100000, "High payroll", "Normal payroll")'},
+{n:'Switch',c:'Logic',s:'Switch( Expr, Match1, Result1 … [, Default] )',d:'Cleaner multi-branch logic — evaluates Expr once, matches against pairs.',x:'Switch(First(Employees).Department, "IT", "Engineering org", "HR", "People org", "Other org")'},
+{n:'And',c:'Logic',s:'And( Cond1, Cond2 … ) — or the && operator',d:'true only if every condition is true.',x:'And(CountRows(Employees) = 100, CountRows(Orders) = 100)'},
+{n:'Or',c:'Logic',s:'Or( Cond1, Cond2 … ) — or the || operator',d:'true if any condition is true.',x:'Or(First(Employees).City = "London", First(Employees).City = "Paris")'},
+{n:'Not',c:'Logic',s:'Not( Condition ) — or the ! operator',d:'Inverts a Boolean value.',x:'Not(IsBlank(First(Employees).Email))'},
+{n:'IsBlank',c:'Logic',s:'IsBlank( Value )',d:'true for Blank() or empty text. Some Nickname/Rating cells are blank in the dataset — try it.',x:'CountIf(Employees, IsBlank(Nickname))'},
+{n:'IsBlankOrError',c:'Logic',s:'IsBlankOrError( Value )',d:'Like IsBlank but also true when the expression errors.',x:'CountIf(Employees, IsBlankOrError(Rating))'},
+{n:'IsEmpty',c:'Logic',s:'IsEmpty( Table )',d:'true if a table or collection has zero records.',x:'IsEmpty(Filter(Employees, Salary > 200000))'},
+{n:'IsNumeric',c:'Logic',s:'IsNumeric( Value )',d:'true if the value is a number.',x:'IsNumeric(First(Orders).Amount)'},
+{n:'Coalesce',c:'Logic',s:'Coalesce( V1, V2 … )',d:'First non-blank value — the clean null-fallback pattern.',x:'Coalesce(First(Employees).Nickname, "no nickname")'},
+{n:'IfError',c:'Logic',s:'IfError( Expr, Fallback )',d:'Catches runtime errors and returns a safe fallback.',x:'IfError(1/0, "division blocked ✔")'},
+{n:'With',c:'Logic',s:'With( {record}, Formula )',d:'Named local scope — compute once, reuse. The readability superpower.',x:'With({avg: Average(Employees, Salary)}, "Avg salary: " & Text(avg, "$#,##0"))'},
+/* ---- TABLE ---- */
+{n:'Filter',c:'Table',s:'Filter( Table, Cond1 [, Cond2 …] )',d:'Returns rows matching every condition. The #1 gallery formula.',x:'Filter(Employees, Department = "IT", Active)'},
+{n:'Search',c:'Table',s:'Search( Table, Text, Col1 [, Col2 …] )',d:'Finds rows where any listed column contains the text (contains-match).',x:'Search(Employees, "tokyo", "City", "Department")'},
+{n:'LookUp',c:'Table',s:'LookUp( Table, Cond [, ResultFormula] )',d:'First matching record — or a single field from it.',x:'LookUp(Employees, Id = 42).FirstName'},
+{n:'Sort',c:'Table',s:'Sort( Table, Formula [, Order] )',d:'Sorts by a formula result per row.',x:'Sort(Employees, Salary, SortOrder.Descending)'},
+{n:'SortByColumns',c:'Table',s:'SortByColumns( Table, "Col" [, Order] )',d:'Sorts by a named column — delegable-friendly.',x:'FirstN(SortByColumns(Orders, "Amount", SortOrder.Descending), 3)'},
+{n:'Distinct',c:'Table',s:'Distinct( Table, Formula )',d:'Unique values only — perfect for dropdowns.',x:'Distinct(Employees, Department)'},
+{n:'GroupBy',c:'Table',s:'GroupBy( Table, "Col", "GroupName" )',d:'Buckets rows by a column into nested tables for roll-ups.',x:'AddColumns(GroupBy(Employees,"Department","M"),"Headcount",CountRows(M))'},
+{n:'Ungroup',c:'Table',s:'Ungroup( Table, "GroupName" )',d:'Flattens grouped/nested tables back into rows.',x:'CountRows(Ungroup(GroupBy(Orders,"Status","G"),"G"))'},
+{n:'AddColumns',c:'Table',s:'AddColumns( Table, "NewCol", Formula … )',d:'Adds computed columns without changing the source.',x:'AddColumns(FirstN(Employees,5), "Band", If(Salary>120000,"Senior","Standard"))'},
+{n:'ShowColumns',c:'Table',s:'ShowColumns( Table, "Col1", "Col2" … )',d:'Keeps only the listed columns.',x:'ShowColumns(FirstN(Employees,5), "FirstName", "Department", "Salary")'},
+{n:'DropColumns',c:'Table',s:'DropColumns( Table, "Col1" … )',d:'Removes columns from a table.',x:'CountRows(DropColumns(Employees, "Email", "Nickname"))'},
+{n:'RenameColumns',c:'Table',s:'RenameColumns( Table, "Old", "New" … )',d:'Renames columns in a table.',x:'RenameColumns(FirstN(Employees,3), "Salary", "AnnualPay")'},
+{n:'First',c:'Table',s:'First( Table )',d:'The first record of a table.',x:'First(Employees).Email'},
+{n:'Last',c:'Table',s:'Last( Table )',d:'The last record of a table.',x:'Last(Orders).Customer'},
+{n:'FirstN',c:'Table',s:'FirstN( Table, N )',d:'The first N records.',x:'FirstN(Employees, 3)'},
+{n:'LastN',c:'Table',s:'LastN( Table, N )',d:'The last N records.',x:'LastN(Orders, 2)'},
+{n:'Index',c:'Table',s:'Index( Table, N )',d:'The Nth record (1-based). Errors if out of range.',x:'Index(Employees, 10).City'},
+{n:'ForAll',c:'Table',s:'ForAll( Table, Formula )',d:'Evaluates a formula per row — for transforms or behavior loops.',x:'ForAll(FirstN(Employees,4), Upper(FirstName) & " " & LastName)'},
+{n:'Sequence',c:'Table',s:'Sequence( N [, Start [, Step]] )',d:'Generates a {Value} number table — calendars, paging, loops.',x:'Sum(Sequence(10), Value)'},
+{n:'CountRows',c:'Table',s:'CountRows( Table )',d:'Number of records in a table.',x:'CountRows(Filter(Orders, Priority = "Critical"))'},
+{n:'CountIf',c:'Table',s:'CountIf( Table, Condition )',d:'How many rows match a condition.',x:'CountIf(Employees, Department = "Sales" And Active)'},
+{n:'Count',c:'Table',s:'Count( values )',d:'Counts numeric values only.',x:'Count(CountRows(Employees), CountRows(Orders))'},
+{n:'CountA',c:'Table',s:'CountA( values )',d:'Counts non-blank values.',x:'CountIf(Employees, Not(IsBlank(Rating)))'},
+/* ---- BEHAVIOR ---- */
+{n:'Set',c:'Behavior',s:'Set( Variable, Value )',d:'Creates/updates a global variable, available app-wide.',x:'Set(gThreshold, 100000); CountIf(Employees, Salary > gThreshold)'},
+{n:'UpdateContext',c:'Behavior',s:'UpdateContext( {var: value} )',d:'Screen-scoped context variables.',x:'UpdateContext({showIT: true}); If(showIT, CountIf(Employees, Department="IT"), 0)'},
+{n:'Collect',c:'Behavior',s:'Collect( Collection, Item )',d:'Appends records to a collection.',x:'Collect(myPicks, LookUp(Employees, Id=1)); CountRows(myPicks)'},
+{n:'ClearCollect',c:'Behavior',s:'ClearCollect( Collection, Table )',d:'Clears then fills a collection — the cache pattern.',x:'ClearCollect(colSales, Filter(Employees, Department="Sales")); CountRows(colSales)'},
+{n:'Clear',c:'Behavior',s:'Clear( Collection )',d:'Empties a collection.',x:'ClearCollect(tmp, Sequence(3)); Clear(tmp); CountRows(tmp)'},
+{n:'Remove',c:'Behavior',s:'Remove( Collection, Record )',d:'Deletes a record from a collection (row number works here too).',x:'ClearCollect(cart, Sequence(3)); Remove(cart, 2); CountRows(cart)'},
+{n:'Patch',c:'Behavior',s:'Patch( Source, Record, Changes )',d:'Creates or updates records. Defaults(Source) = create new.',x:'Patch(Employees, Defaults(Employees), {FirstName:"Ada", LastName:"Wong", Department:"IT", Salary:99000, Active:true}); CountRows(Employees)'},
+{n:'Defaults',c:'Behavior',s:'Defaults( DataSource )',d:'A blank record scaffold with column defaults — used with Patch to create.',x:'Patch(Employees, Defaults(Employees), {FirstName:"Grace", LastName:"Hooper", Salary:105000}); "created ✔"'},
+{n:'Notify',c:'Behavior',s:'Notify( Message [, Type] )',d:'Shows a banner notification — Success, Error, Warning, Information.',x:'Notify("Welcome back, maker!", NotificationType.Success)'},
+{n:'Navigate',c:'Behavior',s:'Navigate( Screen [, Transition] )',d:'Moves to another screen. Simulated in this playground.',x:'If(CountRows(Employees)=100, Navigate(Home), Notify("no data"))'},
+{n:'Reset',c:'Behavior',s:'Reset( Control )',d:'Resets an input control to its default. Simulated here.',x:'Set(x, 5); Reset(txtInput); x * 2'}
+];
+const FN_CATS={'Text':'var(--c-apps)','Math':'var(--c-bi)','Date & Time':'var(--c-flow)','Logic':'var(--c-copilot)','Table':'var(--c-pages)','Behavior':'var(--c-data)'};
+/* ================= FUNCTION REFERENCE UI ================= */
+const escHtml=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fnGrid=$('#fnGrid'),fnCount=$('#fnCount');
+let fnCat='All',fnQ='';
+$('#fnChips').innerHTML=['All',...Object.keys(FN_CATS)].map((c,i)=>`<button class="fn-chip${i===0?' on':''}" data-c="${c}">${c}</button>`).join('');
+$$('#fnChips .fn-chip').forEach(b=>b.addEventListener('click',()=>{
+  fnCat=b.dataset.c;$$('#fnChips .fn-chip').forEach(x=>x.classList.toggle('on',x===b));renderFns();
+}));
+$('#fnSearch').addEventListener('input',e=>{fnQ=e.target.value.trim().toLowerCase();renderFns()});
+function renderFns(){
+  const list=FN.filter(f=>(fnCat==='All'||f.c===fnCat)&&(!fnQ||(f.n+' '+f.s+' '+f.d).toLowerCase().includes(fnQ)));
+  fnCount.textContent=list.length+' / '+FN.length+' functions';
+  fnGrid.innerHTML=list.length?list.map(f=>`
+   <div class="fn-card" style="--fcc:${FN_CATS[f.c]}">
+      <div class="f-top"><span class="f-name">${escHtml(f.n)}</span><span class="f-cat">${escHtml(f.c)}</span></div>
+     <div class="f-sig">${escHtml(f.s)}</div>
+      <div class="f-desc">${escHtml(f.d)}</div>
+     <div class="f-ex">${escHtml(f.x)}</div>
+     <div class="f-acts"><button class="f-btn f-copy" data-n="${f.n}">copy</button><button class="f-btn try" data-n="${f.n}">⌁ run in playground</button></div>
+   </div>`).join(''):'<div class="fn-empty">No functions match — try "sort", "date", "blank"…</div>';
+  $$('.f-copy',fnGrid).forEach(b=>b.addEventListener('click',()=>{
+    const f=FN.find(x=>x.n===b.dataset.n);
+     copyText(f.x).then(()=>{b.textContent='copied ✓';b.classList.add('ok');setTimeout(()=>{b.textContent='copy';b.classList.remove('ok')},1500)}).catch(()=>{b.textContent='copy failed'});
+  }));
+  $$('.f-btn.try',fnGrid).forEach(b=>b.addEventListener('click',()=>{
+    const f=FN.find(x=>x.n===b.dataset.n);loadFxExample(f.x);
+  }));
+}
+
+function loadFxExample(code){
+  const fxBtn=$$('.pg-tab').find(b=>b.dataset.tab==='fx');
+  if(fxBtn&&!fxBtn.classList.contains('on'))fxBtn.click();
+  editorCode.value=code;renderEditor();
+  document.getElementById('playground').scrollIntoView({behavior:'smooth'});
+  setTimeout(runFx,350);
+}
+renderFns();
+/* ================= EDITOR: GUTTER + HIGHLIGHT + INTELLISENSE ================= */
+const editorCode=$('#pgCode'),pgGutter=$('#pgGutter'),pgHl=$('#pgHl'),pgIntel=$('#pgIntel');
+function hlLine(line,isJs){
+  const kw=isJs?/\b(const|let|var|function|return|if|else|for|of|new|await|async|typeof)\b/:/\b(true|false|And|Or|Not|Blank|SortOrder|Days|Months|Years|Hours|Minutes)\b/;
+  const strRe=isJs?/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)/:/("(?:[^"]|"")*")/;
+  const re=new RegExp('(\\/\\/.*$)|'+strRe.source+'|(\\b\\d+(?:\\.\\d+)?\\b)|([A-Za-z_][A-Za-z0-9_]*)(?=\\()|'+kw.source,'g');
+  return escHtml(line).replace(re,(m,cm,st,nm,fn)=>{
+    if(cm)return '<span class="tk-cm">'+cm+'</span>';
+    if(st)return '<span class="tk-st">'+st+'</span>';
+    if(nm)return '<span class="tk-num">'+nm+'</span>';
+    if(fn)return '<span class="tk-fn">'+fn+'</span>';
+    return '<span class="tk-kw">'+m+'</span>';
+  });
+}
+function renderEditor(){
+  const lines=editorCode.value.split('\n');
+  pgGutter.innerHTML=lines.map((_,i)=>'<div>'+(i+1)+'</div>').join('');
+  pgHl.innerHTML=lines.map(l=>hlLine(l,pgTab==='js')||' ').join('\n')+'\n';
+  syncScroll();
+}
+function syncScroll(){pgHl.scrollTop=editorCode.scrollTop;pgHl.scrollLeft=editorCode.scrollLeft;pgGutter.scrollTop=editorCode.scrollTop}
+editorCode.addEventListener('scroll',syncScroll);
+
+/* intellisense */
+let intelIdx=0,intelList=[];
+window.__intelOpen=false;
+const FX_TABLES=[{n:'Employees',s:'table · 100 records',c:'Table'},{n:'Orders',s:'table · 100 records',c:'Table'}];
+function curWord(){const v=editorCode.value,p=editorCode.selectionStart;const m=v.slice(0,p).match(/[A-Za-z_][A-Za-z0-9_]*$/);return m?{w:m[0],start:p-m[0].length}:null}
+function caretXY(){
+  const ta=editorCode,div=document.createElement('div'),cs=getComputedStyle(ta);
+  div.style.cssText='position:absolute;visibility:hidden;white-space:pre;overflow-wrap:normal;'
+    +'font:'+cs.font+';line-height:'+cs.lineHeight+';padding:'+cs.padding+';width:'+ta.clientWidth+'px';
+  div.textContent=ta.value.slice(0,ta.selectionStart);
+  const sp=document.createElement('span');sp.textContent='​';div.appendChild(sp);
+  document.body.appendChild(div);
+  const r={x:sp.offsetLeft-ta.scrollLeft,y:sp.offsetTop-ta.scrollTop};
+  div.remove();return r;
+}
+function updateIntel(){
+  if(pgTab!=='fx')return hideIntel();
+  const cw=curWord();
+  if(!cw||cw.w.length<2)return hideIntel();
+  const q=cw.w.toLowerCase();
+  intelList=[...FN.filter(f=>f.n.toLowerCase().startsWith(q)),...FX_TABLES.filter(t=>t.n.toLowerCase().startsWith(q))].slice(0,8);
+  if(!intelList.length)return hideIntel();
+  intelIdx=0;renderIntel();
+  const{x,y}=caretXY(),wrap=editorCode.parentElement;
+  pgIntel.style.left=Math.max(6,Math.min(x,wrap.clientWidth-352))+'px';
+  pgIntel.style.top=(y+26)+'px';
+  pgIntel.classList.add('on');window.__intelOpen=true;
+}
+function renderIntel(){
+  pgIntel.innerHTML=intelList.map((f,i)=>`<div class="intel-it${i===intelIdx?' sel':''}" data-i="${i}"><span class="i-name">${f.n}</span><span class="i-sig">${escHtml(f.s)}</span></div>`).join('')
+    +'<div class="intel-foot">↑↓ navigate · Tab/Enter accept · Esc dismiss</div>';
+  $$('.intel-it',pgIntel).forEach(el=>el.addEventListener('mousedown',e=>{e.preventDefault();acceptIntel(+el.dataset.i)}));
+  const sel=pgIntel.querySelector('.sel');if(sel)sel.scrollIntoView({block:'nearest'});
+}
+function acceptIntel(i){
+  const f=intelList[i],cw=curWord();if(!f||!cw)return;
+  const isFn=FN.some(x=>x.n===f.n),ins=isFn?f.n+'(':f.n;
+  const v=editorCode.value;
+  editorCode.value=v.slice(0,cw.start)+ins+v.slice(editorCode.selectionStart);
+  editorCode.selectionStart=editorCode.selectionEnd=cw.start+ins.length;
+  hideIntel();renderEditor();editorCode.focus();
+}
+function hideIntel(){pgIntel.classList.remove('on');window.__intelOpen=false}
+editorCode.addEventListener('input',()=>{renderEditor();updateIntel()});
+editorCode.addEventListener('click',hideIntel);
+editorCode.addEventListener('blur',()=>setTimeout(hideIntel,150));
+editorCode.addEventListener('keydown',e=>{
+  if(!window.__intelOpen)return;
+  if(e.key==='ArrowDown'){e.preventDefault();intelIdx=(intelIdx+1)%intelList.length;renderIntel()}
+  else if(e.key==='ArrowUp'){e.preventDefault();intelIdx=(intelIdx-1+intelList.length)%intelList.length;renderIntel()}
+  else if(e.key==='Enter'||e.key==='Tab'){e.preventDefault();acceptIntel(intelIdx)}
+  else if(e.key==='Escape'){hideIntel()}
+});
+/* ================= PLAYGROUND HELP + DATA VIEWER ================= */
+$('#pgHelp').addEventListener('click',()=>{
+  const before=editorCode.value.slice(0,editorCode.selectionStart);
+  const cw=curWord();
+  let fn=cw?FN.find(f=>f.n.toLowerCase()===cw.w.toLowerCase()):null;
+  if(!fn){
+    const calls=[...before.matchAll(/([A-Za-z_][A-Za-z0-9_]*)\s*\(/g)];
+    for(let i=calls.length-1;i>=0&&!fn;i--)fn=FN.find(f=>f.n.toLowerCase()===calls[i][1].toLowerCase());
+  }
+  if(fn){
+    openModal(modalHead(fn.n,fn.c.toUpperCase()+' FUNCTION')+`
+    <div class="modal-b">
+      <p>${escHtml(fn.d)}</p>
+      <dl class="kv">
+        <dt>Syntax</dt><dd><code>${escHtml(fn.s)}</code></dd>
+        <dt>Category</dt><dd>${escHtml(fn.c)}</dd>
+        <dt>Playground</dt><dd>Runs live against the 100-row Employees / Orders datasets</dd>
+      </dl>
+      <p style="margin-bottom:4px;color:var(--txt);font-weight:600">Valid example you can run:</p>
+      <pre>${escHtml(fn.x)}</pre>
+      <div class="modal-actions">
+        <button class="btn btn-pri" style="padding:12px 22px;border:none;cursor:pointer" id="modalTry">⌁ Run this example</button>
+        <a class="modal-link" href="https://learn.microsoft.com/power-platform/power-fx/reference/overview" target="_blank" rel="noopener">Microsoft Learn docs ↗</a>
+      </div>
+    </div>`,FN_CATS[fn.c]);
+    $('#modalTry').addEventListener('click',()=>{closeModal();loadFxExample(fn.x)});
+  }else{
+    openModal(modalHead('Function Help','HOW TO USE')+`
+    <div class="modal-b">
+      <p>Put your cursor <b>on or after any function name</b> in the editor — e.g. inside <code>Filter(Employees, Department = "IT")</code> — and press <b>? help</b> again. You'll get its syntax, a plain-English explanation and a runnable example.</p>
+      <p>As you type, the <b>IntelliSense popup</b> suggests matching functions — accept with <code>Tab</code> or <code>Enter</code>.</p>
+      <div class="modal-actions"><a class="btn btn-ghost modal-close-link" style="padding:12px 22px" href="#functions">Browse all ${FN.length} functions</a></div>
+    </div>`);
+  }
+});
+
+$('#pgData').addEventListener('click',()=>{
+  openModal(modalHead('Playground Datasets','DATA VIEWER')+`
+  <div class="modal-b">
+    <div class="dv-tabs">
+      <button class="dv-tab on" data-ds="Employees">Employees · 100 rows</button>
+      <button class="dv-tab" data-ds="Orders">Orders · 100 rows</button>
+    </div>
+    <div class="dv-meta" id="dvMeta"></div>
+    <div class="dv-table" id="dvTable"></div>
+  </div>`,'var(--c-pages)');
+  renderDs('Employees');
+  $$('.dv-tab',modalCard).forEach(b=>b.addEventListener('click',()=>{
+    $$('.dv-tab',modalCard).forEach(x=>x.classList.remove('on'));b.classList.add('on');renderDs(b.dataset.ds);
+  }));
+});
+function renderDs(name){
+  const rows=FX_DATASETS[name],cols=Object.keys(rows[0]);
+  $('#dvMeta').textContent=cols.length+' columns · showing 50 of '+rows.length+' rows · use in formulas as: '+name;
+  $('#dvTable').innerHTML='<table><tr>'+cols.map(c=>'<th>'+c+'</th>').join('')+'</tr>'+
+    rows.slice(0,50).map(r=>'<tr>'+cols.map(c=>{
+      const v=r[c];
+      if(v===null||v===undefined)return '<td class="null">Blank()</td>';
+      if(v instanceof Date)return '<td>'+v.toLocaleDateString()+'</td>';
+      return '<td>'+escHtml(v)+'</td>';
+    }).join('')+'</tr>').join('')+'</table>';
+}
+/* ================= MODAL SYSTEM ================= */
+const modalOv=$('#modalOv'),modalCard=$('#modalCard');
+function openModal(html,color){
+  modalCard.innerHTML=html;
+  modalCard.style.setProperty('--mc',color||'var(--c-flow)');
+  modalOv.classList.add('on');document.body.style.overflow='hidden';
+  modalCard.querySelector('.modal-x')?.addEventListener('click',closeModal);
+  modalCard.querySelectorAll('.modal-close-link').forEach(link=>link.addEventListener('click',closeModal));
+  modalCard.querySelector('button,a')?.focus();
+}
+function closeModal(){modalOv.classList.remove('on');document.body.style.overflow='';}
+modalOv.addEventListener('click',e=>{if(e.target===modalOv)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+function modalHead(title,tag){return `<div class="modal-h"><span class="mtag">${escHtml(tag)}</span><h3>${escHtml(title)}</h3><button class="modal-x" type="button" aria-label="Close dialog">✕</button></div>`}
+
+/* ================= TOOL TILE MODALS ================= */
+const TOOLS_INFO={
+  apps:{n:'Power Apps',c:'var(--c-apps)',tag:'APP BUILDING',
+    d:'Build custom business apps without writing full-stack code. Canvas apps give total UI freedom; model-driven apps generate the UI from your Dataverse schema.',
+    feats:['Canvas & model-driven apps','Power Fx formula language (98 functions documented here)','1,400+ connectors + custom connectors','Components & reusable component libraries','PCF code components (TypeScript/React)','Offline mobile support','Embedded Power BI tiles & mixed reality controls'],
+    langs:['Power Fx','TypeScript (PCF)','YAML (source code view)'],
+    cert:'PL-900 → Applied Skills (PL-100 retired 2024)',
+    docs:'https://learn.microsoft.com/power-apps/'},
+  flow:{n:'Power Automate',c:'var(--c-flow)',tag:'AUTOMATION',
+    d:'Automate everything from simple notifications to enterprise RPA. Cloud flows react to events; desktop flows automate legacy UIs; business process flows guide users.',
+    feats:['Automated / instant / scheduled cloud flows','Desktop flows (RPA) with UI & API recorders','Approvals with adaptive cards in Teams','Expressions (WDL): utcNow, coalesce, xpath…','Process mining & task mining','Custom connectors & HTTP actions'],
+    langs:['Workflow Definition Language','OData filters','JSON schema'],
+    cert:'PL-500 retires Jun 30, 2026 — AB successors incoming',
+    docs:'https://learn.microsoft.com/power-automate/'},
+  bi:{n:'Power BI',c:'var(--c-bi)',tag:'ANALYTICS',
+    d:'The analytics engine of the platform. Shape data with Power Query (M), model it in a star schema, and calculate with DAX. Now part of Microsoft Fabric.',
+    feats:['DAX measures: CALCULATE, time intelligence, RANKX','Power Query (M) data shaping','Semantic models & dataflows','Row-level security (RLS)','Incremental refresh & aggregations','Embedding in apps, Teams & Power Pages'],
+    langs:['DAX','M (Power Query)','TMDL / TMSL'],
+    cert:'PL-300 Power BI Data Analyst — live',
+    docs:'https://learn.microsoft.com/power-bi/'},
+  pages:{n:'Power Pages',c:'var(--c-pages)',tag:'PORTALS',
+    d:'Secure, external-facing websites over Dataverse. Low-code studio for makers; full-code extensibility with Liquid, JavaScript and the Web API for pros.',
+    feats:['Design studio with themes & templates','Liquid templating + FetchXML queries','Table permissions & web roles','Identity: Entra ID, B2C, Google, LinkedIn','Lists, basic & multistep forms','Web API for CRUD from the browser'],
+    langs:['Liquid','JavaScript','FetchXML','CSS'],
+    cert:'Covered in PL-200 (retiring Aug 31, 2026)',
+    docs:'https://learn.microsoft.com/power-pages/'},
+  copilot:{n:'Copilot Studio',c:'var(--c-copilot)',tag:'AI AGENTS',
+    d:'Build conversational copilots and autonomous agents. Generative answers over your content, topics for guided dialogs, actions that call flows and connectors.',
+    feats:['Generative AI answers over docs/websites/Dataverse','Topic authoring with entities & slot filling','Agent actions via Power Automate flows','Channels: Teams, web, mobile, voice','Autonomous agents with triggers','Analytics & CSAT dashboards'],
+    langs:['Topic YAML','Power Fx (in topics)','Adaptive Cards'],
+    cert:'AB-900 Copilot & Agent Admin — new 2026 track',
+    docs:'https://learn.microsoft.com/microsoft-copilot-studio/'},
+  dataverse:{n:'Dataverse',c:'var(--c-data)',tag:'DATA PLATFORM',
+    d:'The managed, relational data backbone under the whole platform — with enterprise security, business logic, and a full OData Web API.',
+    feats:['Tables, columns, choices, relationships','Security roles, business units, field-level security','Business rules & real-time workflows','Plugins (C#) & custom APIs','Web API (OData 4.0) + FetchXML','Virtual tables, elastic tables, audit log'],
+    langs:['OData / REST','FetchXML','C# (plugins)','Power Fx (formula columns)'],
+    cert:'Core of PL-200 & PL-400 exams',
+    docs:'https://learn.microsoft.com/power-apps/maker/data-platform/'}
+};
+$$('.tool').forEach(t=>t.addEventListener('click',()=>{
+  const i=TOOLS_INFO[t.dataset.tool];if(!i)return;
+  openModal(modalHead(i.n,i.tag)+`
+  <div class="modal-b">
+    <p>${i.d}</p>
+    <dl class="kv">
+      <dt>Key capabilities</dt><dd><ul class="modal-list">${i.feats.map(f=>`<li>${f}</li>`).join('')}</ul></dd>
+      <dt>Languages</dt><dd>${i.langs.map(l=>`<code>${l}</code>`).join(' ')}</dd>
+      <dt>Certification</dt><dd>${i.cert}</dd>
+    </dl>
+    <div class="modal-actions">
+      <a class="btn btn-pri" style="padding:12px 22px" href="${i.docs}" target="_blank" rel="noopener">Official Microsoft Learn docs ↗</a>
+      <a class="btn btn-ghost modal-close-link" style="padding:12px 22px" href="#functions">Browse Power Fx functions</a>
+    </div>
+  </div>`,i.c);
+}));
+
+/* ================= PLAYGROUND WIRING ================= */
+const SAMPLES={
+  fx:[
+    {n:'Hello, Maker (strings)',c:'Concatenate("Welcome ", "to the ", "Power Platform")'},
+    {n:'If + Switch logic',c:'With({score: 87},\n  Switch(true,\n    score >= 90, "A — Outstanding",\n    score >= 75, "B — Great job",\n    score >= 60, "C — Passing",\n    "F — Try again"))'},
+    {n:'Filter + Sort (100 records)',c:'// Top 5 active IT staff by salary — 100 rows live\nFirstN(\n  SortByColumns(\n    Filter(Employees, Department = "IT", Active),\n    "Salary", SortOrder.Descending),\n  5)'},
+    {n:'Aggregations on Orders',c:'Sum(Filter(Orders, Status = "Approved"), Amount)\n// then try: Average(Employees, Salary)'},
+    {n:'GroupBy roll-up',c:'AddColumns(GroupBy(Employees, "Department", "M"),\n  "Headcount", CountRows(M),\n  "AvgPay", Text(Round(Average(M, Salary), 0), "$#,##0"))'},
+    {n:'Collections + Concat',c:'ClearCollect(colIT, Filter(Employees, Department="IT"));\nConcat(FirstN(colIT, 5), FirstName & " " & LastName, " · ")'},
+    {n:'Search + Index',c:'Index(Search(Employees, "tokyo", "City"), 1).FirstName & " works in Tokyo"'},
+    {n:'Patch a record',c:'Patch(Employees, Defaults(Employees), {FirstName:"New", LastName:"Joiner", Department:"IT", Salary:60000, Active:true});\nCountRows(Employees)'}
+  ],
+  js:[
+    {n:'Form validation (Xrm style)',c:'// Simulated form validation, PCF/model-driven style\nfunction validateExpense(amount, hasReceipt) {\n  if (amount <= 0) return "Amount must be positive";\n  if (amount > 100 && !hasReceipt) return "Receipt required over $100";\n  return "OK — ready to submit";\n}\nreturn validateExpense(150, false);'},
+    {n:'OData query builder',c:'// Build a Dataverse Web API query string\nconst select = ["name", "revenue"];\nconst filter = "revenue gt 100000";\nconst url = "accounts" +\n  "?$select=" + select.join(",") +\n  "&$filter=" + encodeURIComponent(filter) +\n  "&$top=5";\nreturn url;'},
+    {n:'Format helpers',c:'const currency = n => "$" + n.toLocaleString("en-US");\nconst initials = name => name.split(" ").map(w => w[0]).join("");\nreturn {\n  total: currency(1542000),\n  owner: initials("Maya Patel")\n};'}
+  ]
+};
+let pgTab='fx';
+const pgOut=$('#pgOut'),pgSample=$('#pgSample');
+
+function loadSamples(){
+  pgSample.innerHTML='<option value="">⚡ load a sample…</option>'+
+    SAMPLES[pgTab].map((s,i)=>`<option value="${i}">${s.n}</option>`).join('');
+}
+function runFx(){
+  const src=editorCode.value.trim();
+  if(!src){pgOut.innerHTML='<span class="hint">// nothing to run</span>';return}
+  try{
+    const{result,logs}=fxEval(src);
+    const r=fxShow(result);
+    pgOut.innerHTML=(logs.length?logs.map(l=>'<div class="ok">'+escHtml(l)+'</div>').join(''):'')+
+      '<div class="ok" style="font-size:15px;margin-top:6px">'+r.html+'</div>'+
+      '<span class="res-type">'+r.type+'</span>';
+  }catch(e){
+    pgOut.innerHTML='<div class="err">⚠ '+escHtml(e instanceof Error?e.message:String(e))+'</div><div class="hint" style="margin-top:10px">// Tip: check brackets, quotes and function names.<br>// Sample tables available: Employees, Orders</div>';
+  }
+}
+function runJs(){
+  const src=editorCode.value.trim();
+  if(!src){pgOut.innerHTML='<span class="hint">// nothing to run</span>';return}
+  pgOut.innerHTML='<span class="hint">// running in an isolated worker…</span>';
+  const worker=new Worker('js-runner.js');let settled=false;
+  const finish=()=>{settled=true;worker.terminate()};
+  const timer=setTimeout(()=>{if(settled)return;finish();pgOut.innerHTML='<div class="err">⚠ Execution stopped after 2 seconds.</div>'},2000);
+  worker.onmessage=e=>{if(settled)return;clearTimeout(timer);finish();if(e.data.ok){const value=e.data.value===undefined?'undefined':e.data.value;pgOut.innerHTML='<div class="ok" style="font-size:15px;white-space:pre-wrap">'+escHtml(value)+'</div><span class="res-type">'+escHtml(e.data.type)+'</span>'}else{pgOut.innerHTML='<div class="err">⚠ '+escHtml(e.data.error)+'</div>'}};
+  worker.onerror=()=>{if(settled)return;clearTimeout(timer);finish();pgOut.innerHTML='<div class="err">⚠ The isolated runner could not execute this code.</div>'};
+  worker.postMessage(src);
+}
+function runPg(){pgTab==='fx'?runFx():runJs()}
+
+$$('.pg-tab').forEach(b=>b.addEventListener('click',()=>{
+  $$('.pg-tab').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-selected','false')});b.classList.add('on');b.setAttribute('aria-selected','true');
+  pgTab=b.dataset.tab;loadSamples();editorCode.value='';renderEditor();
+  pgOut.innerHTML='<span class="hint">'+(pgTab==='fx'
+    ?'// Power Fx mode. Sample tables: Employees, Orders.'
+    :'// JavaScript mode. Use "return" to output a value.')+'</span>';
+}));
+pgSample.addEventListener('change',()=>{const s=SAMPLES[pgTab][+pgSample.value];if(s){editorCode.value=s.c;renderEditor();runPg()}});
+$('#pgRun').addEventListener('click',runPg);
+$('#pgClear').addEventListener('click',()=>{editorCode.value='';renderEditor();pgOut.innerHTML='<span class="hint">// cleared</span>'});
+$('#pgReset').addEventListener('click',()=>{pgSample.value='0';editorCode.value=SAMPLES[pgTab][0].c;renderEditor();runPg()});
+editorCode.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();runPg()}
+  if(e.key==='Tab'&&!e.defaultPrevented){e.preventDefault();const{selectionStart:s,selectionEnd:t,value:v}=editorCode;
+    editorCode.value=v.slice(0,s)+'  '+v.slice(t);editorCode.selectionStart=editorCode.selectionEnd=s+2;renderEditor()}
+});
+
+/* "try in playground" links from snippet cards */
+$$('.try').forEach(a=>a.addEventListener('click',()=>{
+  const tab=a.dataset.try;
+  $$('.pg-tab').find(b=>b.dataset.tab===tab)?.click();
+  pgSample.value='0';editorCode.value=SAMPLES[tab][0].c;renderEditor();
+  setTimeout(runPg,400);
+}));
+
+loadSamples();
+editorCode.value=SAMPLES.fx[2].c;
+renderEditor();
+runFx();
+</script>
+
+
+
+</body>
+</html>

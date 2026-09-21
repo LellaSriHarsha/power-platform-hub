@@ -57,7 +57,7 @@
     <g transform="translate(190 214)">
       <rect width="236" height="40" rx="20" fill="#0B0E1A" stroke="#A258C9" stroke-opacity="0.55"/>
       <circle cx="26" cy="20" r="5" fill="#A258C9"/>
-      <text x="44" y="26" fill="#C9D3EE">99 Power Fx functions</text>
+      <text x="44" y="26" fill="#C9D3EE">98 Power Fx functions</text>
     </g>
     <g transform="translate(442 214)">
       <rect width="252" height="40" rx="20" fill="#0B0E1A" stroke="#3B82F6" stroke-opacity="0.55"/>
@@ -65,11 +65,11 @@
       <text x="44" y="26" fill="#C9D3EE">200-record playground</text>
     </g>
     <g transform="translate(710 214)">
-      <rect width="188" height="40" rx="20" fill="#0B0E1A" stroke="#17B890" stroke-opacity="0.55"/>
+      <rect width="196" height="40" rx="20" fill="#0B0E1A" stroke="#17B890" stroke-opacity="0.55"/>
       <circle cx="26" cy="20" r="5" fill="#17B890"/>
-      <text x="44" y="26" fill="#C9D3EE">IntelliSense</text>
+      <text x="44" y="26" fill="#C9D3EE">Light + dark mode</text>
     </g>
-    <g transform="translate(914 214)">
+    <g transform="translate(922 214)">
       <rect width="226" height="40" rx="20" fill="#0B0E1A" stroke="#F2C811" stroke-opacity="0.55"/>
       <circle cx="26" cy="20" r="5" fill="#F2C811"/>
       <text x="44" y="26" fill="#C9D3EE">25 interview Qs</text>

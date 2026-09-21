@@ -18,3 +18,11 @@ tmp/
 # Node (if you later add a build step)
 node_modules/
 dist/
+
+# App workspace build output (Lovable / TanStack Start)
+app/node_modules/
+app/dist/
+app/.output/
+app/.nitro/
+app/.tanstack/
+app/.wrangler/
