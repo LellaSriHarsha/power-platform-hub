@@ -56,7 +56,23 @@
     '.ppref-item{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--ink-2)}',
     '.ppref-item code{display:block;color:var(--c-pages);font-size:12.5px;margin-bottom:4px;white-space:normal;word-break:break-word;background:none;padding:0}',
     '.ppref-item span{font-size:12px;color:var(--txt-dim);line-height:1.45}',
-    '[data-theme="light"] .ppref-item{background:#fff;border-color:rgba(39,55,91,.15)}'
+    '[data-theme="light"] .ppref-item{background:#fff;border-color:rgba(39,55,91,.15)}',
+    '/* ---- study hub polish ---- */',
+    '.study-tabs{position:sticky;top:66px;z-index:20;padding:12px 0 10px;margin:30px 0 4px;background:var(--ink);background:color-mix(in srgb,var(--ink) 90%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}',
+    '.study-panel:not([hidden]){animation:pvStudyIn .38s cubic-bezier(.2,.7,.2,1)}',
+    '@keyframes pvStudyIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}',
+    '@media(prefers-reduced-motion:reduce){.study-panel:not([hidden]){animation:none}}',
+    '.tp{transition:border-color .25s,transform .2s,box-shadow .25s}',
+    '.tp:hover{transform:translateY(-1px)}',
+    '.tp.open{box-shadow:0 14px 34px rgba(4,8,20,.42)}',
+    '[data-theme="light"] .tp.open{box-shadow:0 14px 34px rgba(39,55,91,.14)}',
+    '.study-tab.on .dot{box-shadow:0 0 10px var(--tc)}',
+    '.study-tab:focus-visible{outline:2px solid var(--tc);outline-offset:2px}',
+    '.tp-q:hover{background:rgba(148,163,204,.05)}',
+    '.tp-q:focus-visible{outline:2px solid var(--tpc,var(--c-copilot));outline-offset:-2px}',
+    '.ppref-item:hover{border-color:var(--c-pages)}',
+    '.tp-vid-play{transition:transform .2s}',
+    '.tp-vid:hover .tp-vid-play{transform:scale(1.08)}'
   ].join('\n');
   document.head.appendChild(st);
 
@@ -511,9 +527,12 @@
       if (i) p.hidden = true;
       if (tb.node) p.appendChild(tb.node); else p.innerHTML = tb.html;
       wrap.appendChild(p);
+      /* only wire accordions we generated — the relocated AI Builder /
+         Copilot lists already carry hub-ai.js click listeners, and wiring
+         them twice cancels itself out (open → close) */
+      if (!tb.node) wireTopics(p);
     });
     res.before(sec);
-    wireTopics(sec);
 
     /* renumber Resources 08 → 09 so the Study Hub owns 08 */
     var rt = document.querySelector('#resources .sec-tag b');
@@ -581,7 +600,65 @@
     }, 1800);
   }
 
+  /* ================= 8b. DEEP LINKS: re-arm on the final DOM ================= */
+  function rearmDeepLinks() {
+    var h = location.hash || '';
+    if (!/(^|[#&])(fn|fx|iq|pfn|ch)=/.test(h)) return;
+    /* hub-plus.js routes #fn / #iq on boot, but hub-data.js re-renders the
+       function grid afterwards and hub-ai/hub-data append interview
+       questions — so re-run every router (they all listen for hashchange)
+       against the finished DOM to flash/scroll the right target */
+    try { window.dispatchEvent(new HashChangeEvent('hashchange')) }
+    catch (e) {
+      try { window.dispatchEvent(new Event('hashchange')) } catch (e2) {}
+    }
+  }
+
   /* ================= 9. HERO STATS: sync with real counts ================= */
+  function syncFnCopy(n) {
+    /* keep copy that hardcodes the function count in step with reality:
+       the search placeholder, social/SEO descriptions and tool-card text */
+    var ph = document.getElementById('fnSearch');
+    if (ph) ph.setAttribute('placeholder', 'Search ' + n + ' functions\u2026 try \u201Cfilter\u201D, \u201Cdate\u201D, \u201Ctext\u201D');
+    /* the ⚡ Power Fx tab label is built by pa-functions.js before this layer
+       adds the Dataverse/SharePoint functions — keep it truthful */
+    var fxTabN = document.querySelector('#paTabFx .pa-tab-n');
+    if (fxTabN) fxTabN.textContent = n;
+    $$('meta').forEach(function (m) {
+      var c = m.getAttribute('content');
+      if (c && c.indexOf('documented functions') > -1) {
+        m.setAttribute('content', c.replace(/\d+ documented functions/g, n + ' documented functions'));
+      }
+    });
+    function walk(root) {
+      if (!root) return;
+      var w = document.createTreeWalker(root, 4, {
+        acceptNode: function (node) {
+          var p = node.parentNode;
+          while (p && p.nodeType === 1) {
+            var tn = p.nodeName;
+            if (tn === 'SCRIPT' || tn === 'STYLE' || tn === 'TEXTAREA' || tn === 'CODE' || tn === 'PRE') return 2;
+            p = p.parentNode;
+          }
+          return 1;
+        }
+      });
+      var node;
+      while ((node = w.nextNode())) {
+        if (node.nodeValue.indexOf('functions documented here') > -1) {
+          node.nodeValue = node.nodeValue.replace(/(\d+) functions documented here/g, n + ' functions documented here');
+        }
+      }
+    }
+    walk(document.body);
+    /* tool capability lists render inside the modal on demand — fix them
+       whenever the modal content changes */
+    var modal = document.getElementById('modalOv');
+    if (modal && window.MutationObserver) {
+      new MutationObserver(function () { walk(modal) }).observe(modal, { childList: true, subtree: true });
+    }
+  }
+
   function syncStats() {
     function setStat(re, n) {
       if (!n) return;
@@ -599,6 +676,7 @@
     setStat(/fx functions/i, fnN);
     setStat(/interview questions/i, $$('#iqList .iq').length);
     setStat(/real scenarios/i, $$('#scenarios .scen').length);
+    if (fnN) syncFnCopy(fnN);
   }
 
   /* ================= INIT ================= */
@@ -606,8 +684,12 @@
     buildStudy();
     fixNav();
     syncStats();
-    /* second pass: wins any race with the counter animation */
-    setTimeout(syncStats, 2600);
+    /* re-arm deep links on the finished DOM (after buildStudy relocated
+       sections and counted everything) */
+    setTimeout(rearmDeepLinks, 120);
+    /* extra passes: the hero counter animation reads data-count when the
+       stats scroll into view, so re-assert the real numbers afterwards */
+    [300, 1200, 2200, 3200].forEach(function (t) { setTimeout(syncStats, t) });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();

@@ -428,35 +428,55 @@
     if (!list || list.querySelector('[data-cat="ai"]')) return;
     var Q = [
       ['How do you choose between a prebuilt and a custom AI Builder model?',
-        'Start with a <b>prebuilt</b> model when the scenario is generic (invoices, receipts, sentiment, OCR) — zero training, instant value. Go <b>custom</b> when your documents/terms are specific and prebuilt accuracy is insufficient; custom needs training samples (5–15 docs per layout, 15+ images per object, 50+ rows per class) and they bill the same Copilot Credits.'],
+        'Start with a <b>prebuilt</b> model when the scenario is generic (invoices, receipts, sentiment, OCR) — zero training, instant value. Go <b>custom</b> when your documents/terms are specific and prebuilt accuracy is insufficient; custom needs training samples (5–15 docs per layout, 15+ images per object, 50+ rows per class) and they bill the same Copilot Credits.', 'med'],
       ['Walk me through building an invoice-processing solution with AI Builder.',
-        'Create a <b>document processing</b> model in the AI hub → upload 5+ invoices per vendor layout (one collection per layout) → tag fields and line-item tables → train, review performance, publish → in a flow, trigger on email/SharePoint arrival, run <code>Extract information from documents</code>, branch on <b>confidence score</b> (low → human review), write results to Dataverse and post to Teams.'],
+        'Create a <b>document processing</b> model in the AI hub → upload 5+ invoices per vendor layout (one collection per layout) → tag fields and line-item tables → train, review performance, publish → in a flow, trigger on email/SharePoint arrival, run <code>Extract information from documents</code>, branch on <b>confidence score</b> (low → human review), write results to Dataverse and post to Teams.', 'hard'],
       ['How does generative orchestration differ from classic trigger phrases?',
-        'Classic topics fire only when the user message matches <b>trigger phrases</b> (NLU). With <b>generative orchestration</b>, an AI planner reads the message and dynamically chooses and chains <b>topics, actions and knowledge</b> based on their names/descriptions — descriptions become the trigger surface, and one turn can invoke multiple tools.'],
+        'Classic topics fire only when the user message matches <b>trigger phrases</b> (NLU). With <b>generative orchestration</b>, an AI planner reads the message and dynamically chooses and chains <b>topics, actions and knowledge</b> based on their names/descriptions — descriptions become the trigger surface, and one turn can invoke multiple tools.', 'hard'],
       ['What knowledge sources can ground a Copilot Studio agent, and what is the authentication catch?',
-        'Public websites, <b>SharePoint/OneDrive</b>, uploaded files, <b>Dataverse</b>, and enterprise sources via Copilot/Graph connectors. The catch: secured sources (SharePoint/Graph) require <b>user authentication</b> and answers respect each user\u2019s permissions; anonymous users can only use public sources.'],
+        'Public websites, <b>SharePoint/OneDrive</b>, uploaded files, <b>Dataverse</b>, and enterprise sources via Copilot/Graph connectors. The catch: secured sources (SharePoint/Graph) require <b>user authentication</b> and answers respect each user\u2019s permissions; anonymous users can only use public sources.', 'med'],
       ['When would you add an agent flow instead of a topic or connector action?',
-        'When the agent must run <b>deterministic, multi-step logic</b>: approvals, loops, exact API sequences, compensation on failure. Topics drive conversation; a single connector action is one call; an <b>agent flow</b> gives auditable, versioned automation the orchestrator can invoke as a tool — and it can also run standalone on a schedule.'],
+        'When the agent must run <b>deterministic, multi-step logic</b>: approvals, loops, exact API sequences, compensation on failure. Topics drive conversation; a single connector action is one call; an <b>agent flow</b> gives auditable, versioned automation the orchestrator can invoke as a tool — and it can also run standalone on a schedule.', 'med'],
       ['What are autonomous agents in Copilot Studio and what guardrails do they need?',
-        'Agents triggered by <b>events</b> (new email, new file, Dataverse change, schedule) that reason and act without a user prompt. Guardrails: narrowly scoped instructions and tools, confidence-based branching, an explicit <b>human-escalation path</b>, transcript/activity monitoring, and credit-consumption alerts.'],
+        'Agents triggered by <b>events</b> (new email, new file, Dataverse change, schedule) that reason and act without a user prompt. Guardrails: narrowly scoped instructions and tools, confidence-based branching, an explicit <b>human-escalation path</b>, transcript/activity monitoring, and credit-consumption alerts.', 'hard'],
       ['How is Copilot Studio licensed, and how do you estimate cost?',
-        'Usage is billed in <b>Copilot Credits</b> (pay-as-you-go via Azure subscription, or prepaid message packs); rates differ for classic answers, generative answers and actions. Makers need a Copilot Studio user license. Estimate: monthly sessions × actions per session × rate; monitor in the Power Platform admin center Copilot hub.']
+        'Usage is billed in <b>Copilot Credits</b> (pay-as-you-go via Azure subscription, or prepaid message packs); rates differ for classic answers, generative answers and actions. Makers need a Copilot Studio user license. Estimate: monthly sessions × actions per session × rate; monitor in the Power Platform admin center Copilot hub.', 'easy']
     ];
-    Q.forEach(function (q) {
+    var base = $$('.iq', list).length;
+    var DIFF = { easy: 'Easy', med: 'Medium', hard: 'Hard' };
+    Q.forEach(function (q, i) {
       var div = document.createElement('div');
-      div.className = 'iq'; div.dataset.cat = 'ai';
-      div.innerHTML = '<button class="iq-q" aria-expanded="false"><span>' + q[0] + '</span><span class="chev">\u25BC</span></button>'
+      div.className = 'iq'; div.dataset.cat = 'ai'; div.dataset.pv = 'ai';
+      var d = q[2] || 'med';
+      div.innerHTML = '<button class="iq-q" aria-expanded="false">'
+        + '<span class="qn">Q' + String(base + i + 1).padStart(2, '0') + '</span>'
+        + '<span>' + q[0] + '</span>'
+        + '<span class="diff ' + d + '">' + DIFF[d] + '</span>'
+        + '<span class="chev">\u25BC</span></button>'
         + '<div class="iq-a"><div class="iq-a-in">' + q[1] + '</div></div>';
+      var btn = div.querySelector('.iq-q');
+      btn.addEventListener('click', function () {
+        var body = div.querySelector('.iq-a'), open = div.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+        body.style.maxHeight = open ? body.scrollHeight + 'px' : '0px';
+      });
       list.appendChild(div);
     });
-    var chips = $('#iqChips');
-    if (chips && !chips.querySelector('[data-cat="ai"]')) {
+    /* "AI & Copilot" category chip — appended to the site's own filters row
+       (there is no #iqChips container) so it behaves like every other chip */
+    var row = $('.iq-filters');
+    if (row && !row.querySelector('[data-cat="ai"]')) {
       var b = document.createElement('button');
-      b.className = 'chip'; b.dataset.cat = 'ai'; b.textContent = 'AI & Copilot';
-      chips.appendChild(b);
+      b.className = 'iq-f'; b.dataset.cat = 'ai'; b.textContent = 'AI & Copilot';
+      b.addEventListener('click', function () {
+        $$('.iq-f:not(.iq-fd)', row).forEach(function (x) { x.classList.remove('on') });
+        b.classList.add('on');
+        setTimeout(function () {
+          $$('.iq').forEach(function (el) { el.classList.toggle('hide', el.dataset.cat !== 'ai') });
+        }, 0);
+      });
+      row.appendChild(b);
     }
-    if (window.PVHUB && window.PVHUB.wireAccordions) window.PVHUB.wireAccordions(list);
-    if (window.PVHUB && window.PVHUB.wireInterviewFilters) window.PVHUB.wireInterviewFilters();
   }
 
   /* ================= 4. NAV + INIT ================= */

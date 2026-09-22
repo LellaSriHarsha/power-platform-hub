@@ -171,7 +171,7 @@
     if(guide)guide.style.display=pa?'':'none';
     if(pa){renderPAChips();renderPA()}else{
       var cnt=$('#fnCount'),g=$('#fnGrid');
-      if(cnt&&g)cnt.textContent=g.querySelectorAll('.fn-card').length+' / 98 functions';
+      if(cnt&&g)cnt.textContent=g.querySelectorAll('.fn-card').length+' / '+(typeof FN!=='undefined'?FN.length:g.querySelectorAll('.fn-card').length)+' functions';
     }
   }
 
@@ -197,7 +197,7 @@
     /* tab toggle above the search row */
     var tabs=document.createElement('div');
     tabs.className='pa-tabs';
-    tabs.innerHTML='<button class="pa-tab on" id="paTabFx">⚡ Power Fx <span class="pa-tab-n">98</span></button>'
+    tabs.innerHTML='<button class="pa-tab on" id="paTabFx">⚡ Power Fx <span class="pa-tab-n">'+(typeof FN!=='undefined'?FN.length:'')+'</span></button>'
       +'<button class="pa-tab" id="paTabPa">🌊 Power Automate <span class="pa-tab-n">'+PA.length+'</span></button>';
     tools.parentNode.insertBefore(tabs,tools);
 
