@@ -8,8 +8,9 @@
 #
 #   1. SEO/social meta pack into docs/index.html  (canonical, Open Graph,
 #      Twitter cards, JSON-LD structured data — content: scripts/growth-pack.html)
-#   2. hub-plus.js enhancement layer (deep links, share buttons) into
-#      docs/index.html — the file itself lives in docs/ and survives syncs
+#   2. Enhancement layers into docs/index.html (hub-plus.js deep links/share,
+#      pa-functions.js Power Automate library, hub-lab.js playground power-ups,
+#      hub-journey.js journey features) — files live in docs/, survive syncs
 #   3. Sitemap line in docs/robots.txt
 #   4. Footer version bump (v1.0 → v2.0) + GitHub repo link
 #
@@ -44,24 +45,31 @@ PYEOF
   fi
 fi
 
-# --- 2. hub-plus.js enhancement layer into docs/index.html ----------------
-if [ -f "$INDEX" ] && [ -f "$ROOT/docs/hub-plus.js" ]; then
-  if grep -q 'hub-plus.js' "$INDEX"; then
-    echo "✓ hub-plus.js already wired into docs/index.html"
-  else
-    python3 - "$INDEX" <<'PYEOF'
-import sys
+# --- 2. repo-owned enhancement layers into docs/index.html -----------------
+# hub-plus.js      — deep links, share buttons (core)
+# pa-functions.js  — Power Automate expression library + Fx/PA tab
+# hub-lab.js       — playground power-ups: history, favorites, import data,
+#                    export, challenges
+# hub-journey.js   — interview progress, difficulty filters, certifications
+for layer in hub-plus.js pa-functions.js hub-lab.js hub-journey.js; do
+  if [ -f "$INDEX" ] && [ -f "$ROOT/docs/$layer" ]; then
+    if grep -q "$layer" "$INDEX"; then
+      echo "✓ $layer already wired into docs/index.html"
+    else
+      LAYER="$layer" python3 - "$INDEX" <<'PYEOF'
+import os, sys
 p = sys.argv[1]
 html = open(p, encoding='utf-8').read()
-tag = '<script src="hub-plus.js" defer></script>\n'
+tag = '<script src="%s" defer></script>\n' % os.environ['LAYER']
 pos = html.lower().rfind('</body>')
 if pos == -1:
     sys.exit('error: </body> not found in docs/index.html')
 open(p, 'w', encoding='utf-8').write(html[:pos] + tag + html[pos:])
 PYEOF
-    echo "→ Wired hub-plus.js into docs/index.html"
+      echo "→ Wired $layer into docs/index.html"
+    fi
   fi
-fi
+done
 
 # --- 3. Sitemap line in docs/robots.txt -----------------------------------
 if [ -f "$ROBOTS" ] && ! grep -q '^Sitemap:' "$ROBOTS"; then
