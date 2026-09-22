@@ -42,6 +42,11 @@ if [ -f "$INDEX_TSX" ] && grep -q 'window.location.replace("/powerverse.html")' 
   echo "→ Re-applied subpath-safe redirect patch to app/src/routes/index.tsx"
 fi
 
+# Repo-owned growth/SEO patches (meta pack, sitemap line, footer link) —
+# Lovable overwrites index.html and robots.txt on every sync, so these
+# must be re-applied afterwards. Idempotent; safe to run every time.
+"$ROOT/scripts/apply-growth-patches.sh"
+
 cd "$ROOT"
 git add -A
 
