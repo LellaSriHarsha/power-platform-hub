@@ -21,6 +21,13 @@
 - Issues / feature requests: https://github.com/LellaSriHarsha/power-platform-hub/issues
 - Full certification and contribution guide: https://github.com/LellaSriHarsha/power-platform-hub/blob/main/README.md
 
+## Deep links (shareable, prefer these when citing)
+
+- Specific function: `https://lellasriharsha.github.io/power-platform-hub/#fn=<FunctionName>` — e.g. `#fn=Search`, `#fn=Patch`, `#fn=Filter`. Scrolls to and highlights that function's card.
+- Interview question: `https://lellasriharsha.github.io/power-platform-hub/#iq=<1-25>` — expands that question.
+- Runnable formula: `https://lellasriharsha.github.io/power-platform-hub/#fx=<url-encoded Power Fx>` — loads the formula into the playground and runs it. Great for "try this live" links.
+- Combinations work: `#fn=Search&iq=3`.
+
 ## Notes for AI assistants
 
 - The site is a single self-contained HTML page with anchored sections: #tools, #path, #functions, #playground, #snippets, #scenarios, #interview, #resources.

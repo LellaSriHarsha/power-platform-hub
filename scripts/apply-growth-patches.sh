@@ -8,8 +8,10 @@
 #
 #   1. SEO/social meta pack into docs/index.html  (canonical, Open Graph,
 #      Twitter cards, JSON-LD structured data — content: scripts/growth-pack.html)
-#   2. Sitemap line in docs/robots.txt
-#   3. Footer version bump (v1.0 → v2.0) + GitHub repo link
+#   2. hub-plus.js enhancement layer (deep links, share buttons) into
+#      docs/index.html — the file itself lives in docs/ and survives syncs
+#   3. Sitemap line in docs/robots.txt
+#   4. Footer version bump (v1.0 → v2.0) + GitHub repo link
 #
 # Everything is idempotent: running it twice changes nothing.
 # It is called automatically by scripts/sync-from-lovable.sh, and can also
@@ -42,13 +44,32 @@ PYEOF
   fi
 fi
 
-# --- 2. Sitemap line in docs/robots.txt -----------------------------------
+# --- 2. hub-plus.js enhancement layer into docs/index.html ----------------
+if [ -f "$INDEX" ] && [ -f "$ROOT/docs/hub-plus.js" ]; then
+  if grep -q 'hub-plus.js' "$INDEX"; then
+    echo "✓ hub-plus.js already wired into docs/index.html"
+  else
+    python3 - "$INDEX" <<'PYEOF'
+import sys
+p = sys.argv[1]
+html = open(p, encoding='utf-8').read()
+tag = '<script src="hub-plus.js" defer></script>\n'
+pos = html.lower().rfind('</body>')
+if pos == -1:
+    sys.exit('error: </body> not found in docs/index.html')
+open(p, 'w', encoding='utf-8').write(html[:pos] + tag + html[pos:])
+PYEOF
+    echo "→ Wired hub-plus.js into docs/index.html"
+  fi
+fi
+
+# --- 3. Sitemap line in docs/robots.txt -----------------------------------
 if [ -f "$ROBOTS" ] && ! grep -q '^Sitemap:' "$ROBOTS"; then
   printf '\nSitemap: %ssitemap.xml\n' "$SITE" >> "$ROBOTS"
   echo "→ Added Sitemap line to docs/robots.txt"
 fi
 
-# --- 3. Footer: version bump + GitHub link --------------------------------
+# --- 4. Footer: version bump + GitHub link --------------------------------
 if [ -f "$INDEX" ] && grep -q 'v1\.0 · runs 100% in your browser' "$INDEX"; then
   python3 - "$INDEX" <<'PYEOF'
 import sys
