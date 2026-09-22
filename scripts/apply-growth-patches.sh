@@ -11,7 +11,8 @@
 #   2. Enhancement layers into docs/index.html (hub-plus.js deep links/share,
 #      pa-functions.js Power Automate library, hub-lab.js playground power-ups,
 #      hub-theme.js light-mode code fixes, hub-data.js Dataverse/SharePoint,
-#      hub-ai.js AI Builder + Copilot Studio, hub-journey.js journey features)
+#      hub-ai.js AI Builder + Copilot Studio, hub-journey.js journey features,
+#      hub-study.js unified Study Hub)
 #      — files live in docs/, survive syncs
 #   3. Sitemap line in docs/robots.txt
 #   4. Footer version bump (v1.0 → v2.0) + GitHub repo link
@@ -54,11 +55,15 @@ fi
 #                    export, challenges
 # hub-theme.js     — light-mode code readability fixes
 # hub-data.js      — Dataverse/SharePoint functions, snippets pane, questions
-# hub-ai.js        — AI Builder + Copilot Studio sections, questions
+# hub-ai.js        — AI Builder + Copilot Studio topics, questions
 # hub-journey.js   — interview progress, difficulty filters, certifications
-#                    (must stay LAST: it wires all .iq items/chips incl.
-#                    the ones hub-data/hub-ai inject)
-for layer in hub-plus.js pa-functions.js hub-lab.js hub-theme.js hub-data.js hub-ai.js hub-journey.js; do
+#                    (wires all .iq items/chips incl. the ones
+#                    hub-data/hub-ai inject)
+# hub-study.js     — unified #study hub (Power Apps / Automate / Pages /
+#                    AI Builder / Copilot tabs), video links, nav scroll
+#                    affordance, hero stat sync
+#                    (MUST stay LAST: relocates hub-ai sections + counts)
+for layer in hub-plus.js pa-functions.js hub-lab.js hub-theme.js hub-data.js hub-ai.js hub-journey.js hub-study.js; do
   if [ -f "$INDEX" ] && [ -f "$ROOT/docs/$layer" ]; then
     if grep -q "$layer" "$INDEX"; then
       echo "✓ $layer already wired into docs/index.html"

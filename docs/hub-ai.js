@@ -4,9 +4,11 @@
    Deep study TOPICS with a curated YouTube video per topic:
    • #ai-builder — 10 topics, official MS UI screenshot
    • #copilot    — 11 topics, official MS UI screenshots
-   • Videos render as click-to-play facades (youtube-nocookie
-     iframe only loads on click — fast + privacy friendly)
+   • Videos are plain outbound YouTube links (open in a new tab —
+     no iframes, no embeds, zero third-party JS on the page)
    • +7 interview questions, nav links, nav nowrap fix
+   hub-study.js (loaded later) relocates both sections into the
+   unified #study hub — section ids are preserved for deep links
    Repo-owned; tag re-injected by scripts/apply-growth-patches.sh
    ============================================================ */
 (function () {
@@ -37,19 +39,16 @@
     '.tp-fig{margin:14px 0 4px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}',
     '.tp-fig img{display:block;width:100%;height:auto}',
     '.tp-fig figcaption{padding:10px 14px;font-size:12.5px;color:var(--txt-dim);border-top:1px solid var(--line);background:var(--ink-2)}',
-    '.tp-vid{display:flex;gap:14px;align-items:center;margin-top:8px;border:1px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;background:var(--ink-3,rgba(148,163,204,.05));transition:border-color .25s}',
-    '.tp-vid:hover{border-color:#f43f5e}',
-    '.tp-vid-thumb{position:relative;flex:none;width:150px;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#0b0e18}',
-    '.tp-vid-thumb img{width:100%;height:100%;object-fit:cover;display:block}',
-    '.tp-vid-thumb::after{content:"\\25B6";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;background:rgba(8,11,22,.45);transition:background .25s}',
-    '.tp-vid:hover .tp-vid-thumb::after{background:rgba(244,63,94,.55)}',
-    '.tp-vid-meta{font-size:13px;font-weight:600;color:var(--txt)}',
-    '.tp-vid-meta span{display:block;margin-top:3px;font-size:11.5px;font-weight:500;color:var(--txt-dim)}',
-    '.tp-vid iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:8px;display:block}',
+    '.tp-vid{display:flex;gap:14px;align-items:center;margin-top:8px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-decoration:none;background:var(--ink-3,rgba(148,163,204,.05));transition:border-color .25s,transform .2s}',
+    '.tp-vid:hover{border-color:#f43f5e;transform:translateY(-1px)}',
+    '.tp-vid-play{flex:none;width:42px;height:42px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;background:#f43f5e;color:#fff;font-size:15px;box-shadow:0 6px 18px rgba(244,63,94,.35)}',
+    '.tp-vid-meta{font-size:13px;font-weight:600;color:var(--txt);line-height:1.4;flex:1;min-width:0}',
+    '.tp-vid-meta>span{display:block;margin-top:3px;font-size:11.5px;font-weight:600;color:#f43f5e;letter-spacing:.02em}',
+    '.tp-vid-host{color:var(--txt-dim);font-weight:500}',
     '[data-theme="light"] .tp{background:#fff}',
     '[data-theme="light"] .tp-vid{background:#f4f6fc}',
     '[data-theme="light"] .tp-a-in code{background:rgba(30,41,69,.08)}',
-    '@media(max-width:640px){.tp-a-in{padding-left:20px}.tp-tag{display:none}.tp-vid{flex-direction:column;align-items:stretch}.tp-vid-thumb{width:100%}}'
+    '@media(max-width:640px){.tp-a-in{padding-left:20px}.tp-tag{display:none}}'
   ].join('\n');
   document.head.appendChild(st);
 
@@ -62,10 +61,10 @@
   function vid(v) {
     if (!v) return '';
     return '<span class="tp-h">▶ Watch — best video for this topic</span>'
-      + '<div class="tp-vid" data-vid="' + v.i + '" role="button" tabindex="0">'
-      + '<div class="tp-vid-thumb"><img src="https://i.ytimg.com/vi/' + v.i + '/hqdefault.jpg" alt="" loading="lazy" '
-      + 'onerror="this.src=\'https://i.ytimg.com/vi/' + v.i + '/mqdefault.jpg\'"></div>'
-      + '<div class="tp-vid-meta">' + v.t + '<span>YouTube · click to play here</span></div></div>';
+      + '<a class="tp-vid" href="https://www.youtube.com/watch?v=' + v.i + '" target="_blank" rel="noopener">'
+      + '<span class="tp-vid-play" aria-hidden="true">▶</span>'
+      + '<span class="tp-vid-meta">' + v.t
+      + '<span>Watch on YouTube <span class="tp-vid-host">· youtube.com ↗</span></span></span></a>';
   }
 
   function topicList(items, color) {
@@ -94,15 +93,7 @@
         }
       });
     });
-    $$('.tp-vid', scope).forEach(function (el) {
-      function play() {
-        el.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + el.dataset.vid
-          + '?autoplay=1&rel=0" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-        el.style.cursor = 'default';
-      }
-      el.addEventListener('click', play);
-      el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play() } });
-    });
+    /* videos are plain outbound links now — nothing to wire */
   }
 
   /* ================= 1. AI BUILDER ================= */
@@ -257,7 +248,7 @@
     s.innerHTML = '<div class="container">'
       + '<div class="sec-head"><p class="eyebrow">\uD83E\uDD16 AI Builder</p>'
       + '<h2 class="sec-title">AI Builder, <span class="grad-text">topic by topic</span></h2>'
-      + '<p class="sec-sub">Open a topic for the deep dive — concepts, build steps, gotchas, official Microsoft UI screenshots and the best YouTube video for that topic.</p></div>'
+      + '<p class="sec-sub">Open a topic for the deep dive — concepts, build steps, gotchas, official Microsoft UI screenshots and a curated YouTube video for that topic (opens on YouTube).</p></div>'
       + topicList(AIB, 'var(--c-copilot)')
       + '</div>';
     document.getElementById('resources').before(s);
@@ -424,7 +415,7 @@
     s.innerHTML = '<div class="container">'
       + '<div class="sec-head"><p class="eyebrow">\uD83D\uDCAC Copilot Studio</p>'
       + '<h2 class="sec-title">Copilot Studio, <span class="grad-text">topic by topic</span></h2>'
-      + '<p class="sec-sub">Open a topic for the deep dive — concepts, build steps, gotchas, official Microsoft UI screenshots and the best YouTube video for that topic.</p></div>'
+      + '<p class="sec-sub">Open a topic for the deep dive — concepts, build steps, gotchas, official Microsoft UI screenshots and a curated YouTube video for that topic (opens on YouTube).</p></div>'
       + topicList(COP, 'var(--c-flow)')
       + '</div>';
     document.getElementById('resources').before(s);
