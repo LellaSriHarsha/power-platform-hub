@@ -128,10 +128,10 @@
     var sec = document.createElement('section');
     sec.id = 'certs';
     sec.innerHTML = '<div class="wrap">'
-      + '<div class="sec-tag rv"><b>★</b> Certifications</div>'
-      + '<h2 class="sec-title rv">Get <span class="hl">certified</span>.<br>Get hired.</h2>'
-      + '<p class="sec-sub rv">The official Microsoft certification path for Power Platform — from fundamentals to expert architect. Every exam maps to free Microsoft Learn paths.</p>'
-      + '<div class="cert-grid rv">'
+      + '<div class="sec-tag rv on"><b>★</b> Certifications</div>'
+      + '<h2 class="sec-title rv on">Get <span class="hl">certified</span>.<br>Get hired.</h2>'
+      + '<p class="sec-sub rv on">The official Microsoft certification path for Power Platform — from fundamentals to expert architect. Every exam maps to free Microsoft Learn paths.</p>'
+      + '<div class="cert-grid rv on">'
       + CERTS.map(function (c) {
         return '<a class="res" style="--rc:' + c.c + '" href="' + c.u + '" target="_blank" rel="noopener">'
           + '<div class="r-ico">' + c.ico + '</div><div><h5>' + c.code + ' · ' + c.name + ' <span class="ext">↗</span></h5>'
